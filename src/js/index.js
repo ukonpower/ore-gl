@@ -13,8 +13,8 @@ var height = window.innerHeight;
 var scene = new THREE.Scene();
 var loader = new GLTFLoader();
 
-var cameraBasePos  = new THREE.Vector3(0,1,5);
-var cameraBaseRotate = new THREE.Vector3(-0.1,0,0);
+var cameraBasePos  = new THREE.Vector3(0,2,7);
+var cameraBaseRotate = new THREE.Vector3(-0.2,0,0);
 
 var cursor = new Cursor();
 
@@ -96,7 +96,7 @@ function resize(){
 	width = window.innerWidth;
 	height = window.innerHeight;
 
-	// renderer.setPixelRatio(window.devicePixelRatio);
+	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(width, height);
 
 	// カメラのアスペクト比を正す
