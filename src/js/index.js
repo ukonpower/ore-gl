@@ -38,20 +38,45 @@ function init() {
 	scene.add(camera);
 
 	//light
-	var light = new THREE.DirectionalLight(0xFFFFFF, 1);
-	light.position.set(5,5,-5);
-	light.rotation.set(Math.PI / 4,Math.PI / 4,0);
-	scene.add(light);
+	var directLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+	directLight.position.set(5,5,-5);
+	directLight.rotation.set(Math.PI / 4,Math.PI / 4,0);
+	scene.add(directLight);
 
-	light = new THREE.AmbientLight();
-	scene.add(light);
+	directLight = new THREE.AmbientLight();
+	scene.add(directLight);
 
-	var boxGeo = new THREE.BoxGeometry(1,1,1);
-	var mat = new THREE.MeshStandardMaterial({color:0xffffff});
-	var box = new THREE.Mesh(boxGeo,mat);
-	box.name = "box";
+	loader.load("./models/ore-gl.glb",function(gltf){
+		const mat = new THREE.MeshStandardMaterial();
 
-	scene.add(box);
+		//table
+		var table = gltf.scene.getObjectByName("table");
+		table.material = mat;
+
+		//keboard
+		var keyboard = gltf.scene.getObjectByName("keyboard");
+		keyboard.material = mat;
+		var keys = gltf.scene.getObjectByName("keys").children;
+		for(var k in keys){
+			keys[k].material = mat;
+		}
+
+		//mouse
+		var mouse = gltf.scene.getObjectByName("mouse");
+		mouse.material = mat;
+
+		//display_body
+		var display_body = gltf.scene.getObjectByName("display_body");
+		display_body.material = mat;
+
+		//display
+		var display = gltf.scene.getObjectByName("display");
+		display.material = mat;
+
+
+
+		scene.add(gltf.scene);
+	})
 
 	window.scene = scene;
 	window.THREE = THREE;	
