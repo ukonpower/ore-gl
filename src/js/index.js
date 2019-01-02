@@ -147,13 +147,13 @@ function init() {
 
 	planeMat.wireframe = true;
 	var plane = new THREE.Mesh(planeGeo, planeMat);
-	plane.position.set(0, 0.9, 0);
+	plane.position.set(0, 0.5, 0);
 	plane.rotateX(-Math.PI / 2);
 	plane.renderOrder = 1;
 	scene.add(plane);
 
 	var particleGeo = new THREE.Geometry();
-	const ptcles = 500;
+	const ptcles = 0;
 	const size = new THREE.Vector3(30, 50, 30);
 	for (var i = 0; i < ptcles; i++) {
 		particleGeo.vertices.push(
@@ -166,7 +166,7 @@ function init() {
 	}
 
 	particleUni = {
-		time: {value: 0,}
+		time: {value: 0}
 	}
 	var particleMat = new THREE.ShaderMaterial({
 		vertexShader: ptclVert,

@@ -120,6 +120,6 @@ void main() {
   vec4 mvpPosition = projectionMatrix * mvPosition;
 
   gl_Position = mvpPosition;
-  gl_PointSize = ( 30.0 / -mvPosition.z ) * 3.0;
+  gl_PointSize = ( 30.0 / -mvPosition.z ) * 2.0;
   vc = vec3(pos.z * -1.0);
 }
