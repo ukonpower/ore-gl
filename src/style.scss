@@ -64,15 +64,20 @@ html,body{
 
 	&-list{
 		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		align-content: stretch;
 		width: 80%;
-		max-width: 800px;
 		margin: 0 auto;
 		list-style: none;
 		&-item{
 			position: relative;
-			width: 100%;
-			margin: 15% auto;
-
+			width: 45%;
+			margin: 2%% 2.5%;
+			@include sp{
+				width: 100%;
+				margin: 5% auto;
+			}
 			& img{
 				position: relative;
 				width: 100%;
@@ -87,10 +92,10 @@ html,body{
 		}
 	}
 }
-#canvas{
+#canvas-wrap{
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 }

@@ -8,19 +8,29 @@ import ObjectController from './ObjectContoller';
 const standardVert = require("../shader/standard.vs");
 const displayFrag = require("../shader/display.fs");
 
-var camera, renderer;
+const planeVert = require("../shader/plane.vs");
+const planeFrag = require("../shader/plane.fs");
+
+const pcVert = require("../shader/pc.vs");
+const pcFrag = require("../shader/pc.fs");
+
+const ptclVert = require("../shader/particle.vs");
+const ptclFrag = require("../shader/particle.fs");
+
 var width = window.innerWidth;
 var height = window.innerHeight;
 
 var scene = new THREE.Scene();
 var loader = new GLTFLoader();
+var camera, renderer;
 
 // var cameraBasePos  = new THREE.Vector3(0,2,7);
-var cameraBasePos = new THREE.Vector3(0, 2, 5);
-var cameraBaseRotate = new THREE.Vector3(-0.25, 0, 0);
+var cameraBasePos = new THREE.Vector3(0, 2, 8);
+var cameraBaseRotate = new THREE.Vector3(-0.1, 0, 0);
 
+var pcBasePos = new THREE.Vector3(0.3,0.3,0);
+var pcBaseRotate = new THREE.Vector3(-0.1, 0, 0);
 var cursor = new Cursor();
-
 var time = 0;
 
 //models
@@ -28,8 +38,12 @@ var keys;
 var mouse;
 var display;
 var displayUni;
+var planeUni;
+var pcUni;
+var particleUni;
 
-var pLight;
+//scroll
+var scrollPos = 0;
 
 function init() {
 	cursor.tapEvent = onTouch.bind(this);
@@ -37,7 +51,7 @@ function init() {
 	// render
 	renderer = new THREE.WebGLRenderer({
 		canvas: document.querySelector('#canvas'),
-		antialias: true
+		antialias: false
 	});
 	renderer.shadowMap.enabled = true;
 	renderer.animate(animate.bind(this));
@@ -51,20 +65,11 @@ function init() {
 	camera.rotation.setFromVector3(cameraBaseRotate);
 	scene.add(camera);
 
-	//light
-	// var aLight = new THREE.AmbientLight();
-	// aLight.intensity = 1;
-	// aLight.color = new THREE.Color(0x444444);
-	// scene.add(aLight);
-
-	pLight = new THREE.PointLight();
+	var pLight = new THREE.PointLight();
 	pLight.intensity = 1.0;
 	pLight.position.set(-0.28, 1.44, -0.40);
 	pLight.scale.setScalar(0.2);
-	pLight.castShadow = true;
 	scene.add(pLight);
-
-	// scene.add(new THREE.PointLightHelper(pLight));
 
 	var sLight = new THREE.SpotLight();
 	sLight.intensity = 0.3;
@@ -72,55 +77,41 @@ function init() {
 	sLight.penumbra = 0.8;
 	sLight.position.set(0, 3, 4);
 	sLight.rotation.set(0, 0, 0);
-	// sLight.castShadow = true;
-	sLight.shadowMapHeight = 2048;
-	sLight.shadowMapWidth = 2048;
 	scene.add(sLight);
 
-	// var slightHelper = new THREE.SpotLightHelper(sLight);
-	// scene.add(slightHelper)
-
 	loader.load("./models/ore-gl.glb", function (gltf) {
-		const mat = new THREE.MeshStandardMaterial();
+
+		pcUni = {
+			time: { value: 0 }
+		}
+		var mat = new THREE.ShaderMaterial({
+			vertexShader: pcVert,
+			fragmentShader: pcFrag,
+			uniforms: pcUni,
+			transparent: true
+		});
+		mat.wireframe = true;
 
 		//table
-		var table = gltf.scene.getObjectByName("table");
-		const tableMat = new THREE.MeshStandardMaterial();
-		tableMat.roughness = 1.0;
-		table.material = tableMat;
-		table.castShadow = true;
-		table.receiveShadow = true;
+		// var table = gltf.scene.getObjectByName("table");
+		// table.material = mat;
 
 		//keboard
 		var keyboard = gltf.scene.getObjectByName("keyboard");
-		const keyboardMat = new THREE.MeshStandardMaterial();
-		keyboard.material = keyboardMat;
-		keyboard.receiveShadow = true;
-		keyboard.castShadow = true;
+		keyboard.material = mat;
+
 		keys = gltf.scene.getObjectByName("keys").children;
 		keys.forEach((k) => {
 			k.material = mat;
-			k.castShadow = true;
 		});
-
-		sLight.target = keyboard;
 
 		//mouse
 		mouse = gltf.scene.getObjectByName("mouse");
-		mouse.castShadow = true;
-		var mouseMat = new THREE.MeshStandardMaterial();
-		mouseMat.flatShading = false;
-		mouseMat.metalness = 0.0;
-		mouseMat.roughness = 0.5;
-		mouse.material = mouseMat;
+		mouse.material = mat;
 
 		//display_body
 		var displayBody = gltf.scene.getObjectByName("display_body");
-		var displayBodyMat = new THREE.MeshStandardMaterial();
-		displayBodyMat.color = new THREE.Color(0xffffff);
-		displayBodyMat.roughness = 0.5;
-		displayBody.material = displayBodyMat;
-		// displayBody.castShadow = true;
+		displayBody.material = mat;
 
 		//display
 		displayUni = {
@@ -134,18 +125,55 @@ function init() {
 		display = gltf.scene.getObjectByName("display");
 		display.material = displayMat;
 
+		gltf.scene.name = "model";
+		gltf.scene.scale.setScalar(1.5);
+		gltf.scene.position.copy(pcBasePos);
+		gltf.scene.rotateX(0.2);
 		scene.add(gltf.scene);
 	})
 
-	// var planeGeo = new THREE.PlaneGeometry(50,50);
-	// var planeMat = new THREE.MeshStandardMaterial();
-	// planeMat.roughness = 1.0;
-	// planeMat.emissive = new THREE.Color(0x888888);
-	// var plane = new THREE.Mesh(planeGeo,planeMat);
-	// plane.receiveShadow = true;
-	// plane.position.set(0,0,0);
-	// plane.rotateX(-Math.PI / 2);
-	// scene.add(plane);
+	var planeGeo = new THREE.PlaneGeometry(20, 20, 50, 50);
+	planeUni = {
+		time: { value: 0 },
+	}
+
+	var planeMat = new THREE.ShaderMaterial({
+		vertexShader: planeVert,
+		fragmentShader: planeFrag,
+		uniforms: planeUni,
+		transparent: true,
+	});
+	planeMat.wireframe = true;
+	var plane = new THREE.Mesh(planeGeo, planeMat);
+	plane.position.set(0, 0, 0);
+	plane.rotateX(-Math.PI / 2);
+	scene.add(plane);
+
+	var particleGeo = new THREE.Geometry();
+	const ptcles = 500;
+	const size = new THREE.Vector3(30, 50, 30);
+	for (var i = 0; i < ptcles; i++) {
+		particleGeo.vertices.push(
+			new THREE.Vector3(
+				Math.random() * size.x - size.x / 2,
+				Math.random() * size.y - size.y / 2,
+				Math.random() * size.z - size.z / 2,
+			)
+		);
+	}
+
+	particleUni = {
+		time: {value: 0,}
+	}
+	var particleMat = new THREE.ShaderMaterial({
+		vertexShader: ptclVert,
+		fragmentShader: ptclFrag,
+		uniforms: particleUni,
+		transparent: true
+	});
+
+	var particle = new THREE.Points(particleGeo,particleMat);
+	scene.add(particle);
 
 	window.scene = scene;
 	window.THREE = THREE;
@@ -165,27 +193,52 @@ function animate() {
 		displayUni.time.value = time;
 	}
 
+	if (pcUni != null) {
+		pcUni.time.value = time;
+	}
+
 	if (mouse != null) {
-		var mTime = time * 0.2;
+		var mTime = time * 0.1;
 		mouse.position.add(new THREE.Vector3(Math.sin(mTime * 3) * 0.003, 0, Math.cos(mTime * 2.0) * 0.003))
 	}
 
-	pLight.intensity = 0.7 + Math.abs(Math.sin(time * 2) + Math.cos(time * 0.5) + Math.cos(time * 1.6)) / 3 * 0.3;
+	var model = scene.getObjectByName("model");
+	if (model != null) {
+		model.position.y = pcBasePos.y + Math.sin(time * 0.15) * 0.05;
+	}
+
+	planeUni.time.value = time;
+	particleUni.time.value = time;
+
+
+	camera.position.y = window.pageYOffset * -0.004 + cameraBasePos.y;
+
 	renderer.render(scene, camera);
 }
 
 function mouseWheel(e) {
-	// camera.position.z -= e.wheelDelta * 0.0003;
+	// var movW = 0.0015;
+	// if (e.wheelDelta < 0) {
+	// 	camera.position.y += e.wheelDelta * movW;
+	// } else {
+	// 	if (camera.position.y < cameraBasePos.y) {
+	// 		camera.position.y += e.wheelDelta * movW;
+	// 	}
+	// }
+
+}
+
+function scroll(e){
 }
 
 function resize() {
 	width = window.innerWidth;
-	height = window.innerHeight;
+	height = document.getElementById("canvas-wrap").offsetHeight;
 
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(width, height);
 
-	// // カメラのアスペクト比を正す
+	//カメラのアスペクト比を正す
 	camera.aspect = width / height;
 	camera.updateProjectionMatrix();
 }
@@ -193,36 +246,17 @@ function resize() {
 function onTouch(pos) {
 }
 
-function getHitRayObj(pos) {
-	var mouseX = pos.x;
-	var mouseY = pos.y;
-
-	mouseX = (mouseX / window.innerWidth) * 2 - 1;
-	mouseY = -(mouseY / window.innerHeight) * 2 + 1;
-
-	console.log(mouseX, mouseY);
-
-	var pos = new THREE.Vector3(mouseX, mouseY, 1);
-	pos.unproject(camera);
-
-	var camWorldPos = new THREE.Vector3().setFromMatrixPosition(camera.matrixWorld);
-	var ray = new THREE.Raycaster(camWorldPos, pos.sub(camWorldPos).normalize());
-
-	var touched = ray.intersectObjects(scene.children, true);
-	var obj;
-	touched.forEach((n) => {
-		if (n.object.name != "plane") {
-			obj = n.object;
-			return;
-		}
-	})
-
-	return obj;
+function touchStart(e) {
+	cursor.CursorDown(e);
 }
 
-window.addEventListener("load", init);
-window.addEventListener("resize", resize);
+function touchMove(e) {
+	cursor.CursorMove(e);
+}
 
+function touchEnd(e) {
+	cursor.CursorUp(e);
+}
 //タッチ系
 window.addEventListener('touchstart', touchStart.bind(this));
 window.addEventListener('touchmove', touchMove.bind(this), { passive: false });
@@ -232,15 +266,6 @@ window.addEventListener('mousemove', touchMove.bind(this));
 window.addEventListener('mouseup', touchEnd.bind(this));
 window.addEventListener('mousewheel', mouseWheel.bind(this));
 
-function touchStart(e) {
-	cursor.CursorDown(e);
-}
-
-function touchMove(e) {
-	cursor.CursorMove(e);
-	// e.preventDefault();
-}
-
-function touchEnd(e) {
-	cursor.CursorUp(e);
-}
+window.addEventListener("load", init);
+window.addEventListener("resize", resize);
+window.addEventListener("scroll", scroll);
