@@ -50,8 +50,7 @@ function init() {
 
 	// render
 	renderer = new THREE.WebGLRenderer({
-		canvas: document.querySelector('#canvas'),
-		antialias: false
+		canvas: document.querySelector('#canvas')
 	});
 	renderer.shadowMap.enabled = true;
 	renderer.animate(animate.bind(this));
@@ -88,6 +87,7 @@ function init() {
 			vertexShader: pcVert,
 			fragmentShader: pcFrag,
 			uniforms: pcUni,
+			depthTest: true,
 			transparent: true
 		});
 		mat.wireframe = true;
@@ -112,6 +112,7 @@ function init() {
 		//display_body
 		var displayBody = gltf.scene.getObjectByName("display_body");
 		displayBody.material = mat;
+		displayBody.renderOrder = -1;
 
 		//display
 		displayUni = {
@@ -120,7 +121,7 @@ function init() {
 		var displayMat = new THREE.ShaderMaterial({
 			vertexShader: standardVert,
 			fragmentShader: displayFrag,
-			uniforms: displayUni
+			uniforms: displayUni,
 		});
 		display = gltf.scene.getObjectByName("display");
 		display.material = displayMat;
@@ -143,10 +144,12 @@ function init() {
 		uniforms: planeUni,
 		transparent: true,
 	});
+
 	planeMat.wireframe = true;
 	var plane = new THREE.Mesh(planeGeo, planeMat);
-	plane.position.set(0, 0, 0);
+	plane.position.set(0, 0.9, 0);
 	plane.rotateX(-Math.PI / 2);
+	plane.renderOrder = 1;
 	scene.add(plane);
 
 	var particleGeo = new THREE.Geometry();
@@ -169,10 +172,12 @@ function init() {
 		vertexShader: ptclVert,
 		fragmentShader: ptclFrag,
 		uniforms: particleUni,
-		transparent: true
+		depthTest: true,
+		transparent : true
 	});
 
 	var particle = new THREE.Points(particleGeo,particleMat);
+	particle.renderOrder = 2;
 	scene.add(particle);
 
 	window.scene = scene;

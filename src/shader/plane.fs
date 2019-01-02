@@ -3,5 +3,6 @@ varying float vtime;
 varying vec3 vc;
 
 void main() {
-  gl_FragColor = vec4(vc,0.5);
+  vec3 c = vc;
+  gl_FragColor = vec4(1.0,1.0,1.0,vc.x);
 }

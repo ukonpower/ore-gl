@@ -111,9 +111,11 @@ float snoise(vec3 v)
 
 void main() {
   vec3 pos = position;
-  pos.z += snoise(vec3(pos.xy * 0.1,0.0) + vec3(0.0,time * 0.3,0.0) * 0.1);
+  pos.z += snoise(vec3(pos.xy * 0.1,0.0) + vec3(0.0,time * 0.3,0.0) * 0.1) * 0.5;
   vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
   vec4 mvpPosition = projectionMatrix * mvPosition;
   gl_Position = mvpPosition;
-  vc = vec3(1.0 - length(pos.xy) * 0.2);
+  
+  vc = vec3(max(0.0,1.0 - length(pos.xy) * 0.25));
+  // vc *= abs(sin(length(pos.xy * 0.5) + time * 0.2)) + 0.3;
 }
