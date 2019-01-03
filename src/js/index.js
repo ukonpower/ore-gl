@@ -217,6 +217,7 @@ function init() {
 	window.THREE = THREE;
 
 	resize();
+	document.querySelector('.load').classList.add('hide');
 }
 
 function animate() {
@@ -271,7 +272,6 @@ function scroll(e) {
 
 	for(var i = 0; i < items.length;i ++){
 		const top = items[i].getBoundingClientRect().top + window.pageYOffset;
-		console.log(top);
 		
 		if(top < window.pageYOffset + window.innerHeight / 5 * 4){
 			items[i].classList.add("active");
