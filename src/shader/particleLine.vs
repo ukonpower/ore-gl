@@ -115,11 +115,12 @@ vec3 snoise3D(vec3 p){
 
 void main() {
   vec3 pos = position;
-  pos.y += snoise(vec3(pos) + vec3(0.0,0.0,time * 0.01)) * 1.0;
+  pos.y += snoise(vec3(pos) + vec3(0.0,0.0,time * 0.01)) * 50.0;
+  // pos.y += sin(time * 0.01 + pos.x) * 20.0;
   vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
   vec4 mvpPosition = projectionMatrix * mvPosition;
 
   gl_Position = mvpPosition;
-  gl_PointSize = ( 30.0 / -mvPosition.z ) * 5.0;
+  gl_PointSize = 100.0;
   vc = vec3(pos.z * -1.0);
 }

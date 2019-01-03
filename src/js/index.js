@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import GLTFLoader from 'three-gltf-loader';
 import Cursor from './Cursor';
 import ObjectController from './ObjectContoller';
+import WebFont from 'webfontloader';
 
 //shaders
 const standardVert = require("../shader/standard.vs");
@@ -16,6 +17,8 @@ const pcFrag = require("../shader/pc.fs");
 
 const ptclVert = require("../shader/particle.vs");
 const ptclFrag = require("../shader/particle.fs");
+const ptclLineFrag = require("../shader/particleLine.fs");
+const ptclLineVert = require("../shader/particleLine.vs");
 
 var width = window.innerWidth;
 var height = window.innerHeight;
@@ -28,7 +31,7 @@ var camera, renderer;
 var cameraBasePos = new THREE.Vector3(0, 2, 8);
 var cameraBaseRotate = new THREE.Vector3(-0.1, 0, 0);
 
-var pcBasePos = new THREE.Vector3(0.3,0.3,0);
+var pcBasePos = new THREE.Vector3(0.3, 0.3, 0);
 var pcBaseRotate = new THREE.Vector3(-0.1, 0, 0);
 var cursor = new Cursor();
 var time = 0;
@@ -46,7 +49,12 @@ var particleUni;
 var scrollPos = 0;
 
 function init() {
-	cursor.tapEvent = onTouch.bind(this);
+
+	WebFont.load({
+		typekit: {
+			id: 'yfe1bhb'
+		}
+	});
 
 	// render
 	renderer = new THREE.WebGLRenderer({
@@ -77,6 +85,7 @@ function init() {
 	sLight.position.set(0, 3, 4);
 	sLight.rotation.set(0, 0, 0);
 	scene.add(sLight);
+
 
 	loader.load("./models/ore-gl.glb", function (gltf) {
 
@@ -152,11 +161,23 @@ function init() {
 	plane.renderOrder = 1;
 	scene.add(plane);
 
-	var particleGeo = new THREE.Geometry();
-	const ptcles = 0;
+	var rectParticleGeo = new THREE.Geometry();
+	var lineParticleGeo = new THREE.Geometry();
+
+
 	const size = new THREE.Vector3(30, 50, 30);
-	for (var i = 0; i < ptcles; i++) {
-		particleGeo.vertices.push(
+	for (var i = 0; i < 200; i++) {
+		rectParticleGeo.vertices.push(
+			new THREE.Vector3(
+				Math.random() * size.x - size.x / 2,
+				Math.random() * size.y - size.y / 2,
+				Math.random() * size.z - size.z / 2,
+			)
+		);
+	}
+
+	for(var i = 0; i < 50; i++){
+		lineParticleGeo.vertices.push(
 			new THREE.Vector3(
 				Math.random() * size.x - size.x / 2,
 				Math.random() * size.y - size.y / 2,
@@ -166,19 +187,31 @@ function init() {
 	}
 
 	particleUni = {
-		time: {value: 0}
+		time: { value: 0 }
 	}
-	var particleMat = new THREE.ShaderMaterial({
+	var rectParticleMat = new THREE.ShaderMaterial({
 		vertexShader: ptclVert,
 		fragmentShader: ptclFrag,
 		uniforms: particleUni,
 		depthTest: true,
-		transparent : true
+		transparent: true
 	});
 
-	var particle = new THREE.Points(particleGeo,particleMat);
-	particle.renderOrder = 2;
-	scene.add(particle);
+	var lineParticleMat = new THREE.ShaderMaterial({
+		vertexShader: ptclLineVert,
+		fragmentShader: ptclLineFrag,
+		uniforms: particleUni,
+		depthTest: true,
+		transparent: true
+	});
+
+	var rectParticle = new THREE.Points(rectParticleGeo, rectParticleMat);
+	rectParticle.renderOrder = 2;
+	scene.add(rectParticle);
+
+	var lineParticle = new THREE.Points(lineParticleGeo, lineParticleMat);
+	lineParticle.renderOrder = 2;
+	scene.add(lineParticle);
 
 	window.scene = scene;
 	window.THREE = THREE;
@@ -233,7 +266,7 @@ function mouseWheel(e) {
 
 }
 
-function scroll(e){
+function scroll(e) {
 }
 
 function resize() {

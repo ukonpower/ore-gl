@@ -8,7 +8,6 @@ float trim(float p){
 void main() {
   vec2 uv = gl_PointCoord;
   uv = uv * 2.0 - 1.0;
-  // float alpha = (1.0 - length(uv));
-  float alpha = 1.0;
+  float alpha = step(0.985,1.0 - abs(uv.x));
   gl_FragColor = vec4(1.0,1.0,1.0,alpha);
 }
