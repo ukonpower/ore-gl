@@ -11,7 +11,7 @@ export default class Cursor {
         this.beginTouchY;
         this.endTouchX;
         this.endTouchY;
-        this.tapEvent = 0;
+        this.tapEvent = null;
         this.Update();
     }
 

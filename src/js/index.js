@@ -20,6 +20,9 @@ const ptclFrag = require("../shader/particle.fs");
 const ptclLineFrag = require("../shader/particleLine.fs");
 const ptclLineVert = require("../shader/particleLine.vs");
 
+const arrowVert = require("../shader/arrow.vs");
+const whiteFrag = require("../shader/white.fs");
+
 var width = window.innerWidth;
 var height = window.innerHeight;
 
@@ -44,6 +47,8 @@ var displayUni;
 var planeUni;
 var pcUni;
 var particleUni;
+var arrowUni1;
+var arrowUni2;
 
 //scroll
 var scrollPos = 0;
@@ -72,23 +77,23 @@ function init() {
 	camera.rotation.setFromVector3(cameraBaseRotate);
 	scene.add(camera);
 
-	var pLight = new THREE.PointLight();
-	pLight.intensity = 1.0;
-	pLight.position.set(-0.28, 1.44, -0.40);
-	pLight.scale.setScalar(0.2);
-	scene.add(pLight);
+	createPlane();
 
-	var sLight = new THREE.SpotLight();
-	sLight.intensity = 0.3;
-	sLight.angle = 0.5;
-	sLight.penumbra = 0.8;
-	sLight.position.set(0, 3, 4);
-	sLight.rotation.set(0, 0, 0);
-	scene.add(sLight);
+	loadModels();
 
+	createParticle();
 
+	createArrow();
+
+	resize();
+
+	window.scene = scene;
+	window.THREE = THREE;
+	document.querySelector('.load').classList.add('hide');
+}
+
+function loadModels(){
 	loader.load("./models/ore-gl.glb", function (gltf) {
-
 		pcUni = {
 			time: { value: 0 }
 		}
@@ -100,10 +105,6 @@ function init() {
 			transparent: true
 		});
 		mat.wireframe = true;
-
-		//table
-		// var table = gltf.scene.getObjectByName("table");
-		// table.material = mat;
 
 		//keboard
 		var keyboard = gltf.scene.getObjectByName("keyboard");
@@ -141,7 +142,9 @@ function init() {
 		gltf.scene.rotateX(0.2);
 		scene.add(gltf.scene);
 	})
+}
 
+function createPlane(){
 	var planeGeo = new THREE.PlaneGeometry(20, 20, 50, 50);
 	planeUni = {
 		time: { value: 0 },
@@ -160,11 +163,54 @@ function init() {
 	plane.rotateX(-Math.PI / 2);
 	plane.renderOrder = 1;
 	scene.add(plane);
+}
 
+function createArrow(){
+	var arrowGeo = new THREE.Geometry();
+	arrowGeo.vertices.push(
+		new THREE.Vector3(-1.0,1.0,0.0),
+		new THREE.Vector3(1.0,1.0,0.0),
+		new THREE.Vector3(0.0,-0.5,0.0),
+	)
+	arrowGeo.faces.push(
+		new THREE.Face3(2,1,0)
+	)
+
+	arrowUni1 = {
+		time: {value: 0},
+		offset: {value: 0},
+	}
+	arrowUni2 = {
+		time: {value: 0},
+		offset: {value: 1},
+	}
+	var arrowMat1 = new THREE.ShaderMaterial({
+		vertexShader: arrowVert,
+		fragmentShader: whiteFrag,
+		uniforms:arrowUni1
+	});
+
+	var arrowMat2 = new THREE.ShaderMaterial({
+		vertexShader: arrowVert,
+		fragmentShader: whiteFrag,
+		uniforms:arrowUni2
+	});
+
+	var arrow = new THREE.Mesh(arrowGeo,arrowMat1);
+	arrow.scale.setScalar(0.04);
+	arrow.position.set(0,0.7,3.5);
+	arrow.name = "arrow";
+	scene.add(arrow);
+
+	var arrow2 = arrow.clone();
+	arrow2.material = arrowMat2;
+	arrow2.position.y -= 0.1;
+	scene.add(arrow2);
+}
+
+function createParticle(){
 	var rectParticleGeo = new THREE.Geometry();
 	var lineParticleGeo = new THREE.Geometry();
-
-
 	const size = new THREE.Vector3(30, 50, 30);
 	for (var i = 0; i < 100; i++) {
 		rectParticleGeo.vertices.push(
@@ -212,12 +258,6 @@ function init() {
 	var lineParticle = new THREE.Points(lineParticleGeo, lineParticleMat);
 	lineParticle.renderOrder = 3;
 	scene.add(lineParticle);
-
-	window.scene = scene;
-	window.THREE = THREE;
-
-	resize();
-	document.querySelector('.load').classList.add('hide');
 }
 
 function animate() {
@@ -248,10 +288,9 @@ function animate() {
 
 	planeUni.time.value = time;
 	particleUni.time.value = time;
-
-
+	arrowUni1.time.value = time;
+	arrowUni2.time.value = time;
 	camera.position.y = window.pageYOffset * -0.004 + cameraBasePos.y;
-
 	renderer.render(scene, camera);
 }
 
@@ -272,7 +311,6 @@ function scroll(e) {
 
 	for(var i = 0; i < items.length;i ++){
 		const top = items[i].getBoundingClientRect().top + window.pageYOffset;
-		
 		if(top < window.pageYOffset + window.innerHeight / 5 * 4){
 			items[i].classList.add("active");
 		}
