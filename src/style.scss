@@ -17,7 +17,7 @@ $sp-width: 800px;
 	margin: 0;
 	padding: 0;
 	color: white;
-	font-family: "domlovesmary-pro"
+	// font-family: "domlovesmary-pro"
 }
 
 html,body{
@@ -54,10 +54,19 @@ html,body{
 	height: 100vh;
 }
 
+#canvas-wrap{
+	position: fixed;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
 .content{
 	position: relative;
 	width: 100%;
-	margin: 100px auto;
+	margin: 30px auto;
 	text-align: center;
 	z-index: 99;
 	list-style: none;
@@ -73,10 +82,19 @@ html,body{
 		&-item{
 			position: relative;
 			width: 45%;
-			margin: 2%% 2.5%;
+			margin: 2% 2.5%;
+			transform: translateY(100px);
+			opacity: 0;
+
 			@include sp{
 				width: 100%;
 				margin: 5% auto;
+			}
+			transition: .7s;
+
+			&.active{
+				transform: translateY(0);
+				opacity: 1.0;
 			}
 			& img{
 				position: relative;
@@ -92,10 +110,16 @@ html,body{
 		}
 	}
 }
-#canvas-wrap{
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
+
+.footer{
+	text-align: center;
+	width: 90%;
+	margin: 0 auto;
+	// border-top: #aaa solid 1px;
+
+	&-copylight{
+		padding-top: 50px;
+		padding-bottom: 50px;
+		font-size: 12px;
+	}
 }

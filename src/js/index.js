@@ -166,7 +166,7 @@ function init() {
 
 
 	const size = new THREE.Vector3(30, 50, 30);
-	for (var i = 0; i < 200; i++) {
+	for (var i = 0; i < 100; i++) {
 		rectParticleGeo.vertices.push(
 			new THREE.Vector3(
 				Math.random() * size.x - size.x / 2,
@@ -210,7 +210,7 @@ function init() {
 	scene.add(rectParticle);
 
 	var lineParticle = new THREE.Points(lineParticleGeo, lineParticleMat);
-	lineParticle.renderOrder = 2;
+	lineParticle.renderOrder = 3;
 	scene.add(lineParticle);
 
 	window.scene = scene;
@@ -267,11 +267,21 @@ function mouseWheel(e) {
 }
 
 function scroll(e) {
+	var items = document.getElementsByClassName('content-list-item');
+
+	for(var i = 0; i < items.length;i ++){
+		const top = items[i].getBoundingClientRect().top + window.pageYOffset;
+		console.log(top);
+		
+		if(top < window.pageYOffset + window.innerHeight / 5 * 4){
+			items[i].classList.add("active");
+		}
+	}
 }
 
 function resize() {
 	width = window.innerWidth;
-	height = document.getElementById("canvas-wrap").offsetHeight;
+	height = document.getElementById("canvas-wrap").clientHeight;
 
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(width, height);
