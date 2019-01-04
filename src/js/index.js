@@ -57,10 +57,7 @@ function init() {
 
 	WebFont.load({
 		typekit: {
-			id: 'yfe1bhb'
-		},
-		google:{
-			families: ['Comfortaa','Sawarabi Mincho']
+			id: 'xcw8thg'
 		}
 	});
 

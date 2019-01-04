@@ -17,8 +17,8 @@ $sp-width: 800px;
 	margin: 0;
 	padding: 0;
 	color: white;
-	// font-family: 'Comfortaa', cursive;
-	font-family: "Yu Gothic";
+	font-family: 'Comfortaa', sans-serif;
+	font-style: normal;
 }
 
 html,body{
@@ -158,17 +158,18 @@ html,body{
 				position: absolute;
 				width: 100%;
 				bottom: 0;
-				font-family: 'Sawarabi Mincho', sans-serif;
 				text-align: center;
 				background-color: rgba($color: #000000, $alpha: 0.5);
 
 				&-title{
-					padding-bottom: 5px;
-					font-size: 15px;
+					margin: 10px auto;
+					font-size: 15px;					
 				}
 
 				&-comment{
 					font-size: 15px;
+					font-family: ten-mincho-text, serif;
+					font-style: normal;
 				}
 			}
 
