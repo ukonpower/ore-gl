@@ -1,5 +1,4 @@
 body{
-	font-family: 'Comfortaa', cursive;
     background-color: black;
 }
 
@@ -13,6 +12,7 @@ body{
 	align-items: center;
 	justify-content: center;
 	background-color: black;
+	font-family: 'Comfortaa', cursive;
 	transition: .7s;
 }
 

@@ -129,11 +129,11 @@ function loadModels(){
 		displayCanvas.height = 540;
 
 		var ctx = displayCanvas.getContext('2d');
-		ctx.font = "normal 200px miller-headline";
+		ctx.font = "bold 200px battleslab, sans-serif";
 		// ctx.font = "normal 200px alpine-script";
 
 		ctx.fillStyle  = 'rgb(255, 255, 255)';
-		ctx.fillText("Ore-GL",180,340);
+		ctx.fillText("Ore-GL",70,340);
 
 		var dispTex = new THREE.Texture(displayCanvas);
 		dispTex.needsUpdate = true;
@@ -148,6 +148,7 @@ function loadModels(){
 			fragmentShader: displayFrag,
 			uniforms: displayUni,
 		});
+
 		display = gltf.scene.getObjectByName("display");
 		display.material = displayMat;
 

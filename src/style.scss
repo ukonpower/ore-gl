@@ -17,7 +17,6 @@ $sp-width: 800px;
 	margin: 0;
 	padding: 0;
 	color: white;
-	font-family: 'Comfortaa', sans-serif;
 	font-style: normal;
 }
 
@@ -34,6 +33,7 @@ html,body{
 	overflow: hidden;
 	user-select: none;
 	&-logo{
+		font-family: 'Comfortaa', sans-serif;
 		float: left;
 		font-size: 40px;
 	}
@@ -163,13 +163,14 @@ html,body{
 
 				&-title{
 					margin: 10px auto;
-					font-size: 15px;					
+					font-family: a-otf-jun-pro,sans-serif;
+					font-weight: 300;
+					font-style: normal;
+					font-size: 15px;				
 				}
 
 				&-comment{
 					font-size: 15px;
-					font-family: ten-mincho-text, serif;
-					font-style: normal;
 				}
 			}
 
