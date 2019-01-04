@@ -53,13 +53,8 @@ var arrowUni2;
 //scroll
 var scrollPos = 0;
 
-function init() {
 
-	WebFont.load({
-		typekit: {
-			id: 'xcw8thg'
-		}
-	});
+function init() {
 
 	// render
 	renderer = new THREE.WebGLRenderer({
@@ -375,6 +370,21 @@ window.addEventListener('mousemove', touchMove.bind(this));
 window.addEventListener('mouseup', touchEnd.bind(this));
 window.addEventListener('mousewheel', mouseWheel.bind(this));
 
-window.addEventListener("load", init);
+window.addEventListener("load", ()=>{
+	WebFont.load({
+		typekit: {
+			id: 'xcw8thg'
+		},
+		custom :{
+			families:["battleslab"],
+		},
+		fontactive: function(font_family, font_variation_description)
+		{
+			if(font_family == "battleslab"){
+				init();
+			}	
+		}
+	});
+});
 window.addEventListener("resize", resize);
 window.addEventListener("scroll", scroll);
