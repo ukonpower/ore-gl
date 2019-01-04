@@ -34,7 +34,7 @@ var camera, renderer;
 var cameraBasePos = new THREE.Vector3(0, 2, 8);
 var cameraBaseRotate = new THREE.Vector3(-0.1, 0, 0);
 
-var pcBasePos = new THREE.Vector3(0.3, 0.3, 0);
+var pcBasePos = new THREE.Vector3(0.3, -0.0, 0);
 var pcBaseRotate = new THREE.Vector3(-0.1, 0, 0);
 var cursor = new Cursor();
 var time = 0;
@@ -58,6 +58,9 @@ function init() {
 	WebFont.load({
 		typekit: {
 			id: 'yfe1bhb'
+		},
+		google:{
+			families: ['Comfortaa','Sawarabi Mincho']
 		}
 	});
 
@@ -124,9 +127,24 @@ function loadModels(){
 		displayBody.material = mat;
 		displayBody.renderOrder = -1;
 
+		var displayCanvas = document.createElement('canvas');
+		displayCanvas.width = 960;
+		displayCanvas.height = 540;
+
+		var ctx = displayCanvas.getContext('2d');
+		ctx.font = "normal 200px miller-headline";
+		// ctx.font = "normal 200px alpine-script";
+
+		ctx.fillStyle  = 'rgb(255, 255, 255)';
+		ctx.fillText("Ore-GL",180,340);
+
+		var dispTex = new THREE.Texture(displayCanvas);
+		dispTex.needsUpdate = true;
+
 		//display
 		displayUni = {
 			time: { value: 0 },
+			texture: {type:"t" ,value: dispTex},
 		}
 		var displayMat = new THREE.ShaderMaterial({
 			vertexShader: standardVert,
@@ -159,7 +177,7 @@ function createPlane(){
 
 	planeMat.wireframe = true;
 	var plane = new THREE.Mesh(planeGeo, planeMat);
-	plane.position.set(0, 0.5, 0);
+	plane.position.set(0, 0.0, 0);
 	plane.rotateX(-Math.PI / 2);
 	plane.renderOrder = 1;
 	scene.add(plane);
@@ -197,14 +215,14 @@ function createArrow(){
 	});
 
 	var arrow = new THREE.Mesh(arrowGeo,arrowMat1);
-	arrow.scale.setScalar(0.04);
-	arrow.position.set(0,0.7,3.5);
+	arrow.scale.setScalar(0.06);
+	arrow.position.set(0,0.8,3.5);
 	arrow.name = "arrow";
 	scene.add(arrow);
 
 	var arrow2 = arrow.clone();
 	arrow2.material = arrowMat2;
-	arrow2.position.y -= 0.1;
+	arrow2.position.y -= 0.15;
 	scene.add(arrow2);
 }
 
@@ -329,9 +347,6 @@ function resize() {
 	camera.updateProjectionMatrix();
 }
 
-function onTouch(pos) {
-}
-
 function touchStart(e) {
 	cursor.CursorDown(e);
 }
@@ -343,6 +358,16 @@ function touchMove(e) {
 function touchEnd(e) {
 	cursor.CursorUp(e);
 }
+
+document.querySelector('.header-about').addEventListener("click",()=>{
+	document.querySelector('.about').classList.add('show');
+})
+
+document.querySelector('.about-back-wrap').addEventListener("click",()=>{
+	document.querySelector('.about').classList.remove('show');
+})
+
+
 //タッチ系
 window.addEventListener('touchstart', touchStart.bind(this));
 window.addEventListener('touchmove', touchMove.bind(this), { passive: false });

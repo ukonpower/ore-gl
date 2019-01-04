@@ -1,4 +1,5 @@
 body{
+	font-family: 'Comfortaa', cursive;
     background-color: black;
 }
 
@@ -15,6 +16,11 @@ body{
 	transition: .7s;
 }
 
+.about{
+	opacity: 0;
+}
+
 .load.hide{
-    opacity: 0;
+	opacity: 0;
+	visibility: hidden;
 }
