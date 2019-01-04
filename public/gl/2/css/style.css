@@ -10,6 +10,7 @@ html, body {
 }
 
 .back{
+    font-family: 'Comfortaa', sans-serif;
     position: absolute;
     left: 5%;
     top: 30px;

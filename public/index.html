@@ -9,16 +9,16 @@
 	<link rel="stylesheet" href="./css/init.css">
 
 	<script>
-		(function(d) {
-		  var config = {
-			kitId: 'xcw8thg',
-			scriptTimeout: 3000,
-			async: true
-		  },
-		  h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+		(function (d) {
+			var config = {
+				kitId: 'xcw8thg',
+				scriptTimeout: 3000,
+				async: true
+			},
+				h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
 		})(document);
-	  </script>
-	  
+	</script>
+
 	<title>Ore-GL</title>
 </head>
 
@@ -32,7 +32,7 @@
 
 	<div class="about">
 		<div class="about-back-wrap">
-				<span class="about-back">&gt;&gt;</span>
+			<span class="about-back">&gt;&gt;</span>
 		</div>
 		<div class="about-title">About</div>
 		<div class="about-sentence">
@@ -48,22 +48,32 @@
 	<section class="content">
 		<ul class="content-list">
 			<li class="content-list-item">
-				<a href="./gl/1/index.html">
-				<img src="./gl/1/gl1-thumbnail.png" alt="gl1" srcset="">
-				<div class="content-list-item-description">
-					<h2 class="content-list-item-description-title">フレームバッファ</h2>
-				</div>
+				<a href="./gl/3/index.html">
+					<img src="./gl/3/gl3-thumbnail.png" alt="gl1" srcset="">
+					<div class="content-list-item-description">
+						<h2 class="content-list-item-description-title">Curl Noise</h2>
+					</div>
 				</a>
 			</li>
-
 			<li class="content-list-item">
-					<a href="./gl/2/index.html">
+				<a href="./gl/2/index.html">
 					<img src="./gl/2/gl2-thumbnail.png" alt="gl2" srcset="">
 					<div class="content-list-item-description">
 						<h2 class="content-list-item-description-title">Life Game</h2>
 					</div>
-					</a>
-				</li>
+				</a>
+			</li>
+
+			<li class="content-list-item">
+				<a href="./gl/1/index.html">
+					<img src="./gl/1/gl1-thumbnail.png" alt="gl1" srcset="">
+					<div class="content-list-item-description">
+						<h2 class="content-list-item-description-title">Drawing</h2>
+					</div>
+				</a>
+			</li>
+
+
 		</ul>
 	</section>
 
