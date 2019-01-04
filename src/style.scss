@@ -18,11 +18,15 @@ $sp-width: 800px;
 	padding: 0;
 	color: white;
 	font-style: normal;
+
+	font-family: a-otf-jun-pro,sans-serif;
+	font-weight: 300;
+	font-style: normal;
 }
 
 html,body{
 	position: relative;
-	margin: 0;
+	margin: 0;	
 	padding: 0;
 }
 
@@ -32,6 +36,10 @@ html,body{
 	z-index: 10;
 	overflow: hidden;
 	user-select: none;
+
+	@include sp{
+		margin: 20px auto;
+	}
 	&-logo{
 		font-family: 'Comfortaa', sans-serif;
 		float: left;
@@ -164,9 +172,6 @@ html,body{
 
 				&-title{
 					margin: 10px auto;
-					font-family: a-otf-jun-pro,sans-serif;
-					font-weight: 300;
-					font-style: normal;
 					font-size: 15px;				
 				}
 

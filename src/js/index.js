@@ -360,7 +360,6 @@ document.querySelector('.about-back-wrap').addEventListener("click",()=>{
 	document.querySelector('.about').classList.remove('show');
 })
 
-
 //タッチ系
 window.addEventListener('touchstart', touchStart.bind(this));
 window.addEventListener('touchmove', touchMove.bind(this), { passive: false });
