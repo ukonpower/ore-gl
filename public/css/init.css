@@ -1,6 +1,6 @@
 body{
 	background-color: black;
-    overflow: hidden;		
+    overflow-x: hidden;		
 }
 
 .load{
