@@ -306,15 +306,6 @@ function animate() {
 }
 
 function mouseWheel(e) {
-	// var movW = 0.0015;
-	// if (e.wheelDelta < 0) {
-	// 	camera.position.y += e.wheelDelta * movW;
-	// } else {
-	// 	if (camera.position.y < cameraBasePos.y) {
-	// 		camera.position.y += e.wheelDelta * movW;
-	// 	}
-	// }
-
 }
 
 function scroll(e) {
