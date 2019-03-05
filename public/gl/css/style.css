@@ -4,7 +4,6 @@
     margin: 0px;
     padding: 0px;
     overflow: hidden;
-    background-color: black;
 }
 
 .back{
@@ -20,4 +19,8 @@
 canvas {
     margin: 0px auto;
     width: 100%;
+}
+
+body{
+    background-color: #000;
 }
