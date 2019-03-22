@@ -2,10 +2,7 @@
   "name": "ore-gl",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "webpack-dev-server"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": ""
@@ -13,26 +10,28 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "homepage": "",
   "devDependencies": {
-    "@babel/core": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "babel-loader": "^8.0.4",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.5",
     "browser-sync": "^2.26.3",
-    "css-loader": "^1.0.1",
-    "glslify": "^7.0.0",
-    "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-pug": "^4.0.1",
+    "gulp-sass": "^4.0.2",
     "shader-loader": "^1.3.1",
-    "style-loader": "^0.23.1",
-    "three": "^0.98.0",
-    "webpack": "^4.27.1",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack": "^4.28.4",
+    "webpack-stream": "^5.2.1"
   },
   "dependencies": {
-    "jquery": "^3.3.1",
-    "three-gltf-loader": "^1.99.0",
-    "webfontloader": "^1.6.28"
+    "three": "^0.100.0",
+    "three-effectcomposer-es6": "0.0.4",
+    "three-gltf2-loader": "^1.2.0"
   }
 }
