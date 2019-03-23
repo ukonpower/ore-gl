@@ -17,7 +17,7 @@ gulp.task("webpack", () => {
 });
 
 gulp.task('pug', () => {
-    return gulp.src(['./src/pug/**/*.pug', '!./pug/**/_*.pug'])
+    return gulp.src(['./src/pug/**/*.pug', '!./src/pug/**/_*.pug'])
     .pipe(plumber())
     .pipe(pug({
       pretty: true
