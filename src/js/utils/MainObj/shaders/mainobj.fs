@@ -1,5 +1,45 @@
+#define PHYSICAL
 uniform float time;
+uniform vec3 diffuse;
+uniform vec3 emissive;
+float roughness = 0.0;
+uniform float metalness;
+uniform float opacity;
+#ifndef STANDARD
+	uniform float clearCoat;
+	uniform float clearCoatRoughness;
+#endif
+varying vec3 vViewPosition;
+#ifndef FLAT_SHADED
+	varying vec3 vNormal;
+#endif
+
 varying vec2 u;
+#include <common>
+#include <packing>
+#include <dithering_pars_fragment>
+#include <color_pars_fragment>
+#include <uv_pars_fragment>
+#include <uv2_pars_fragment>
+#include <map_pars_fragment>
+#include <alphamap_pars_fragment>
+#include <aomap_pars_fragment>
+#include <lightmap_pars_fragment>
+#include <emissivemap_pars_fragment>
+#include <bsdfs>
+#include <cube_uv_reflection_fragment>
+#include <envmap_pars_fragment>
+#include <envmap_physical_pars_fragment>
+#include <fog_pars_fragment>
+#include <lights_pars_begin>
+#include <lights_physical_pars_fragment>
+#include <shadowmap_pars_fragment>
+#include <bumpmap_pars_fragment>
+#include <normalmap_pars_fragment>
+#include <roughnessmap_pars_fragment>
+#include <metalnessmap_pars_fragment>
+#include <logdepthbuf_pars_fragment>
+#include <clipping_planes_pars_fragment>
 
 //
 // Description : Array and textureless GLSL 2D/3D/4D simplex 
@@ -104,17 +144,34 @@ float snoise(vec3 v)
     return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) );
 }
 
-void main(){
-    vec3 c = vec3(0.6,0.6,1.0);
-    float t = time;
-    vec2 uv = u;
+void main() {
+	#include <clipping_planes_fragment>
+	// vec3 c = vec3(1.0 + snoise(vec3(u,time)));
+	vec3 c = vec3(1.0);
+	vec4 diffuseColor = vec4( c, opacity );
+	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
+	vec3 totalEmissiveRadiance = emissive;
 
-    t *= 0.1;
-    uv *= 0.5;
-    // c.x += snoise(vec3(uv + vec2(200.0),t));
-    float n = snoise(vec3(uv,t)) * 0.5;
-    c.x -= n;
-    c.y -= n * 2.0;
-    c.z -= n;
-    gl_FragColor = vec4(c,1.0);
+	#include <logdepthbuf_fragment>
+	#include <map_fragment>
+	#include <color_fragment>
+	#include <alphamap_fragment>
+	#include <alphatest_fragment>
+	#include <roughnessmap_fragment>
+	#include <metalnessmap_fragment>
+	#include <normal_fragment_begin>
+	#include <normal_fragment_maps>
+	#include <emissivemap_fragment>
+	#include <lights_physical_fragment>
+	#include <lights_fragment_begin>
+	#include <lights_fragment_maps>
+	#include <lights_fragment_end>
+	#include <aomap_fragment>
+	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
+	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
+	#include <tonemapping_fragment>
+	#include <encodings_fragment>
+	#include <fog_fragment>
+	#include <premultiplied_alpha_fragment>
+	#include <dithering_fragment>
 }

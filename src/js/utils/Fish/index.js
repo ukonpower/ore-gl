@@ -48,9 +48,10 @@ export default class Fish{
 
         this.computeRenderer.setVariableDependencies( this.comTexs.velocity.texture, [ this.comTexs.position.texture, this.comTexs.velocity.texture] );  
         this.comTexs.velocity.uniforms = this.comTexs.velocity.texture.material.uniforms;
-        this.comTexs.velocity.uniforms.time =  { type:"f", value : 0};
-        this.comTexs.velocity.uniforms.seed =  { type:"f", value : Math.random() * 100};
-
+        this.comTexs.velocity.uniforms.time =  {value : 0};
+        this.comTexs.velocity.uniforms.seed =  {value : Math.random() * 100};
+        this.comTexs.velocity.uniforms.avoidPos = {value: new THREE.Vector3(0,0,0)},
+        this.comTexs.velocity.uniforms.avoidScale = {value: 0},
         this.computeRenderer.init();
     }
 
@@ -128,7 +129,7 @@ export default class Fish{
         let customUni = {
             texturePosition : {value: null},
             textureVelocity : {value: null},
-            uvDiff: {value: 1 / this.length}
+            uvDiff: {value: 1 / this.length},
         }
 
         let phong = THREE.ShaderLib.standard;
@@ -154,5 +155,10 @@ export default class Fish{
         this.comTexs.velocity.uniforms.time.value = this.time;
         this.uni.texturePosition.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.position.texture).texture;
         this.uni.textureVelocity.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.velocity.texture).texture;
+    }
+
+    setAvoidObje(pos,scale){
+        this.comTexs.velocity.uniforms.avoidPos.value = pos;
+        this.comTexs.velocity.uniforms.avoidScale.value = scale;
     }
 }

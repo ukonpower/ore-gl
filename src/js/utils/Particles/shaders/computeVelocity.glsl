@@ -1,6 +1,5 @@
-uniform float time;
-varying vec2 u;
-
+#include <common>
+uniform vec2 mouse;
 //
 // Description : Array and textureless GLSL 2D/3D/4D simplex 
 //               noise functions.
@@ -104,17 +103,33 @@ float snoise(vec3 v)
     return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) );
 }
 
-void main(){
-    vec3 c = vec3(0.6,0.6,1.0);
-    float t = time;
-    vec2 uv = u;
+vec3 snoise3D(vec3 pos){
+    float weight = 0.5;
+    float x = snoise(pos * weight + 61.0) ;
+    float y = snoise(pos * weight + 236.0);
+    float z = snoise(pos * weight + 0.0);
 
-    t *= 0.1;
-    uv *= 0.5;
-    // c.x += snoise(vec3(uv + vec2(200.0),t));
-    float n = snoise(vec3(uv,t)) * 0.5;
-    c.x -= n;
-    c.y -= n * 2.0;
-    c.z -= n;
-    gl_FragColor = vec4(c,1.0);
+    return vec3(x,y,z);
+}
+
+vec3 snoiseDelta(vec3 pos){
+    float dlt = 0.0001;
+    vec3 a = snoise3D(pos);
+    vec3 b = snoise3D(vec3(pos.x + dlt,pos.y + dlt,pos.z + dlt));
+    vec3 dt = vec3(a.x - b.x,a.y - b.y,a.z - b.z) / dlt;
+    return dt;
+}
+
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+
+    vec3 pos = texture2D( texturePosition, uv ).xyz;
+    vec3 vel = texture2D( textureVelocity, uv ).xyz;
+    float idParticle = uv.y * resolution.x + uv.x;
+
+    vel = vel + snoiseDelta(pos * 3.0) * 0.1;
+    vel *= 0.92;
+
+    gl_FragColor = vec4( vel.xyz, 1.0 );
 }

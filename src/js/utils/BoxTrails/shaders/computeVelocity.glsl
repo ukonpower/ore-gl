@@ -1,7 +1,5 @@
 uniform float time;
 uniform float seed;
-uniform vec3 avoidPos;
-uniform float avoidScale;
 
 // Description : Array and textureless GLSL 2D/3D/4D simplex 
 //               noise functions.
@@ -131,7 +129,17 @@ float snoise(vec4 v)
                + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
 
   }
-  
+
+
+// vec3 snoiseDelta(vec3 pos){
+//     float dlt = 0.0001;
+//     vec3 a = snoise3D(pos);
+//     vec3 b = snoise3D(vec3(pos.x + dlt,pos.y + dlt,pos.z + dlt));
+//     vec3 dt = vec3(a.x - b.x,a.y - b.y,a.z - b.z) / dlt;
+//     return dt;
+// }
+
+
 void main() {
     if(gl_FragCoord.x >= 1.0) return;    
     
@@ -139,14 +147,14 @@ void main() {
     vec3 pos = texture2D( texturePosition, uv ).xyz;
     vec3 vel = texture2D( textureVelocity, uv ).xyz;
     float idParticle = uv.y * resolution.x + uv.x;
-    float scale = 0.1;
-    vel.xyz += 40.0 * vec3(
-      snoise( vec4( scale * pos.xyz, 7.225 * seed * 200.0 + 0.4 * time ) ),
-      snoise( vec4( scale * pos.xyz, 3.553 * seed + 0.4 * time ) ),
-      snoise( vec4( scale * pos.xyz, 1.259 * seed * 10.0 + 0.4 * time ) )
-    ) * 0.05;
-    vel += -pos * length(pos) * 0.005;
-    vel += (pos- avoidPos) * max(0.0,(1.0 - (distance(pos,avoidPos) - avoidScale)));
-    vel.xyz *= 0.9 + abs(sin(uv.y * 9.0)) * 0.05;
+    float nScale = 0.3;
+    vel.xyz += 20.0 * vec3(
+      snoise( vec4( nScale * pos.xyz, 7.225 + seed + 0.4 * time ) ),
+      snoise( vec4( nScale * pos.xyz, 3.553 + seed * 100.0 + 0.4 * time ) ),
+      snoise( vec4( nScale * pos.xyz, 1.259 + seed * 200.0 + 0.4 * time ) )
+    ) * 0.2;
+    
+    vel += -(pos) * length(pos) * 1.0;
+    vel.xyz *= 0.9 + abs(sin(uv.y * 9.0)) * 0.03;
     gl_FragColor = vec4( vel.xyz, 1.0 );
 }

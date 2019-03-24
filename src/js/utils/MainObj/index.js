@@ -1,0 +1,43 @@
+import vert from './shaders/mainobj.vs';
+import frag from './shaders/mainobj.fs';
+
+export default class Background{
+    constructor(){
+        this.obj;
+        this.time = 0;
+        this.clock = new THREE.Clock();
+        this.createMesh();
+    }
+
+    createMesh(){
+        let geo = new THREE.SphereGeometry(1,30,30);
+
+        let customUni = {
+            time:{
+                value: 0
+            }
+        }
+
+        let std = THREE.ShaderLib.standard;
+        this.uni = THREE.UniformsUtils.merge([customUni,std.uniforms]);
+        
+        let mat = new THREE.ShaderMaterial({
+            uniforms: this.uni,
+            fragmentShader: frag,
+            vertexShader: vert,
+            lights: true,
+            // flatShading: true,
+        });
+
+        mat.uniforms.diffuse.value = new THREE.Vector3(1.0,1.0,1.0);
+        mat.uniforms.roughness.value = 0.0;
+        mat.uniforms.metalness.value = 0.1;
+        
+        this.obj = new THREE.Mesh(geo,mat);
+        this.obj.scale.set(3,3,3);
+    }
+
+    update(time){
+        this.uni.time.value = time;
+    }
+}

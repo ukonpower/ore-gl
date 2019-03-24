@@ -4,8 +4,6 @@ import frag from './shaders/background.fs';
 export default class Background{
     constructor(){
         this.obj;
-        this.time = 0;
-        this.clock = new THREE.Clock();
         this.createMesh();
     }
 
@@ -47,12 +45,10 @@ export default class Background{
             fragmentShader: frag,
             vertexShader: vert,
         });
-        
         this.obj = new THREE.Mesh(geo,mat);
     }
 
-    update(){
-        this.time += this.clock.getDelta();
-        this.uni.time.value = this.time;
+    update(time){
+        this.uni.time.value = time;
     }
 }
