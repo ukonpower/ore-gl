@@ -10,11 +10,14 @@ export default class Background{
     }
 
     createMesh(){
-        let geo = new THREE.SphereGeometry(1,30,30);
+        let geo = new THREE.SphereGeometry(1,50,50);
 
         let customUni = {
             time:{
                 value: 0
+            },
+            pointer:{
+                value: new THREE.Vector3(0,0,0)
             }
         }
 
@@ -26,7 +29,6 @@ export default class Background{
             fragmentShader: frag,
             vertexShader: vert,
             lights: true,
-            // flatShading: true,
         });
 
         mat.uniforms.diffuse.value = new THREE.Vector3(1.0,1.0,1.0);
@@ -39,5 +41,11 @@ export default class Background{
 
     update(time){
         this.uni.time.value = time;
+    }
+
+    setPointer(point){
+        let a = new THREE.Vector3(0,0,0);
+        let p = point.sub(this.obj.position);
+        this.uni.pointer.value = p;
     }
 }

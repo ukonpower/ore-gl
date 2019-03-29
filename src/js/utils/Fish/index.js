@@ -63,8 +63,8 @@ export default class Fish{
             let y = Math.random() * range.y - range.y / 2;
             let z = Math.random() * range.z - range.z / 2;
             for(let j = 0; j < this.length * 4; j += 4){
-                texArray[i + j + 0] = x;
-                texArray[i + j + 1] = y;
+                texArray[i + j + 0] = x  - 30;
+                texArray[i + j + 1] = y + 20;
                 texArray[i + j + 2] = z;
                 texArray[i + j + 3] = 0.0;
             }
@@ -76,10 +76,11 @@ export default class Fish{
 
         let posArray = [];
         let indexArray = [];
+        let normalArray = [];
         let uvArray = []; 
 
         let r = .1;
-        let res = 4;
+        let res = 10;
         for(let i = 0; i < this.num; i++){
             for(let j = 0; j < this.length; j++){
                 let cNum = i * this.length + j;
@@ -94,6 +95,11 @@ export default class Fish{
                     posArray.push(x);
                     posArray.push(y);
                     posArray.push(z);
+
+                    let nml = new THREE.Vector3(x,y,z);
+                    nml.normalize();
+
+                    normalArray.push(nml.x,nml.y,nml.z);
 
                     uvArray.push(j / this.length);
                     uvArray.push(i / this.num);
@@ -110,20 +116,16 @@ export default class Fish{
                     }
                 }
             }
-
-            // let n = i * this.length;
-            // indexArray.push(n, n + 2, n + 1, n, n + 3, n + 2);
-
-            // n = (i + 1) * this.length * res - 1;            
-            // indexArray.push(n, n - 2, n - 1, n, n - 3, n - 2);
         }
 
         let pos = new Float32Array(posArray);
+        let normal = new Float32Array(normalArray);
         let indices = new Uint32Array(indexArray);
         let uv = new Float32Array(uvArray);
 
         geo.addAttribute('position', new THREE.BufferAttribute( pos, 3 ) );
         geo.addAttribute('uv', new THREE.BufferAttribute( uv, 2 ) );
+        geo.addAttribute('normal', new THREE.BufferAttribute( normal, 3 ) );
         geo.setIndex(new THREE.BufferAttribute(indices,1));
 
         let customUni = {

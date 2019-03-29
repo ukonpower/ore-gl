@@ -13,6 +13,7 @@ export default class ThreeGraphic{
         });
         
         this.renderer.setSize(window.innerWidth,window.innerHeight);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setPixelRatio(1);
 
         this.cursor = new Cursor();
@@ -47,10 +48,10 @@ export default class ThreeGraphic{
     setScene(scene){
         console.log('setScene');
         this.currentScene = scene;
+        this.onWindowResize();
     }
 
     onWindowResize(){
-        
         var width = window.innerWidth;
         var height = window.innerHeight;
         this.renderer.setSize(width,height);
@@ -79,7 +80,6 @@ export default class ThreeGraphic{
     }
 
     onTouchMove(event){
-        event.preventDefault();
         if(!this.isTouch) return;
         if(this.cursor){
             this.cursor.TouchMove(event);

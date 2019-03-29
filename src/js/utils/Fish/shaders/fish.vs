@@ -1,4 +1,4 @@
-
+varying vec3 vNormal;
 varying vec3 vViewPosition;
 uniform sampler2D texturePosition;
 uniform float uvDiff;
@@ -10,7 +10,7 @@ highp float atan2(in float y, in float x)
     return x == 0.0 ? sign(y) * PI / 2.0 : atan(y, x);
 }
 
-highp mat2 rotate(float rad){
+mat2 rotate(float rad){
     return mat2(cos(rad),sin(rad),-sin(rad),cos(rad));
 }
 
@@ -27,12 +27,13 @@ void main() {
     float rotX = atan2(vec.y,vec.z);
 
     p.xy *= sin(uv.x * PI) * (sin(uv.y * PI) * 1.0 + 0.1);
-    p.yz *= rotate(rotX);
+    // p.yz *= rotate(rotX);
 
     vec4 mvPosition = modelViewMatrix * vec4(p + pos, 1.0 );
     gl_Position = projectionMatrix * mvPosition;
 
     vViewPosition = -mvPosition.xyz; 
+    vNormal = normalMatrix * normal;
 }
 
 

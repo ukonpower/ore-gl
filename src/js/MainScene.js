@@ -9,13 +9,15 @@ export default class MainScene extends BaseScene {
         super(renderer);
         this.init();
         this.animate();
-        this.scene.background = new THREE.Color( 0x120012 );
+        window.addEventListener('scroll',this.onScroll.bind(this));
     }
 
     init() {
         this.time = Math.random() * 100;
         this.clock = new THREE.Clock();
-        this.camera.position.set(0,1,3);
+        this.camera.position.set(0,0,9);
+
+        this.cyOffset = 0;
 
         this.aLight = new THREE.AmbientLight();
         this.aLight.intensity = 0.5;
@@ -39,17 +41,25 @@ export default class MainScene extends BaseScene {
         this.scene.add(this.light);
 
         this.bg = new Background();
+        this.bg.obj.frustumCulled = false;
         this.scene.add(this.bg.obj);
 
         this.mobj = new MainObj();
         this.scene.add(this.mobj.obj);
         this.mobj.obj.position.set(3,0,0);
 
-        this.fish = new Fish(this.renderer,2000,10);
+        this.fish = new Fish(this.renderer,200,50);
         this.fish.setAvoidObje(this.mobj.obj.position,3);
+        this.fish.obj.frustumCulled = false;
         this.scene.add(this.fish.obj);
 
+
+        this.raycaster = new THREE.Raycaster();
+        this.pointer = new THREE.Vector3(0,0,0);
+
         window.scene = this.scene;
+
+        document.querySelector(".loading").classList.remove("v");
     }
 
     animate() {
@@ -68,22 +78,60 @@ export default class MainScene extends BaseScene {
         }
         // let r = 13;
         // this.camera.position.set(Math.sin(this.time * 0.5) * r,0,Math.cos(this.time * 0.5) * r);
-        this.camera.position.set(0,0,10);
-        this.camera.lookAt(0,0,0);
         this.renderer.render(this.scene,this.camera);
     }
 
+    ray(cursor){
+        var halfWidth = innerWidth / 2;
+        var halfHeight = innerHeight / 2;
+        var pos = new THREE.Vector2((cursor.x - halfWidth) / halfWidth, (cursor.y - halfHeight) / halfHeight);
+        pos.y *= -1;
+
+        this.raycaster.setFromCamera(pos, this.camera); 
+        var intersects = this.raycaster.intersectObjects([this.mobj.obj]);
+        if(intersects.length > 0){
+            var point = intersects[0].point;   
+            this.pointer.copy(point);
+        }
+    }
+
     Resize(width,height){
-        this.camera.aspect = width / height;
+        let aspect = width / height;
+        if(aspect < 1){
+            this.camera.position.x = 2;
+            this.camera.position.z = 13;
+            this.cyOffset = -2.0;
+        }else{
+            this.camera.position.x = 0;
+            this.camera.position.z = 10;
+            this.cyOffset = 0;
+        }
+        this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
+        this.camera.position.y = window.pageYOffset * -0.002 + this.cyOffset;
+    }
+
+    onScroll(){
+        if(this.camera){
+            this.camera.position.y = window.pageYOffset * -0.002 + this.cyOffset;
+        }
     }
     
-    onTouchStart(){
+    
+    onTouchStart(c){
+        this.ray(c);
+        console.log(this.pointer);
+        
     }
 
-    onTouchMove(){
+    onTouchMove(c){
+        this.ray(c);
+        console.log(this.pointer);
     }
 
-    onTouchEnd(){
+    onTouchEnd(c){
+        this.pointer.set(0,0,0);
+        console.log(this.pointer);
+
     }
 }

@@ -19,41 +19,37 @@ $sp-width: 800px;
 	color: white;
 	font-style: normal;
 
-	font-family: a-otf-jun-pro,sans-serif;
+	font-family: Comfortaa;
 	font-weight: 300;
 	font-style: normal;
 }
 
 html{
-	background-color: #000;
+	// background-color: #000;
 }
 
-.header{
+.container{
 	width: 90%;
-	margin: 40px auto;
-	z-index: 10;
-	overflow: hidden;
-	user-select: none;
+	margin: 0 auto;
+}
 
-	@include sp{
-		margin: 20px auto;
-	}
+.main-visual{
+	position: relative;
+	width: 100%;
+	height: 100vh;
 	&-logo{
-		font-family: 'Comfortaa', sans-serif;
-		float: left;
-		font-size: 40px;
-	}
+		display: inline-block;
+		position: absolute;
+		left: 10%;
+		padding: 10px 30px;
+		padding-bottom: 0px;
+		font-size: 100px;
+		color: #FFF;
+		background: rgba($color: #000000, $alpha: 0.4);
 
-	&-about{
-		right: 5%;
-		margin: 11px 0;
-		font-family: 'Comfortaa', sans-serif;
-		font-size: 20px;
-		float: right;
-		cursor: pointer;
-		transition: .6s;
-		&:hover{
-			opacity: 0.5;
+		@include sp{
+			// width: 100%;
+			font-size: 50px;
 		}
 	}
 }
@@ -68,7 +64,6 @@ html{
 	z-index: 100;
 	align-items: center;
 	justify-content: center;
-	background-color: black;
 	
 	opacity: 0;
 	transform: translateX(100%);
@@ -123,14 +118,11 @@ html{
 	  }
 }
 
-.main-visual{
-	width: 100vw;
-	height: 100vh;
-}
+
 
 #canvas{
 	position: fixed;
-	z-index: -999;
+	z-index: 0;
 	top: 0;
 	left: 0;
 	width: 100vw;
@@ -150,7 +142,7 @@ html{
 		display: flex;
 		flex-wrap: wrap;
 		align-content: stretch;
-		width: 80%;
+		width: 95%;
 		margin: 0 auto;
 		list-style: none;
 		&-item{
@@ -161,6 +153,7 @@ html{
 			opacity: 1;
 			transition: .4s;
 			z-index: 999;
+			background-color: #000;
 
 			@include sp{
 				width: 100%;
@@ -194,6 +187,20 @@ html{
 				}
 			}
 		}
+	}
+}
+
+.loading{
+	position: fixed;
+	left: 0;top: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: white;
+	opacity: 0;
+	transition: 2.5s;
+	pointer-events: none;
+	&.v{
+		opacity: 1;
 	}
 }
 
