@@ -75,7 +75,7 @@ export default class ThreeGraphic{
         }
 
         if(this.currentScene){
-            this.currentScene.onTouchStart(this.cursor);
+            this.currentScene.onTouchStart(this.cursor,event);
         }
     }
 
@@ -86,7 +86,7 @@ export default class ThreeGraphic{
         }
 
         if(this.currentScene){
-            this.currentScene.onTouchMove(this.cursor);
+            this.currentScene.onTouchMove(this.cursor,event);
         }
     }
 
@@ -98,7 +98,7 @@ export default class ThreeGraphic{
         }
 
         if(this.currentScene){
-            this.currentScene.onTouchEnd(this.cursor);
+            this.currentScene.onTouchEnd(this.cursor,event);
         }
     }
 }

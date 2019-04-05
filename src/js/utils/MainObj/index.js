@@ -44,7 +44,6 @@ export default class Background{
     }
 
     setPointer(point){
-        let a = new THREE.Vector3(0,0,0);
         let p = point.sub(this.obj.position);
         this.uni.pointer.value = p;
     }

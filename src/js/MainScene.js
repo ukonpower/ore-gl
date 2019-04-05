@@ -90,8 +90,10 @@ export default class MainScene extends BaseScene {
         this.raycaster.setFromCamera(pos, this.camera); 
         var intersects = this.raycaster.intersectObjects([this.mobj.obj]);
         if(intersects.length > 0){
-            var point = intersects[0].point;   
-            this.pointer.copy(point);
+            let point = intersects[0].point;   
+            return point;
+        }else{
+            return null;
         }
     }
 
@@ -118,20 +120,28 @@ export default class MainScene extends BaseScene {
     }
     
     
-    onTouchStart(c){
-        this.ray(c);
-        console.log(this.pointer);
-        
+    onTouchStart(c,e){
+        this.pointer = this.ray(c);
+        if(this.pointer){
+            this.mobj.setPointer(this.pointer.clone());
+            e.preventDefault();
+        }else{
+            this.mobj.setPointer(this.mobj.obj.position.clone());
+        }
     }
 
-    onTouchMove(c){
-        this.ray(c);
-        console.log(this.pointer);
+    onTouchMove(c,e){
+        this.pointer = this.ray(c);
+        if(this.pointer){
+            this.mobj.setPointer(this.pointer.clone());
+            e.preventDefault();
+
+        }else{
+            this.mobj.setPointer(this.mobj.obj.position.clone());
+        }
     }
 
-    onTouchEnd(c){
-        this.pointer.set(0,0,0);
-        console.log(this.pointer);
-
+    onTouchEnd(c,e){
+        this.mobj.setPointer(this.mobj.obj.position.clone());
     }
 }
