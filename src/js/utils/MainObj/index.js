@@ -32,7 +32,7 @@ export default class Background{
         });
 
         mat.uniforms.diffuse.value = new THREE.Vector3(1.0,1.0,1.0);
-        mat.uniforms.roughness.value = 0.0;
+        mat.uniforms.roughness.value = 0.3;
         mat.uniforms.metalness.value = 0.1;
         
         this.obj = new THREE.Mesh(geo,mat);

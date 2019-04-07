@@ -118,7 +118,24 @@ vec3 snoise3D(vec3 pos){
 
 void main() {
     vec3 pos = position;
-    float size = (0.95 + sin(time) * 0.05);
+    float s1 = smoothstep(0.5,1.0,(snoise(vec3(time * 0.3,.0,0.0)) + 1.0)/ 2.0);
+    float s2 = smoothstep(0.63,1.0,(snoise(vec3(time * 0.2 + 1000.0,.0,0.0)) + 1.0)/ 2.0);
+    float w1 = (0.96 + cos(time * 1.0) * 0.04);
+    float w2 = 0.0;
+    float noise = 0.0;
+    if(s1 < 0.01){
+      w2 = 1.0;
+    }else{
+      w2 = (0.95 + sin(snoise(pos + vec3(.0,.0,-time * 0.1)) * (2.0 + 5.0 * abs(sin(time + 100.0))) + -time * 20.0) * 0.05);
+    }
+
+    if(s2 < 0.01){
+      noise = 0.0;
+    }else{
+      noise = (sin(snoise(pos + vec3(.0,.0,-time * 0.1)) * 10.0 * sin(time * 0.3) + -time * 10.0) + 1.0) / 2.0 * 0.7 * s2;
+    }
+
+    float size = mix(1.0,w2,s1) * w1 + noise;
     pos *= size;
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0 );
     gl_Position = projectionMatrix * mvPosition;
