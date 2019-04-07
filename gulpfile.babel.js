@@ -42,6 +42,7 @@ gulp.task('copy', ()=> {
 
 gulp.task('browser-sync', () =>{
     browserSync.init({
+        notify: false,
         server:{
             baseDir:"public",
             index: "index.html"
