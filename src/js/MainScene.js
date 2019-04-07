@@ -100,9 +100,9 @@ export default class MainScene extends BaseScene {
     Resize(width,height){
         let aspect = width / height;
         if(aspect < 1){
-            this.camera.position.x = 2;
+            this.camera.position.x = 1;
             this.camera.position.z = 13;
-            this.cyOffset = -2.0;
+            this.cyOffset = -1.0;
         }else{
             this.camera.position.x = 0;
             this.camera.position.z = 10;

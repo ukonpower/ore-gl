@@ -118,7 +118,7 @@ vec3 snoise3D(vec3 pos){
 
 void main() {
     vec3 pos = position;
-    float size = (0.9 + sin(distance(pointer,pos) * 9.0 - time * 10.0) * 0.1);
+    float size = (0.95 + sin(time) * 0.05);
     pos *= size;
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0 );
     gl_Position = projectionMatrix * mvPosition;

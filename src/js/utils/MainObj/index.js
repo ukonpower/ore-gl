@@ -37,6 +37,7 @@ export default class Background{
         
         this.obj = new THREE.Mesh(geo,mat);
         this.obj.scale.set(3,3,3);
+        this.obj.receiveShadow = true;
     }
 
     update(time){
