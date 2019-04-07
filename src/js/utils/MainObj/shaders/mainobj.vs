@@ -123,6 +123,7 @@ void main() {
     float w1 = (0.96 + cos(time * 1.0) * 0.04);
     float w2 = 0.0;
     float noise = 0.0;
+
     if(s1 < 0.01){
       w2 = 1.0;
     }else{
@@ -132,7 +133,7 @@ void main() {
     if(s2 < 0.01){
       noise = 0.0;
     }else{
-      noise = (sin(snoise(pos + vec3(.0,.0,-time * 0.1)) * 10.0 * sin(time * 0.3) + -time * 10.0) + 1.0) / 2.0 * 0.7 * s2;
+      noise = (sin(snoise(pos + vec3(.0,.0,-time * 0.1)) * 7.0 * sin(time * 0.3) + -time * 10.0) + 1.0) / 2.0 * 0.7 * s2;
     }
 
     float size = mix(1.0,w2,s1) * w1 + noise;

@@ -37,24 +37,27 @@ export default class Cursor {
     }
 
     TouchStart(cursor) {
-        this._touchDown = true;
-        if (cursor.pageX) {
-            this.x = cursor.pageX;
-            this.y = cursor.pageY;
+        if (!event.touches) {
+            if(event.button != 0) return;
+            this.x = event.pageX;
+            this.y = event.pageY;
         } else {
-            this.x = cursor.touches[0].clientX;
-            this.y = cursor.touches[0].clientY;
+            this.x = event.touches[0].clientX + window.pageXOffset;
+            this.y = event.touches[0].clientY + window.pageYOffset;
+            
         }
+        this._touchDown = true;
     }
 
     TouchMove(cursor) {
         if (this._touchDown == true) {
-            if (cursor.pageX) {
-                this.x = cursor.pageX;
-                this.y = cursor.pageY;
+            if (!event.touches) {
+                this.x = event.pageX;
+                this.y = event.pageY;
+                
             } else {
-                this.x = cursor.touches[0].clientX;
-                this.y = cursor.touches[0].clientY;
+                this.x = event.touches[0].clientX + window.pageXOffset;
+                this.y = event.touches[0].clientY + window.pageYOffset;
             }
         }
     }

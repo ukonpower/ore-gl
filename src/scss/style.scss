@@ -100,12 +100,33 @@ html{
 			}
 		}
 	}
-	.b{
+	.title{
 		padding-left: 100px;
 		display: block;
 		background: rgba($color: #000000, $alpha: 0.4);
 		@include sp{
 			padding-left: 30px;
+		}
+		transform: translateX(-100%);
+		&.v{
+			animation: fadeIn 1s cubic-bezier(.54,.25,.29,1.01) forwards;
+			@keyframes fadeIn {
+				0% {		
+					transform: translateX(-100%);
+				}
+				100% {		
+					transform: translateX(0);
+				}
+			}
+		}
+		&:nth-child(1){
+			animation-delay: 0.1s;
+		}
+		&:nth-child(2){
+			animation-delay: .3s;
+		}
+		&:nth-child(3){
+			animation-delay: .5s;
 		}
 	}
 }
@@ -140,7 +161,7 @@ html{
 			width: 45%;
 			margin: 2% 2.5%;
 			transform: translateY(100px);
-			opacity: 1;
+			opacity: 0;
 			transition: .4s;
 			z-index: 999;
 			background-color: #000;
@@ -150,7 +171,7 @@ html{
 				margin: 5% auto;
 			}
 
-			&.active{
+			&.v{
 				transform: translateY(0);
 				opacity: 1.0;
 			}
@@ -182,25 +203,26 @@ html{
 
 .loading{
 	position: fixed;
+	z-index: 999;
 	left: 0;top: 0;
-	width: 100%;
+	width: 100vw;
 	height: 100vh;
 	background-color: white;
-	opacity: 0;
+	opacity: 1;
 	transition: 2.5s;
 	pointer-events: none;
-	&.v{
-		opacity: 1;
+	&.hide{
+		opacity: 0;
 	}
 }
 
 .footer{
+	position: relative;
 	text-align: center;
 	width: 90%;
 	margin: 0 auto;
-	// border-top: #aaa solid 1px;
-
 	&-copylight{
+		color: black;
 		padding-top: 50px;
 		padding-bottom: 50px;
 		font-size: 12px;

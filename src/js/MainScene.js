@@ -10,6 +10,10 @@ export default class MainScene extends BaseScene {
         this.init();
         this.animate();
         window.addEventListener('scroll',this.onScroll.bind(this));
+        document.querySelector(".loading").classList.add("hide");
+        document.querySelectorAll('.title').forEach((elm)=>{
+            elm.classList.add('v');
+        })
     }
 
     init() {
@@ -20,12 +24,12 @@ export default class MainScene extends BaseScene {
         this.cyOffset = 0;
 
         this.aLight = new THREE.AmbientLight();
-        this.aLight.intensity = 0.5;
+        this.aLight.intensity = 0.4;
         this.scene.add(this.aLight);
 
         this.dLight = new THREE.DirectionalLight();
         this.dLight.intensity = 0.7;
-        this.dLight.position.set(0.1,10,-10);
+        this.dLight.position.set(0.1,10,-2);
         this.scene.add(this.dLight);
 
         this.light = new THREE.PointLight();
@@ -53,13 +57,11 @@ export default class MainScene extends BaseScene {
         this.fish.obj.frustumCulled = false;
         this.scene.add(this.fish.obj);
 
-
         this.raycaster = new THREE.Raycaster();
         this.pointer = new THREE.Vector3(0,0,0);
 
         window.scene = this.scene;
-
-        document.querySelector(".loading").classList.remove("v");
+        this.onScroll();
     }
 
     animate() {
@@ -88,7 +90,7 @@ export default class MainScene extends BaseScene {
         pos.y *= -1;
 
         this.raycaster.setFromCamera(pos, this.camera); 
-        var intersects = this.raycaster.intersectObjects([this.mobj.obj]);
+        var intersects = this.raycaster.intersectObjects([this.plane]);
         if(intersects.length > 0){
             let point = intersects[0].point;   
             return point;
@@ -110,38 +112,54 @@ export default class MainScene extends BaseScene {
         }
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
-        this.camera.position.y = window.pageYOffset * -0.002 + this.cyOffset;
+        this.camera.position.y = window.pageYOffset * -0.004 + this.cyOffset;
     }
 
     onScroll(){
+        let offset = window.pageYOffset;
         if(this.camera){
-            this.camera.position.y = window.pageYOffset * -0.002 + this.cyOffset;
+            this.camera.position.y = offset * -0.004 + this.cyOffset;
         }
+
+        document.querySelectorAll('.content-list-item').forEach((elm)=>{
+            const top = elm.getBoundingClientRect().top + window.pageYOffset;
+            if(top < window.pageYOffset + window.innerHeight / 5 * 4){
+                elm.classList.add('v');
+            }
+        })
+
     }
     
+    keep_scroll_reload() {
+        var re = /&page_x=(\d+)&page_y=(\d+)/;
+        var page_x = document.documentElement ? document.documentElement.scrollLeft : document.body.scrollLeft;
+        var page_y = document.documentElement ? document.documentElement.scrollTop : document.body.scrollTop;
+        var position = '&page_x=' + page_x + '&page_y=' + page_y;
+        if(!url.match(re)) {
+                //初回
+                location.href = url + position;
+        } else {
+                //2回目以降
+                location.href = url.replace(/&page_x=(\d+)&page_y=(\d+)/,position);
+        }
+    }
+
+    restore_scroll() {
+        var re = /&page_x=(\d+)&page_y=(\d+)/;
+        if(window.location.href.match(re)) {
+                var position = window.location.href.match(re)
+                window.scrollTo(position[1],position[2]);
+        }
+    }
+
+
     
     onTouchStart(c,e){
-        this.pointer = this.ray(c);
-        if(this.pointer){
-            this.mobj.setPointer(this.pointer.clone());
-            e.preventDefault();
-        }else{
-            this.mobj.setPointer(this.mobj.obj.position.clone());
-        }
     }
 
     onTouchMove(c,e){
-        this.pointer = this.ray(c);
-        if(this.pointer){
-            this.mobj.setPointer(this.pointer.clone());
-            e.preventDefault();
-
-        }else{
-            this.mobj.setPointer(this.mobj.obj.position.clone());
-        }
     }
 
-    onTouchEnd(c,e){
-        this.mobj.setPointer(this.mobj.obj.position.clone());
+    onTouchEnd(c,e){       
     }
 }
