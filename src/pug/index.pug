@@ -1,0 +1,53 @@
+-
+    var contents=[
+        "Triangle Drawing",
+        "Life Game",
+        "Curl Noise",
+        "Curl Noise2",
+        "Curl Noise3",
+        "Curl Noise frameBuffer",
+        "framebuffer fractal",
+        "fold raymarching",
+        "raymarching1",
+        "Blinn-Phong",
+        "raymarching2",
+        "GLSL School Work",
+        "Boids",
+        "Three Curl Noise (好きすぎかよ)",
+        "Devil Suzanne",
+        "GPU Trails",
+        "FISH!!",
+        "GPU RAAMEN",
+        "21 Happy Birthday",
+        "Natto"
+    ]
+
+html(lang="en")
+    head
+        include ./_meta.pug
+        link(href="https://fonts.googleapis.com/css?family=Comfortaa", rel="stylesheet")
+        link(rel="stylesheet",href="https://use.fontawesome.com/releases/v5.8.1/css/all.css",rossorigin="anonymous")
+        link(rel="stylesheet", href="./css/style.css")
+        title Ore-GL
+    body
+        canvas#canvas
+        section.main-visual
+            .main-visual-wrap
+                h1.main-visual-logo.title Ore-GL
+                p.main-visual-description.title This is my WebGL works.
+                .main-visual-sns.title
+                    a.about-content-sns.fab.fa-twitter.fa-lg(aria-hidden="true", href="https://twitter.com/uksksan")
+                    a.about-content-sns.fab.fa-github.fa-lg(aria-hidden="true", href="https://github.com/ukonpower")
+                    a.about-content-sns.fab.fa-facebook.fa-lg(aria-hidden="true", href="https://www.facebook.com/profile.php?id=100010703025139")
+                    a.about-content-sns.fab.fa-youtube.fa-lg(aria-hidden="true", href="https://www.youtube.com/channel/UC5VH-OrfhFGLZkrv9Na3Dpw?view_as=subscriber")
+        .container
+            section.content
+                ul.content-list
+                    - for(var i = contents.length - 1; i >= 0;i--)
+                        - var Num = i + 1
+                        - var Title = contents[i]
+                        include ./_content.pug
+            footer.footer
+                .footer-copylight ©︎2019 Ryohei Ukon All Rights Reserved.
+        .loading
+        script(src="js/script.js")
