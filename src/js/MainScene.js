@@ -54,7 +54,7 @@ export default class MainScene extends BaseScene {
         this.mobj.obj.position.set(3,0,0);
 
         this.fish = new Fish(this.renderer,200,50);
-        this.fish.setAvoidObje(this.mobj.obj.position,3.5);
+        this.fish.setAvoidObje(this.mobj.obj.position,3.2);
         this.fish.setCamY(this.camera.position.y);
         this.fish.obj.frustumCulled = false;
         this.scene.add(this.fish.obj);

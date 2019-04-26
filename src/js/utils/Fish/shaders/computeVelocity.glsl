@@ -139,7 +139,7 @@ void main() {
     vec3 pos = texture2D( texturePosition, uv ).xyz;
     vec3 vel = texture2D( textureVelocity, uv ).xyz;
     float idParticle = uv.y * resolution.x + uv.x;
-    float scale = 0.1;
+    float scale = 0.08;
     
     vel.xyz += 40.0 * vec3(
       snoise( vec4( scale * pos.xyz, 7.225 * seed * 200.0 + 0.4 * time ) ),

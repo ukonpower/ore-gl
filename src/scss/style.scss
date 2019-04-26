@@ -36,8 +36,6 @@ html {
 
 .main-visual {
 	position: relative;
-	// display: flex;
-	// align-items: center;
 	width: 100%;
 	height: 100%;
 
@@ -112,8 +110,10 @@ html {
 
 	.title {
 		padding-left: 100px;
-		display: block;
+		display: inline-block;
 		background: rgba($color: #000000, $alpha: 0.4);
+		border-bottom: 0.15px solid rgba($color: #000000, $alpha: 0.4);
+		margin: 0;
 
 		@include sp {
 			padding-left: 30px;
@@ -181,7 +181,7 @@ html {
 			margin: 2% 2.5%;
 			transform: translateY(100px);
 			opacity: 0;
-			transition: .4s;
+			transition: .4s cubic-bezier(.26,0,.27,.99);
 			z-index: 999;
 			background-color: #000;
 
@@ -216,6 +216,10 @@ html {
 				&-comment {
 					font-size: 15px;
 				}
+			}
+
+			&:hover{
+				transform: translateY(-15px);
 			}
 		}
 	}
