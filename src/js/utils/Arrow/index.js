@@ -1,7 +1,7 @@
 import vert from './shaders/mainobj.vs';
 import frag from './shaders/mainobj.fs';
 
-export default class MainObj{
+export default class Arrow{
     constructor(){
         this.obj;
         this.createMesh();
@@ -40,10 +40,5 @@ export default class MainObj{
 
     update(time){
         this.uni.time.value = time;
-    }
-
-    setPointer(point){
-        let p = point.sub(this.obj.position);
-        this.uni.pointer.value = p;
     }
 }

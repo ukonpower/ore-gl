@@ -14,8 +14,6 @@ export default class Fish{
         this.length = length;
         
         this.obj;
-        this.time = 0;
-        this.clock = new THREE.Clock();
 
         this.comTexs = {
             position:{
@@ -152,10 +150,9 @@ export default class Fish{
         this.obj.updateMatrix();
     }
 
-    update(){
-        this.time += this.clock.getDelta();
+    update(time){
         this.computeRenderer.compute();
-        this.comTexs.velocity.uniforms.time.value = this.time;
+        this.comTexs.velocity.uniforms.time.value = time;
         this.uni.texturePosition.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.position.texture).texture;
         this.uni.textureVelocity.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.velocity.texture).texture;
     }

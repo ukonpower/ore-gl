@@ -19,6 +19,7 @@ export default class MainScene extends BaseScene {
     init() {
         this.time = Math.random() * 100;
         this.clock = new THREE.Clock();
+
         this.camera.position.set(0,0,9);
 
         this.cyOffset = 0;
@@ -77,7 +78,7 @@ export default class MainScene extends BaseScene {
         }
 
         if(this.fish){
-            this.fish.update();
+            this.fish.update(this.time);
         }
         // let r = 13;
         // this.camera.position.set(Math.sin(this.time * 0.5) * r,0,Math.cos(this.time * 0.5) * r);
@@ -131,31 +132,7 @@ export default class MainScene extends BaseScene {
         })
 
     }
-    
-    keep_scroll_reload() {
-        var re = /&page_x=(\d+)&page_y=(\d+)/;
-        var page_x = document.documentElement ? document.documentElement.scrollLeft : document.body.scrollLeft;
-        var page_y = document.documentElement ? document.documentElement.scrollTop : document.body.scrollTop;
-        var position = '&page_x=' + page_x + '&page_y=' + page_y;
-        if(!url.match(re)) {
-                //初回
-                location.href = url + position;
-        } else {
-                //2回目以降
-                location.href = url.replace(/&page_x=(\d+)&page_y=(\d+)/,position);
-        }
-    }
 
-    restore_scroll() {
-        var re = /&page_x=(\d+)&page_y=(\d+)/;
-        if(window.location.href.match(re)) {
-                var position = window.location.href.match(re)
-                window.scrollTo(position[1],position[2]);
-        }
-    }
-
-
-    
     onTouchStart(c,e){
     }
 
