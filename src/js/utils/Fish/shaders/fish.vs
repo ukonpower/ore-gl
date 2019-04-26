@@ -1,4 +1,3 @@
-varying vec3 vNormal;
 varying vec3 vViewPosition;
 uniform sampler2D texturePosition;
 uniform float uvDiff;
@@ -33,8 +32,7 @@ void main() {
     vec4 mvPosition = modelViewMatrix * vec4(p + pos, 1.0 );
     gl_Position = projectionMatrix * mvPosition;
 
-    vViewPosition = -mvPosition.xyz; 
-    vNormal = normalMatrix * normal;
+    vViewPosition = -mvPosition.xyz;
 }
 
 

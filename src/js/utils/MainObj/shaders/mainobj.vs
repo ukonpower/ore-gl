@@ -1,7 +1,6 @@
 uniform float time;
 varying vec3 vViewPosition;
 varying vec3 vNormal;
-varying vec2 u;
 uniform vec3 pointer;
 
 //
@@ -142,5 +141,4 @@ void main() {
     gl_Position = projectionMatrix * mvPosition;
     vViewPosition = -mvPosition.xyz; 
     vNormal = normal;
-    u = uv;
 }

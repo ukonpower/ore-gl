@@ -14,7 +14,6 @@ varying vec3 vViewPosition;
 	varying vec3 vNormal;
 #endif
 
-varying vec2 u;
 #include <common>
 #include <packing>
 #include <dithering_pars_fragment>
@@ -146,7 +145,6 @@ float snoise(vec3 v)
 
 void main() {
 	#include <clipping_planes_fragment>
-	// vec3 c = vec3(1.0 + snoise(vec3(u,time)));
 	vec3 c = vec3(1.0);
 	vec4 diffuseColor = vec4( c, opacity );
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
