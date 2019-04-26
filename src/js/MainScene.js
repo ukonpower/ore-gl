@@ -53,7 +53,8 @@ export default class MainScene extends BaseScene {
         this.mobj.obj.position.set(3,0,0);
 
         this.fish = new Fish(this.renderer,200,50);
-        this.fish.setAvoidObje(this.mobj.obj.position,3);
+        this.fish.setAvoidObje(this.mobj.obj.position,3.5);
+        this.fish.setCamY(this.camera.position.y);
         this.fish.obj.frustumCulled = false;
         this.scene.add(this.fish.obj);
 
@@ -121,6 +122,7 @@ export default class MainScene extends BaseScene {
             this.camera.position.y = offset * -0.004 + this.cyOffset;
         }
 
+        this.fish.setCamY(this.camera.position.y);
         document.querySelectorAll('.content-list-item').forEach((elm)=>{
             const top = elm.getBoundingClientRect().top + window.pageYOffset;
             if(top < window.pageYOffset + window.innerHeight / 5 * 4){

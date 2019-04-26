@@ -2,6 +2,7 @@ varying vec3 vNormal;
 varying vec3 vViewPosition;
 uniform sampler2D texturePosition;
 uniform float uvDiff;
+uniform float camY;
 
 float PI = 3.141592653589793;
 

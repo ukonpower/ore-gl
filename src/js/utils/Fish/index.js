@@ -52,6 +52,7 @@ export default class Fish{
         this.comTexs.velocity.uniforms.seed =  {value : Math.random() * 100};
         this.comTexs.velocity.uniforms.avoidPos = {value: new THREE.Vector3(0,0,0)},
         this.comTexs.velocity.uniforms.avoidScale = {value: 0},
+        this.comTexs.velocity.uniforms.camY = {value: 0},
         this.computeRenderer.init();
     }
 
@@ -162,5 +163,9 @@ export default class Fish{
     setAvoidObje(pos,scale){
         this.comTexs.velocity.uniforms.avoidPos.value = pos;
         this.comTexs.velocity.uniforms.avoidScale.value = scale;
+    }
+
+    setCamY(pos){
+        this.comTexs.velocity.uniforms.camY.value = pos; 
     }
 }
