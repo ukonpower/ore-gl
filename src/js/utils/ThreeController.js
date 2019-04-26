@@ -14,7 +14,7 @@ export default class ThreeGraphic {
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(window.devicePixelRatio);
-        // this.renderer.setPixelRatio(1);
+        this.renderer.setPixelRatio(1);
 
         this.cursor = new Cursor();
         this.userAgent = navigator.userAgent;
