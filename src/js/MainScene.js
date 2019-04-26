@@ -80,8 +80,7 @@ export default class MainScene extends BaseScene {
         if(this.fish){
             this.fish.update(this.time);
         }
-        // let r = 13;
-        // this.camera.position.set(Math.sin(this.time * 0.5) * r,0,Math.cos(this.time * 0.5) * r);
+
         this.renderer.render(this.scene,this.camera);
     }
 
@@ -124,6 +123,7 @@ export default class MainScene extends BaseScene {
         }
 
         this.fish.setCamY(this.camera.position.y);
+        
         document.querySelectorAll('.content-list-item').forEach((elm)=>{
             const top = elm.getBoundingClientRect().top + window.pageYOffset;
             if(top < window.pageYOffset + window.innerHeight / 5 * 4){

@@ -26,7 +26,7 @@ void main() {
     vec3 nPos = texture2D( texturePosition, nUV).xyz;
 
     vec3 vec = normalize(nPos - pos);
-    float rotX = atan2(vec.y,vec.z);
+    // float rotX = atan2(vec.y,vec.z);
 
     p.xy *= sin(uv.x * PI) * (sin(uv.y * PI) * 1.0 + 0.1);
     p.yz *= rotate(rotX);
