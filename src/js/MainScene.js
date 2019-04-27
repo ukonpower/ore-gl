@@ -2,6 +2,7 @@ import BaseScene from './utils/BaseScene';
 import Background from './utils/Background';
 import MainObj from './utils/MainObj';
 import Fish from './utils/Fish';
+import * as THREE from 'three';
 
 export default class MainScene extends BaseScene {
 
@@ -10,6 +11,14 @@ export default class MainScene extends BaseScene {
         this.init();
         this.animate();
         window.addEventListener('scroll',this.onScroll.bind(this));
+        document.querySelector('.about-link').addEventListener('click',()=>{
+            if(document.querySelector('.about').classList.toggle('v'));
+        });
+
+        document.querySelector('.about-close').addEventListener('click',()=>{
+            if(document.querySelector('.about').classList.toggle('v'));
+        });
+
         document.querySelector(".loading").classList.add("hide");
         document.querySelectorAll('.title').forEach((elm)=>{
             elm.classList.add('v');
