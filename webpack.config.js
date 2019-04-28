@@ -1,6 +1,6 @@
 import path from 'path';
 module.exports = {
-    mode: "development",
+    mode: "production",
     entry: {
         main: './src/js/main.js'
     },
