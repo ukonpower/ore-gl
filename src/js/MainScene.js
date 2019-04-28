@@ -31,6 +31,17 @@ export default class MainScene extends BaseScene {
         document.querySelectorAll('.title').forEach((elm) => {
             elm.classList.add('v');
         })
+
+        if(!this.ext){
+            document.querySelectorAll(".content-list-item-link.ext").forEach((elm)=>{
+                elm.addEventListener('click',(e)=>{
+                    e.preventDefault();
+                })
+            });
+            document.querySelectorAll(".content-list-item-worning").forEach((elm)=>{
+                elm.style.opacity = 1;
+            });
+        }
     }
 
     init() {
