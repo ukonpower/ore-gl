@@ -20,7 +20,7 @@ $sp-width: 800px;
 	color: white;
 	font-style: normal;
 
-	font-family: Comfortaa;
+	font-family: Comfortaa,'M PLUS Rounded 1c';
 	font-weight: 300;
 	font-style: normal;
 }
@@ -161,11 +161,13 @@ html {
 	height: 100%;
 	z-index: 99;
 
-	transition: .4s;
+	transform: translateX(-100%);
+	transition: .8s cubic-bezier(.55, .02, .23, .98);
 
 	&.v {
 		opacity: 1.0;
 		pointer-events: all;
+		transform: translateX(0);
 	}
 
 	background-color: rgba($color: #000000, $alpha: 0.85);
@@ -176,7 +178,7 @@ html {
 		margin: 0 auto;
 		width: 90px;
 		padding: 5px 15px;
-		font-size: 1７px;
+		font-size: 15px;
 		z-index: 99;
 		cursor: pointer;
 		text-align: center;
@@ -200,7 +202,7 @@ html {
 			border: 0px;
 			border-top: solid 2px black;
 			border-right: solid 2px black;
-			transform: translateX(-5px) rotate(45deg);			
+			transform: translateX(-5px) rotate(45deg);
 			position: absolute;
 			top: 50%;
 			right: 0;
@@ -254,20 +256,71 @@ html {
 			}
 		}
 	}
-	&-close{
-		cursor: pointer;
-		transition: .4s;
-		// border-bottom: 1px solid white;
 
-		&:hover{
-			color: #777
+	&-close {
+		display: block;
+		position: relative;
+		width: 80px;
+		margin: 0 auto;
+		text-align: center;
+		font-size: 15px;
+		cursor: pointer;
+
+		transition: .4s;
+
+		&:hover {
+			color: #777;
+
+			&::after {
+				border-top: solid 2px #777;
+				border-right: solid 2px #777;
+				transform: translateX(0px) rotate(-135deg);
+			}
 		}
+
+		&::after {
+			content: '';
+			width: 6px;
+			height: 6px;
+			border: 0px;
+			border-top: solid 2px white;
+			border-right: solid 2px white;
+			transform: translateX(5px) rotate(-135deg);
+			position: absolute;
+			top: 50%;
+			left: 0;
+			margin-top: -4px;
+			transition: .4s;
+		}
+	}
+}
+
+.worning {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 10px 0;
+	background-color: rgba($color: #000000, $alpha: 0.4);
+	z-index: 999;
+	font-size: 10px;
+	text-align: center;
+	transform: translateY(-100%);
+	opacity: 0;
+
+	&.v {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@include sp{
+		padding: 5px 0;
 	}
 }
 
 #canvas {
 	position: fixed;
-	z-index: 0;
+	z-index: -999;
 	top: 0;
 	left: 0;
 	width: 100vw;

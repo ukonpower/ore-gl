@@ -31,7 +31,8 @@ gulp.task("sass", () => {
         .pipe(autoprefixer())
         .pipe(sass())
         .pipe(cssmin())
-        .pipe(gulp.dest("./public/css/"));
+        .pipe(gulp.dest("./public/css/"))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('copy', () => {
@@ -56,7 +57,7 @@ gulp.task('bs-reload', () => {
 
 gulp.task('default', ['browser-sync', 'webpack', 'sass', 'pug', 'copy'], () => {
     gulp.watch(['./src/js/**/*'], ['webpack', 'bs-reload']);
-    gulp.watch('./src/scss/**/*.scss', ['sass', 'bs-reload']);
+    gulp.watch('./src/scss/**/*.scss', ['sass']);
     gulp.watch('./src/pug/**/*.pug', ['pug', 'bs-reload']);
     gulp.watch(['./src/js/*'], ['copy']);
 });

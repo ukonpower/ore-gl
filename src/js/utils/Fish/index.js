@@ -1,188 +1,198 @@
- import comShaderPosition from './shaders/computePosition.glsl';
- import comShaderVelocity from './shaders/computeVelocity.glsl';
+import comShaderPosition from './shaders/computePosition.glsl';
+import comShaderVelocity from './shaders/computeVelocity.glsl';
 
- import vert from './shaders/fish.vs';
+import vert from './shaders/fish.vs';
 
- import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
+import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
 
- import * as THREE from 'three';
+import * as THREE from 'three';
 
- export default class Fish {
-     constructor(renderer, num, length) {
-         this.renderer = renderer;
+export default class Fish {
+    constructor(renderer, num, length) {
+        this.renderer = renderer;
 
-         this.computeRenderer;
-         this.num = num;
-         this.length = length;
+        this.computeRenderer;
+        this.num = num;
+        this.length = length;
 
-         this.obj;
+        this.obj = null;
 
-         this.comTexs = {
-             position: {
-                 texture: null,
-                 uniforms: null,
-             },
-             velocity: {
-                 texture: null,
-                 uniforms: null,
-             },
-         }
+        this.comTexs = {
+            position: {
+                texture: null,
+                uniforms: null,
+            },
+            velocity: {
+                texture: null,
+                uniforms: null,
+            },
+        }
 
-         this.initComputeRenderer();
-         this.createTrails();
-     }
+        if (this.renderer.extensions.get( "OES_texture_float" ) ) {
+            this.initComputeRenderer()
+            this.createTrails();
+        }else{
+			console.log("No OES_texture_float support for float textures.");
+        }
+    }
 
-     initComputeRenderer() {
-         this.computeRenderer = new GPUComputationRenderer(this.length, this.num, this.renderer);
+    initComputeRenderer() {
+        this.computeRenderer = new GPUComputationRenderer(this.length, this.num, this.renderer);
 
-         let initPositionTex = this.computeRenderer.createTexture();
-         let initVelocityTex = this.computeRenderer.createTexture();
+        if (this.computeRenderer == null) {
+            return false;
+        }
 
-         this.initPosition(initPositionTex);
+        let initPositionTex = this.computeRenderer.createTexture();
+        let initVelocityTex = this.computeRenderer.createTexture();
 
-         this.comTexs.position.texture = this.computeRenderer.addVariable("texturePosition", comShaderPosition, initPositionTex);
-         this.comTexs.velocity.texture = this.computeRenderer.addVariable("textureVelocity", comShaderVelocity, initVelocityTex);
+        this.initPosition(initPositionTex);
 
-         this.computeRenderer.setVariableDependencies(this.comTexs.position.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture]);
-         this.comTexs.position.uniforms = this.comTexs.position.texture.material.uniforms;
+        this.comTexs.position.texture = this.computeRenderer.addVariable("texturePosition", comShaderPosition, initPositionTex);
+        this.comTexs.velocity.texture = this.computeRenderer.addVariable("textureVelocity", comShaderVelocity, initVelocityTex);
 
-         this.computeRenderer.setVariableDependencies(this.comTexs.velocity.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture]);
-         this.comTexs.velocity.uniforms = this.comTexs.velocity.texture.material.uniforms;
-         this.comTexs.velocity.uniforms.time = {
-             value: 0
-         };
-         this.comTexs.velocity.uniforms.seed = {
-             value: Math.random() * 100
-         };
-         this.comTexs.velocity.uniforms.avoidPos = {
-                 value: new THREE.Vector3(0, 0, 0)
-             },
-             this.comTexs.velocity.uniforms.avoidScale = {
-                 value: 0
-             },
-             this.comTexs.velocity.uniforms.camY = {
-                 value: 0
-             },
-             this.computeRenderer.init();
-     }
+        this.computeRenderer.setVariableDependencies(this.comTexs.position.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture]);
+        this.comTexs.position.uniforms = this.comTexs.position.texture.material.uniforms;
 
-     initPosition(tex) {
-         var texArray = tex.image.data;
-         let range = new THREE.Vector3(25, 25, 25);
-         for (var i = 0; i < texArray.length; i += this.length * 4) {
-             let x = Math.random() * range.x - range.x / 2;
-             let y = Math.random() * range.y - range.y / 2;
-             let z = Math.random() * range.z - range.z / 2;
-             for (let j = 0; j < this.length * 4; j += 4) {
-                 texArray[i + j + 0] = x - 30;
-                 texArray[i + j + 1] = y + 20;
-                 texArray[i + j + 2] = z;
-                 texArray[i + j + 3] = 0.0;
-             }
-         }
-     }
+        this.computeRenderer.setVariableDependencies(this.comTexs.velocity.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture]);
+        this.comTexs.velocity.uniforms = this.comTexs.velocity.texture.material.uniforms;
+        this.comTexs.velocity.uniforms.time = {
+            value: 0
+        };
+        this.comTexs.velocity.uniforms.seed = {
+            value: Math.random() * 100
+        };
+        this.comTexs.velocity.uniforms.avoidPos = {
+            value: new THREE.Vector3(0, 0, 0)
+        };
+        this.comTexs.velocity.uniforms.avoidScale = {
+            value: 0
+        };
+        this.comTexs.velocity.uniforms.camY = {
+            value: 0
+        };
+        this.computeRenderer.init();
 
-     createTrails() {
-         let geo = new THREE.InstancedBufferGeometry();
+        return true;
+    }
 
-         let posArray = [];
-         let indexArray = [];
-         let normalArray = [];
-         let uvXArray = [];
-         let uvYArray = [];
+    initPosition(tex) {
+        var texArray = tex.image.data;
+        let range = new THREE.Vector3(25, 25, 25);
+        for (var i = 0; i < texArray.length; i += this.length * 4) {
+            let x = Math.random() * range.x - range.x / 2;
+            let y = Math.random() * range.y - range.y / 2;
+            let z = Math.random() * range.z - range.z / 2;
+            for (let j = 0; j < this.length * 4; j += 4) {
+                texArray[i + j + 0] = x - 30;
+                texArray[i + j + 1] = y + 20;
+                texArray[i + j + 2] = z;
+                texArray[i + j + 3] = 0.0;
+            }
+        }
+    }
 
-         let r = .1;
-         let res = 10;
-         for (let j = 0; j < this.length; j++) {
-             let cNum = j;
-             for (let k = 0; k < res; k++) {
-                 let rad = Math.PI * 2 / res * k;
-                 let x = Math.cos(rad) * r;
-                 let y = Math.sin(rad) * r;
-                 let z = j * 1.6;
-                 z = 0;
+    createTrails() {
+        let geo = new THREE.InstancedBufferGeometry();
 
-                 posArray.push(x);
-                 posArray.push(y);
-                 posArray.push(z);
+        let posArray = [];
+        let indexArray = [];
+        let normalArray = [];
+        let uvXArray = [];
+        let uvYArray = [];
 
-                 let nml = new THREE.Vector3(x, y, z);
-                 nml.normalize();
+        let r = .1;
+        let res = 10;
+        for (let j = 0; j < this.length; j++) {
+            let cNum = j;
+            for (let k = 0; k < res; k++) {
+                let rad = Math.PI * 2 / res * k;
+                let x = Math.cos(rad) * r;
+                let y = Math.sin(rad) * r;
+                let z = j * 1.6;
+                z = 0;
 
-                 normalArray.push(nml.x, nml.y, nml.z);
+                posArray.push(x);
+                posArray.push(y);
+                posArray.push(z);
 
-                 uvXArray.push(j / this.length);
+                let nml = new THREE.Vector3(x, y, z);
+                nml.normalize();
 
-                 let c = cNum * res + k;
-                 if (j > 0) {
-                     indexArray.push(c);
-                     indexArray.push(((cNum - 1) * (res) + (k + 1) % res));
-                     indexArray.push((cNum * res + ((k + 1) % res)));
+                normalArray.push(nml.x, nml.y, nml.z);
 
-                     indexArray.push(c);
-                     indexArray.push(c - res);
-                     indexArray.push(((cNum - 1) * res + ((k + 1) % res)));
-                 }
-             }
-         }
+                uvXArray.push(j / this.length);
 
-         let pos = new Float32Array(posArray);
-         let normal = new Float32Array(normalArray);
-         let indices = new Uint32Array(indexArray);
-         let uvx = new Float32Array(uvXArray);
+                let c = cNum * res + k;
+                if (j > 0) {
+                    indexArray.push(c);
+                    indexArray.push(((cNum - 1) * (res) + (k + 1) % res));
+                    indexArray.push((cNum * res + ((k + 1) % res)));
 
-         geo.addAttribute('position', new THREE.BufferAttribute(pos, 3));
-         geo.addAttribute('uvx', new THREE.BufferAttribute(uvx, 1));
-         geo.addAttribute('normal', new THREE.BufferAttribute(normal, 3));
-         geo.setIndex(new THREE.BufferAttribute(indices, 1));
+                    indexArray.push(c);
+                    indexArray.push(c - res);
+                    indexArray.push(((cNum - 1) * res + ((k + 1) % res)));
+                }
+            }
+        }
 
-         //instanecing attribute
-         for(let i = 0; i < this.num; i++){
+        let pos = new Float32Array(posArray);
+        let normal = new Float32Array(normalArray);
+        let indices = new Uint32Array(indexArray);
+        let uvx = new Float32Array(uvXArray);
+
+        geo.addAttribute('position', new THREE.BufferAttribute(pos, 3));
+        geo.addAttribute('uvx', new THREE.BufferAttribute(uvx, 1));
+        geo.addAttribute('normal', new THREE.BufferAttribute(normal, 3));
+        geo.setIndex(new THREE.BufferAttribute(indices, 1));
+
+        //instanecing attribute
+        for (let i = 0; i < this.num; i++) {
             uvYArray.push(i / this.num);
-         }
+        }
 
-         let uvy = new Float32Array(uvYArray);
-         geo.addAttribute('uvy', new THREE.InstancedBufferAttribute(uvy, 1,false,1));
+        let uvy = new Float32Array(uvYArray);
+        geo.addAttribute('uvy', new THREE.InstancedBufferAttribute(uvy, 1, false, 1));
 
 
-         let customUni = {
-             texturePosition: {
-                 value: null
-             },
-             textureVelocity: {
-                 value: null
-             },
-         }
+        let customUni = {
+            texturePosition: {
+                value: null
+            },
+            textureVelocity: {
+                value: null
+            },
+        }
 
-         let phong = THREE.ShaderLib.standard;
-         this.uni = THREE.UniformsUtils.merge([phong.uniforms, customUni]);
+        let phong = THREE.ShaderLib.standard;
+        this.uni = THREE.UniformsUtils.merge([phong.uniforms, customUni]);
 
-         let mat = new THREE.ShaderMaterial({
-             uniforms: this.uni,
-             vertexShader: vert,
-             fragmentShader: phong.fragmentShader,
-             lights: true,
-             flatShading: true,
-         });
-         
-         this.obj = new THREE.Mesh(geo, mat);
-         this.obj.matrixAutoUpdate = false;
-         this.obj.updateMatrix();
-     }
+        let mat = new THREE.ShaderMaterial({
+            uniforms: this.uni,
+            vertexShader: vert,
+            fragmentShader: phong.fragmentShader,
+            lights: true,
+            flatShading: true,
+        });
 
-     update(time) {
-         this.computeRenderer.compute();
-         this.comTexs.velocity.uniforms.time.value = time;
-         this.uni.texturePosition.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.position.texture).texture;
-         this.uni.textureVelocity.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.velocity.texture).texture;
-     }
+        this.obj = new THREE.Mesh(geo, mat);
+        this.obj.matrixAutoUpdate = false;
+        this.obj.updateMatrix();
+    }
 
-     setAvoidObje(pos, scale) {
-         this.comTexs.velocity.uniforms.avoidPos.value = pos;
-         this.comTexs.velocity.uniforms.avoidScale.value = scale;
-     }
+    update(time) {
+        this.computeRenderer.compute();
+        this.comTexs.velocity.uniforms.time.value = time;
+        this.uni.texturePosition.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.position.texture).texture;
+        this.uni.textureVelocity.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.velocity.texture).texture;
+    }
 
-     setCamY(pos) {
-         this.comTexs.velocity.uniforms.camY.value = pos;
-     }
- }
+    setAvoidObje(pos, scale) {
+        this.comTexs.velocity.uniforms.avoidPos.value = pos;
+        this.comTexs.velocity.uniforms.avoidScale.value = scale;
+    }
+
+    setCamY(pos) {
+        this.comTexs.velocity.uniforms.camY.value = pos;
+    }
+}

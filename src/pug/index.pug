@@ -13,7 +13,7 @@
         "raymarching2",
         "GLSL School Work",
         "Boids",
-        "Three Curl Noise (好きすぎかよ)",
+        "Three Curl Noise",
         "Devil Suzanne",
         "GPU Trails",
         "FISH!!",
@@ -27,11 +27,12 @@
 html(lang="en")
     head
         include ./_meta.pug
-        link(href="https://fonts.googleapis.com/css?family=Comfortaa", rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css?family=Comfortaa|M+PLUS+Rounded+1c", rel="stylesheet")
         link(rel="stylesheet",href="https://use.fontawesome.com/releases/v5.8.1/css/all.css?20190427",rossorigin="anonymous")
-        link(rel="stylesheet", href="./css/style.css?20190427")
+        link(rel="stylesheet", href="./css/style.css?04283")
         title Ore-GL
     body
+        .worning お使いの端末では演出が制限されます。
         canvas#canvas
 
         section.main-visual
@@ -54,10 +55,10 @@ html(lang="en")
             .about-link Who I am...
             section.about
                 .about-wrap
-                    h3.about-title About
+                    h3.about-title I am
                     .about-content 
-                        | WebGL表現を追求します。<br>
-                        | Ore - 右近良平
+                        | 右近良平<br>
+                        | WebGL 表現を追求します。
                     .about-sns
                         a.about-sns.fab.fa-twitter.fa-lg(aria-hidden="true", href="https://twitter.com/uksksan")
                         a.about-sns.fab.fa-github.fa-lg(aria-hidden="true", href="https://github.com/ukonpower")
@@ -67,4 +68,4 @@ html(lang="en")
             footer.footer
                 .footer-copylight ©︎2019 Ryohei Ukon All Rights Reserved.
         .loading
-        script(src="js/script.js?20190427")
+        script(src="js/script.js?04282")
