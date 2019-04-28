@@ -20,7 +20,7 @@ $sp-width: 800px;
 	color: white;
 	font-style: normal;
 
-	font-family: Comfortaa,'M PLUS Rounded 1c';
+	font-family: Comfortaa, 'M PLUS Rounded 1c';
 	font-weight: 300;
 	font-style: normal;
 }
@@ -109,7 +109,6 @@ html {
 		padding-left: 100px;
 		display: inline-block;
 		background: rgba($color: #000000, $alpha: 0.4);
-		border-bottom: 0.15px solid rgba($color: #000000, $alpha: 0.4);
 		margin: 0;
 
 		@include sp {
@@ -173,17 +172,22 @@ html {
 	background-color: rgba($color: #000000, $alpha: 0.85);
 
 	&-link {
-		position: relative;
 		display: block;
-		margin: 0 auto;
-		width: 90px;
-		padding: 5px 15px;
-		font-size: 15px;
-		z-index: 99;
-		cursor: pointer;
+		position: relative ;
+		left: 0; right: 0;
+		margin: auto;
+		width: 100px;
+		padding: 5px 5px;
+		padding-right: 20px;
+		padding-bottom: 3px;
 		text-align: center;
+		font-size: 15px;
 		color: black;
+		cursor: pointer;
+
 		transition: .4s;
+		border: 1px solid black;
+		border-radius: 20px;
 
 		&:hover {
 			color: #ccc;
@@ -191,7 +195,7 @@ html {
 			&::after {
 				border-top: solid 2px #ccc;
 				border-right: solid 2px #ccc;
-				transform: translateX(0px) rotate(45deg);
+				transform: translateX(-10px) rotate(45deg);
 			}
 		}
 
@@ -202,7 +206,7 @@ html {
 			border: 0px;
 			border-top: solid 2px black;
 			border-right: solid 2px black;
-			transform: translateX(-5px) rotate(45deg);
+			transform: translateX(-15px) rotate(45deg);
 			position: absolute;
 			top: 50%;
 			right: 0;
@@ -259,14 +263,20 @@ html {
 
 	&-close {
 		display: block;
-		position: relative;
-		width: 80px;
-		margin: 0 auto;
+		position: absolute;
+		left: 0; right: 0;
+		bottom: 115px;
+		margin: auto;
+		width: 75px;
+		padding: 5px 5px;
+		padding-left: 15px;
 		text-align: center;
 		font-size: 15px;
 		cursor: pointer;
 
 		transition: .4s;
+		border: 1px solid white;
+		border-radius: 20px;
 
 		&:hover {
 			color: #777;
@@ -274,7 +284,7 @@ html {
 			&::after {
 				border-top: solid 2px #777;
 				border-right: solid 2px #777;
-				transform: translateX(0px) rotate(-135deg);
+				transform: translateX(10px) rotate(-135deg);
 			}
 		}
 
@@ -285,7 +295,7 @@ html {
 			border: 0px;
 			border-top: solid 2px white;
 			border-right: solid 2px white;
-			transform: translateX(5px) rotate(-135deg);
+			transform: translateX(15px) rotate(-135deg);
 			position: absolute;
 			top: 50%;
 			left: 0;
@@ -313,7 +323,7 @@ html {
 		transform: translateY(0);
 	}
 
-	@include sp{
+	@include sp {
 		padding: 5px 0;
 	}
 }
