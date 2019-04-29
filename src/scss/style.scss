@@ -132,14 +132,17 @@ html {
 		}
 
 		&:nth-child(1) {
+			border-radius: 0 3px 3px 0;
 			animation-delay: 0.1s;
 		}
 
 		&:nth-child(2) {
+			border-radius: 0 0 3px 0;
 			animation-delay: .3s;
 		}
 
 		&:nth-child(3) {
+			border-radius: 0 0 3px 0;
 			animation-delay: .5s;
 		}
 	}
@@ -361,6 +364,9 @@ html {
 			transition: .4s cubic-bezier(.26, 0, .27, .99);
 			z-index: 999;
 			background-color: #000;
+			border-radius: 10px;
+			overflow: hidden;
+			line-height: 0;
 
 			@include sp {
 				width: 100%;
@@ -388,6 +394,7 @@ html {
 				&-title {
 					margin: 10px auto;
 					font-size: 15px;
+					line-height: 1;
 				}
 
 				&-comment {
