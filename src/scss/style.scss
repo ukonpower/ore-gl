@@ -178,8 +178,9 @@ html {
 		right: 0;
 		margin: auto;
 		width: 100px;
-		padding: 3px 5px;
+		padding: 4px 5px;
 		padding-right: 20px;
+		padding-bottom: 2px;
 		text-align: center;
 		font-size: 15px;
 		color: black;
@@ -190,11 +191,7 @@ html {
 		border-radius: 20px;
 
 		&:hover {
-			color: #ccc;
-
 			&::after {
-				border-top: solid 2px #ccc;
-				border-right: solid 2px #ccc;
 				transform: translateX(-10px) rotate(45deg);
 			}
 		}
@@ -280,11 +277,11 @@ html {
 		border-radius: 20px;
 
 		&:hover {
-			color: #777;
+			// color: #777;
 
 			&::after {
-				border-top: solid 2px #777;
-				border-right: solid 2px #777;
+				// border-top: solid 2px #777;
+				// border-right: solid 2px #777;
 				transform: translateX(10px) rotate(-135deg);
 			}
 		}
