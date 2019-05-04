@@ -8,6 +8,7 @@ export default class ThreeGraphic {
         this.currentScene;
         this.canvas = document.querySelector('#canvas');
 
+        this.wrap = document.querySelector('.canvas-wrap');
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
         });
@@ -54,7 +55,7 @@ export default class ThreeGraphic {
 
     onWindowResize() {
         var width = window.innerWidth;
-        var height = window.innerHeight;
+        var height = this.wrap.offsetHeight;
         this.renderer.setSize(width, height);
 
         if (this.currentScene) {
