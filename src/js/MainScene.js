@@ -32,6 +32,8 @@ export default class MainScene extends BaseScene {
             elm.classList.add('v');
         })
 
+        document.querySelector('.about').style.transition = '.8s cubic-bezier(.55, .02, .23, .98)';
+
         if(!this.ext){
             document.querySelectorAll(".content-list-item-link.ext").forEach((elm)=>{
                 elm.addEventListener('click',(e)=>{
