@@ -1,14 +1,14 @@
 li.content-list-item
     if ext
-        a(href=`./gl/${Num}`).content-list-item-link.ext
-            img(src=`./gl/${Num}/gl${Num}-thumbnail.png`, alt=`gl${Num}`)
+        a(href=`./gl/${title_nospace}`).content-list-item-link.ext
+            img(src=`./gl/${title_nospace}/${title_nospace}-thumbnail.png`, alt=`${title}`)
             .content-list-item-description
-                h2.content-list-item-description-title #{Title}
+                h2.content-list-item-description-title #{title}
             .content-list-item-worning
                 .content-list-item-worning-text お使いの端末では動作しません。
     else
-        a(href=`./gl/${Num}`).content-list-item-link
-            img(src=`./gl/${Num}/gl${Num}-thumbnail.png`, alt=`gl${Num}`)
+        a(href=`./gl/${title_nospace}`).content-list-item-link
+            img(src=`./gl/${title_nospace}/${title_nospace}-thumbnail.png`, alt=`${title}`)
             .content-list-item-description
-                h2.content-list-item-description-title #{Title}
+                h2.content-list-item-description-title #{title}
             

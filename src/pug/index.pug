@@ -5,12 +5,12 @@
         "Curl Noise" : {ext: true},
         "Curl Noise2" : {ext: true},
         "Curl Noise3" : {ext: true},
-        "Curl Noise frameBuffer" : {ext: true},
-        "framebuffer fractal" : {ext: false},
-        "fold raymarching" : {ext: false},
-        "raymarching1" : {ext: false},
+        "Curl Noise FrameBuffer" : {ext: true},
+        "Framebuffer Fractal" : {ext: false},
+        "Fold Raymarching" : {ext: false},
+        "Raymarching1" : {ext: false},
         "Blinn-Phong" : {ext: false},
-        "raymarching2" : {ext: false},
+        "Raymarching2" : {ext: false},
         "GLSL School Work" : {ext: true},
         "Boids" : {ext: true},
         "Three Curl Noise" : {ext: true},
@@ -55,7 +55,8 @@ html(lang="en")
                     - let keys = Object.keys(contents);
                     - for(var i = keys.length - 1; i >= 0;i--)
                         - var Num = i + 1
-                        - var Title = keys[i];
+                        - var title = keys[i];
+                        - var title_nospace = title.replace(/\s+/g, "");
                         - var ext = contents[keys[i]].ext;
                         include ./_content.pug
             
