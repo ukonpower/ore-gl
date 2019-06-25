@@ -2,3 +2,4 @@
 node_modules
 *.blend1
 /public
+src/conf/.htaccess
