@@ -82,6 +82,8 @@ function buildAllGLs( cb ){
 
             //copy files
             gulp.src( glDir + files[i] + '/src/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
+
+            gulp.src( glItemDir + '/' + files[i] + '-thumbnail.png', { allowEmpty: true } ).pipe( gulp.dest( distGLItemDir) );
             
         }
         
