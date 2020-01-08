@@ -32,7 +32,10 @@
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
+    "matrixgl": "^1.0.1",
     "ore-three-ts": "^0.3.8",
-    "three": "^0.112.0"
+    "three": "^0.112.0",
+    "three-effectcomposer-es6": "0.0.4",
+    "three-gltf2-loader": "^1.2.0"
   }
 }
