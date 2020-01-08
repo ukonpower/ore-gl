@@ -43,30 +43,45 @@ function buildTopVisual( cb ){
 
 }
 
-function buildGLs( cb ){
+function buildAllGLs( cb ){
 
     fs.readdir( glDir, ( err, files ) => {
 
         if ( err ) throw err;
 
-        let conf = require( './webpack/webpack.config' );
+        let conf = require( './webpack/buildAllGL.config' );
 
         for ( let i = 0; i < files.length; i++ ) {
 
+            if( files[i] == '.DS_Store' ) continue;
+            
+            let glItemDir = glDir + files[i] + '/src';
+            let distGLItemDir = distGLDir + files[i];
+
             //set webpack entry files
-            conf.entry[files[i]] = glDir + files[i] + '/src/ts/main.ts';     
+            conf.entry[files[i]] = glItemDir + '/ts/main.ts';     
+
+            //pug
+            gulp.src([ glItemDir + '/pug/**/*.pug', '!' + glItemDir + '/pug/**/_*.pug'] )
+                .pipe(plumber())
+                .pipe(pug({
+                    pretty: true,
+                    locals: {
+                        title: files[i],
+                    }
+                }))
+                .pipe(gulp.dest( distGLItemDir ));
 
             //sass
-            gulp.src( glDir + files[i] + "/src/scss/style.scss" )
+            gulp.src( glItemDir + "/scss/style.scss" )
                 .pipe( plumber() )
                 .pipe( autoprefixer() )
                 .pipe( sass() )
                 .pipe( cssmin() )
-                .pipe( gulp.dest( distGLDir + files[i] + "/css/" ) )
+                .pipe( gulp.dest( distGLItemDir + "/css/" ) )
 
             //copy files
-            gulp.src( glDir + files[i] + '/src/html/**/*' ).pipe( gulp.dest( distGLDir + files[i] + '/' ) );
-            gulp.src( glDir + files[i] + '/src/assets/**/*' ).pipe( gulp.dest( distGLDir + files[i] + '/assets/' ) );
+            gulp.src( glDir + files[i] + '/src/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
             
         }
         
@@ -136,7 +151,7 @@ function cleanDevFiles( cb ){
 
 function webpackDev(){
 
-    let conf = require( './webpack/webpack.config' );
+    let conf = require( './webpack/dev.config' );
     conf.entry.main = srcDir + '/ts/main.ts';
     conf.output.filename = 'main.js';
     conf.mode = options.P ? 'production' : 'development';
@@ -200,8 +215,8 @@ function watch(){
 
 function setDevGLPath( cb ){
     
-    srcDir = './gl/' + options.gl + '/src';
-    distDir = './gl/' + options.gl + '/public';
+    srcDir = srcPath + '/gl/' + options.gl + '/src';
+    distDir = srcPath + '/gl/' + options.gl + '/public';
 
     cb();
 }
@@ -222,7 +237,7 @@ let develop = gulp.series(
 );
 
 //build topVisual
-exports.default = gulp.series( cleanAllFiles, setDevTopVisualPath, develop );
+exports.default = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, develop );
 
 //build GLs
 exports.dev = gulp.series( setDevGLPath, cleanDevFiles, develop );
