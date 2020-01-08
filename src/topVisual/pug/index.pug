@@ -1,0 +1,84 @@
+-
+    var contents={
+        "Triangle Drawing" : {ext: false},
+        "Life Game" : {ext: true},
+        "Curl Noise" : {ext: true},
+        "Curl Noise2" : {ext: true},
+        "Curl Noise3" : {ext: true},
+        "Curl Noise FrameBuffer" : {ext: true},
+        "FrameBuffer Fractal" : {ext: false},
+        "Fold Raymarching" : {ext: false},
+        "Raymarching1" : {ext: false},
+        "Blinn-Phong" : {ext: false},
+        "Raymarching2" : {ext: false},
+        "GLSL School Work" : {ext: true},
+        "Boids" : {ext: true},
+        "Three Curl Noise" : {ext: true},
+        "Devil Suzanne" : {ext: true},
+        "GPU Trails" : {ext: true},
+        "FISH!!" : {ext: true},
+        "GPU RAAMEN" : {ext: true},
+        "21 Happy Birthday" : {ext: false},
+        "Natto" : {ext: true},
+        "Instancing Box -Demo-" : {ext: false},
+        "Cube" : {ext: false},
+        "A SUMO" : {ext: false},
+        "Ring" : {ext: false},
+        "Flower" : {ext: false},
+        "UNI" : {ext: false},
+        "FluidGeometry": {ext: true},
+        "Dandelion": {ext: true},
+        "Fireworks": {ext: false},
+        "Tunnel": {ext: true},
+        "Boxes": {ext: false},
+    }
+
+html(lang="en")
+    head
+        include ./_meta.pug
+        link(href="https://fonts.googleapis.com/css?family=Comfortaa|M+PLUS+Rounded+1c", rel="stylesheet")
+        link(rel="stylesheet",href="https://use.fontawesome.com/releases/v5.8.1/css/all.css?20190427",rossorigin="anonymous")
+        link(rel="stylesheet", href="./css/style.css")
+        title Ore-GL
+    body
+        .worning お使いの端末では演出が制限されます。
+        .canvas-wrap
+            canvas#canvas.canvas
+
+        section.main-visual
+            .main-visual-wrap
+                h1.main-visual-logo.title Ore-GL
+                p.main-visual-description.title My Web Graphics Demos.
+                .main-visual-sns.title
+                    a.main-visual-sns.fab.fa-twitter.fa-lg(aria-hidden="true", href="https://twitter.com/uksksan")
+                    a.main-visual-sns.fab.fa-github.fa-lg(aria-hidden="true", href="https://github.com/ukonpower")
+                    a.main-visual-sns.fab.fa-facebook.fa-lg(aria-hidden="true", href="https://www.facebook.com/profile.php?id=100010703025139")
+                    a.main-visual-sns.fab.fa-youtube.fa-lg(aria-hidden="true", href="https://www.youtube.com/channel/UC5VH-OrfhFGLZkrv9Na3Dpw?view_as=subscriber")
+        .container
+            section.content
+                ul.content-list
+                    - let keys = Object.keys(contents);
+                    - for(var i = keys.length - 1; i >= 0;i--)
+                        - var Num = i + 1
+                        - var title = keys[i];
+                        - var title_nospace = title.replace(/\s+/g, "");
+                        - var ext = contents[keys[i]].ext;
+                        include ./_content.pug
+            
+            .about-link Who am I ...
+            section.about
+                .about-wrap
+                    h3.about-title I am
+                    .about-content 
+                        | 右近良平<br>
+                        | WebGL 表現を追求します。<br>
+                    .about-sns
+                        a.about-sns.fab.fa-twitter.fa-lg(aria-hidden="true", href="https://twitter.com/uksksan")
+                        a.about-sns.fab.fa-github.fa-lg(aria-hidden="true", href="https://github.com/ukonpower")
+                        a.about-sns.fab.fa-facebook.fa-lg(aria-hidden="true", href="https://www.facebook.com/profile.php?id=100010703025139")
+                        a.about-sns.fab.fa-youtube.fa-lg(aria-hidden="true", href="https://www.youtube.com/channel/UC5VH-OrfhFGLZkrv9Na3Dpw?view_as=subscriber")
+                    .about-close close
+            footer.footer
+                .footer-copylight ©︎2019 Ryohei Ukon All Rights Reserved.
+        .loading
+        script(src="js/main.js")
