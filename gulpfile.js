@@ -50,6 +50,7 @@ function buildAllGLs( cb ){
 		if ( err ) throw err;
 
 		let conf = require( './webpack/buildAllGL.config' );
+		conf.mode = options.P ? 'production' : 'development';
 
 		for ( let i = 0; i < files.length; i++ ) {
 
@@ -240,8 +241,16 @@ let develop = gulp.series(
 	gulp.parallel( brSync, watch ),
 );
 
+let build = gulp.series( 
+	copyDevFiles,
+	gulp.parallel( pugDev, webpackDev, sassDev ),
+);
+
+
 //build topVisual
 exports.default = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, develop );
 
 //build GLs
 exports.gl = gulp.series( setDevGLPath, cleanDevFiles, develop );
+
+exports.build = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, build );

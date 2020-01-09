@@ -2,7 +2,9 @@
   "name": "ore-gl",
   "version": "1.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+	  "deploy" : "npx gulp build -P && firebase deploy"
+  },
   "repository": {
 	"type": "git",
 	"url": ""
