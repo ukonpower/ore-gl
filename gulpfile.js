@@ -13,7 +13,7 @@ const fs = require( 'fs' );
 
 const options = minimist( process.argv.slice( 2 ), {
     default: {
-        gl: null,
+        name: null,
         P: false,
     }
 });
@@ -166,7 +166,7 @@ function webpackDev(){
 
 function pugDev(){
 
-    let title = options.gl || 'Ore-GL';
+    let title = options.name || 'Ore-GL';
     
     return gulp.src([ srcDir + '/pug/**/*.pug', '!' + srcDir + '/pug/**/_*.pug'] )
         .pipe(plumber())
@@ -217,8 +217,8 @@ function watch(){
 
 function setDevGLPath( cb ){
     
-    srcDir = srcPath + '/gl/' + options.gl + '/src';
-    distDir = srcPath + '/gl/' + options.gl + '/public';
+    srcDir = srcPath + '/gl/' + options.name + '/src';
+    distDir = srcPath + '/gl/' + options.name + '/public';
 
     cb();
 }
@@ -242,7 +242,7 @@ let develop = gulp.series(
 exports.default = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, develop );
 
 //build GLs
-exports.dev = gulp.series( setDevGLPath, cleanDevFiles, develop );
+exports.gl = gulp.series( setDevGLPath, cleanDevFiles, develop );
 
 //build topVisual and GLs
 // exports.build = gulp.series( cleanAllFiles, buildTopVisual, setDevTopVisualPath, develop );

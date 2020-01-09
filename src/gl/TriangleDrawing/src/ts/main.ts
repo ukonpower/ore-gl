@@ -83,7 +83,7 @@ function init(){
 
         glp.selectFramebuffer(bn);
         glp.selectUseProgram(drawPrg);
-        glp.setAttribute('position',screenVBO,screenIBO);
+        glp.addAttribute('position',screenVBO,screenIBO);
         glp.setUniform('resolution',[canvas.width,canvas.height]);
         glp.setUniform('texture',(bn == 0) ? 1 : 0);
         glp.setUniform('drawPos',dPos);
@@ -93,7 +93,7 @@ function init(){
 
         glp.selectFramebuffer(null);
         glp.selectUseProgram(renderPrg);
-        glp.setAttribute('position',screenVBO,screenIBO);
+        glp.addAttribute('position',screenVBO,screenIBO);
         glp.setUniform('resolution',[canvas.width,canvas.height]);
         glp.setUniform('texture',bn);
         glp.drawElements();

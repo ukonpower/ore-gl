@@ -3,7 +3,7 @@ import comShaderVelocity from './shaders/computeVelocity.glsl';
 
 import vert from './shaders/boxTrails.vs';
 import shadowFrag from './shaders/boxTrailsShadow.fs';
-import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
+import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer';
 
 export default class boxTrails{
     constructor(renderer,num,length,lineWidth){

@@ -3,7 +3,7 @@ import comShaderVelocity from './shaders/computeVelocity.glsl';
 import frag from './shaders/fragment.glsl';
 import vert from './shaders/vertex.glsl';
 
-import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
+import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer';
 
 export default class Boids{
 

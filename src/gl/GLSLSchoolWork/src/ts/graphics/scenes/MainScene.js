@@ -2,7 +2,9 @@ import BaceScene from './BaceScene.js';
 import Timer from '../utils/Timer.js';
 import Particle from './Particle';
 
-import EffectComposer,{RenderPass,ShaderPass,CopyShader} from 'three-effectcomposer-es6';
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
+import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
 
 import mainVisualVert from '../shaders/bg.vs';
 import mainVisualFrag from '../shaders/bg.fs';

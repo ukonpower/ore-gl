@@ -5,7 +5,9 @@ import Particle from './utils/Particles/Particles';
 import ppVert from './shaders/pp.vs';
 import ppFrag from './shaders/pp.fs';
 
-import EffectComposer,{RenderPass,ShaderPass,CopyShader} from 'three-effectcomposer-es6';
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
+import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
 
 
 export default class MainScene extends BaseScene {

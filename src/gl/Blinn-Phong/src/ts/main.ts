@@ -70,7 +70,7 @@ function init(){
 
         glp.selectFramebuffer(selectRBuffer);
         glp.selectUseProgram(wholeRenderPrg);
-        glp.setAttribute("position",glp.screenVBO,glp.screenIBO);
+        glp.addAttribute("position",glp.screenVBO,glp.screenIBO);
         glp.setUniform('resolution',[canvas.width,canvas.height]);
         glp.setUniform('preFrameTex',selectRBuffer == 0 ? 1 : 0);
         glp.setUniform('time',time);
@@ -80,7 +80,7 @@ function init(){
 
         glp.selectFramebuffer(null);
         glp.selectUseProgram(renderPrg);
-        glp.setAttribute("position",glp.screenVBO,glp.screenIBO);
+        glp.addAttribute("position",glp.screenVBO,glp.screenIBO);
         glp.setUniform('texture',selectRBuffer);
         glp.setUniform('resolution',[canvas.width,canvas.height]);
         glp.clear();

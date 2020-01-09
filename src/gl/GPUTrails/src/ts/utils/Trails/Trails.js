@@ -3,7 +3,7 @@ import comShaderVelocity from './shaders/computeVelocity.glsl';
 import frag from './shaders/trails.fs';
 import vert from './shaders/trails.vs';
 
-import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
+import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer';
 
 export default class Trails{
 

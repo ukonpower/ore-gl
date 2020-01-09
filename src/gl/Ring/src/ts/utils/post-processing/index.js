@@ -1,4 +1,6 @@
-import EffectComposer, { RenderPass, ShaderPass } from 'three-effectcomposer-es6'
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
+import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import ppFrag from './shaders/post-processing.fs';
 import ppVert from './shaders/post-processing.vs';
 

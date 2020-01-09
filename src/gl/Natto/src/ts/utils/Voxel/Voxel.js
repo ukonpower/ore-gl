@@ -6,7 +6,7 @@ import frag from './shaders/voxel.fs';
 
 import shadowFrag from './shaders/voxelShadow.fs';
 
-import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
+import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer';
 
 export default class Voxel {
     constructor(renderer, width, height, dist, res) {

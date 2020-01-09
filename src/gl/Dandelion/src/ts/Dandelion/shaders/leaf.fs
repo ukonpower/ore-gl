@@ -1,3 +1,4 @@
+#extension GL_OES_standard_derivatives : enable
 #define PHYSICAL
 varying vec3 vColor;
 uniform vec3 emissive;

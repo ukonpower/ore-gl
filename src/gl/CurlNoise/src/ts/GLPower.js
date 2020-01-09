@@ -72,7 +72,7 @@ module.exports = class GLpower{
         
     }
 
-    setAttribute(name,vbo,ibo){
+    addAttribute(name,vbo,ibo){
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER,vbo.data);
         this.gl.enableVertexAttribArray(this.currentProgram.attLocation[name]);
         this.gl.vertexAttribPointer(this.currentProgram.attLocation[name], this.currentProgram.attStride[name], this.gl.FLOAT, false, 0, 0);

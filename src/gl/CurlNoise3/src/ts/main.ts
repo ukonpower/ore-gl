@@ -97,7 +97,7 @@ function initPrg(){
 
     glp.selectFramebuffer(0);
     glp.selectUseProgram(initParticlePrg)
-    glp.setAttribute('position',glp.screenVBO,glp.screenIBO);
+    glp.addAttribute('position',glp.screenVBO,glp.screenIBO);
     glp.setUniform('resolution',[partNum,partNum]);
     glp.clear();
     glp.drawElements();
@@ -124,7 +124,7 @@ function initPrg(){
         
         glp.selectFramebuffer(fBselect);
         glp.selectUseProgram(particlePrg)
-        glp.setAttribute('position',glp.screenVBO,glp.screenIBO);
+        glp.addAttribute('position',glp.screenVBO,glp.screenIBO);
         glp.setUniform('posTexture',fBselect == 0 ? 1 : 0);
         glp.setUniform('resolution',[partNum,partNum]);
         glp.setUniform('time',time);
@@ -134,7 +134,7 @@ function initPrg(){
 
         glp.selectFramebuffer(2);
         glp.selectUseProgram(scenePrg);
-        glp.setAttribute('index',indexVBO,null);
+        glp.addAttribute('index',indexVBO,null);
         glp.setUniform('mvp',mvp.values);
         glp.setUniform('num',partNum);
         glp.setUniform('time',time);
@@ -147,7 +147,7 @@ function initPrg(){
 
         glp.selectFramebuffer(selectRBuffer);
         glp.selectUseProgram(wholeRenderPrg);
-        glp.setAttribute("position",glp.screenVBO,glp.screenIBO);
+        glp.addAttribute("position",glp.screenVBO,glp.screenIBO);
         glp.setUniform('resolution',[canvas.width,canvas.height]);
         glp.setUniform('tex1',2);
         glp.setUniform('tex2',selectRBuffer == 3 ? 4 : 3);
@@ -158,7 +158,7 @@ function initPrg(){
 
         glp.selectFramebuffer(null);
         glp.selectUseProgram(renderPrg);
-        glp.setAttribute("position",glp.screenVBO,glp.screenIBO);
+        glp.addAttribute("position",glp.screenVBO,glp.screenIBO);
         glp.setUniform('texture',selectRBuffer);
         glp.setUniform('resolution',[canvas.width,canvas.height]);
         glp.clear();

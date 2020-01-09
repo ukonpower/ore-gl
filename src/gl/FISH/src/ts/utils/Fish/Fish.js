@@ -3,7 +3,7 @@ import comShaderVelocity from './shaders/computeVelocity.glsl';
 
 import vert from './shaders/fish.vs';
 
-import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
+import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer';
 
 export default class Fish{
     constructor(renderer,num,length){
