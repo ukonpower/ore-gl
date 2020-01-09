@@ -56,7 +56,7 @@ export default class MainScene extends BaseScene {
 			});
 
 			this.cake.position.y = 0.5;
-			this.cake.scale.set(2.5,2.5,2.5);
+			this.cake.scale.set(5,5,5);
 			this.scene.add(this.cake);	 
 		});
 
