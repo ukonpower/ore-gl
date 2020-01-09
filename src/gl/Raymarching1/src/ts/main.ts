@@ -34,12 +34,12 @@ window.addEventListener('load',() =>{
 
 function init(){
 
-    glp.addAttribute(wholeRenderPrg,'position',3);
+    glp.setAttribute(wholeRenderPrg,'position',3);
     glp.addUniform(wholeRenderPrg,'resolution','uniform2fv');
     glp.addUniform(wholeRenderPrg,'preFrameTex','uniform1i');
     glp.addUniform(wholeRenderPrg,'time','uniform1f');
 
-    glp.addAttribute(renderPrg,'position',3);
+    glp.setAttribute(renderPrg,'position',3);
     glp.addUniform(renderPrg,'texture','uniform1i');
     glp.addUniform(renderPrg,'resolution','uniform2fv');
 

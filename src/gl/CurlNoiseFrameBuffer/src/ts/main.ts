@@ -42,27 +42,27 @@ window.addEventListener('load',() =>{
 
 function init(){
 
-    glp.addAttribute(initParticlePrg,'position',3);
+    glp.setAttribute(initParticlePrg,'position',3);
     glp.addUniform(initParticlePrg,'resolution','uniform2fv');
 
-    glp.addAttribute(particlePrg,'position',3);
+    glp.setAttribute(particlePrg,'position',3);
     glp.addUniform(particlePrg,'resolution','uniform2fv');
     glp.addUniform(particlePrg,'posTexture','uniform1i');
     glp.addUniform(particlePrg,'time','uniform1f');
 
-    glp.addAttribute(scenePrg,'index',1);
+    glp.setAttribute(scenePrg,'index',1);
     glp.addUniform(scenePrg,'mvp','uniformMatrix4fv')
     glp.addUniform(scenePrg,'time','uniform1f');
     glp.addUniform(scenePrg,'num','uniform1f');
     glp.addUniform(scenePrg,'posTexture','uniform1i');
 
-    glp.addAttribute(wholeRenderPrg,'position',3);
+    glp.setAttribute(wholeRenderPrg,'position',3);
     glp.addUniform(wholeRenderPrg,'resolution','uniform2fv');
     glp.addUniform(wholeRenderPrg,'tex1','uniform1i');
     glp.addUniform(wholeRenderPrg,'tex2','uniform1i');
     glp.addUniform(wholeRenderPrg,'time','uniform1f');
 
-    glp.addAttribute(renderPrg,'position',3);
+    glp.setAttribute(renderPrg,'position',3);
     glp.addUniform(renderPrg,'texture','uniform1i');
     glp.addUniform(renderPrg,'resolution','uniform2fv');
 

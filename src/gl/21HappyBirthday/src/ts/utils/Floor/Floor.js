@@ -30,7 +30,7 @@ export default class Floor{
 
         let pos = new Float32Array(posArray);
 
-        geo.addAttribute('position', new THREE.BufferAttribute( pos, 3 ) );
+        geo.setAttribute('position', new THREE.BufferAttribute( pos, 3 ) );
 
         this.uni = {
             time: {vaue: 0}

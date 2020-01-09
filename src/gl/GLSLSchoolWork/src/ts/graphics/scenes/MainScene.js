@@ -172,8 +172,8 @@ export default class MainScene extends BaceScene {
 	]);
 	
 	// attributesを追加
-	bgGeo.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
-	bgGeo.addAttribute('uv', new THREE.BufferAttribute(uv, 3));
+	bgGeo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+	bgGeo.setAttribute('uv', new THREE.BufferAttribute(uv, 3));
 	bgGeo.setIndex(new THREE.BufferAttribute(indices,  1));
 	this.bgMat = new THREE.ShaderMaterial({
 		uniforms: {

@@ -2,6 +2,7 @@ import { Vector3, Vector4, Matrix4 } from 'matrixgl';
 import GLPower from './GLPower';
 
 import drawFrag from '../shader/drawFrag.glsl';
+
 import renderVert from '../shader/renderVert.glsl';
 import renderFrag from '../shader/renderFrag.glsl';
 
@@ -30,13 +31,14 @@ window.addEventListener('load',() =>{
 
 function init(){
 
-    glp.addAttribute(drawPrg,'position',3);
+    glp.setAttribute(drawPrg,'position',3);
     glp.addUniform(drawPrg,'texture','uniform1i');
     glp.addUniform(drawPrg,'resolution','uniform2fv');
     glp.addUniform(drawPrg,'drawPos','uniform2fv');
     glp.addUniform(drawPrg,'drawPow','uniform1f');
+    glp.addUniform(drawPrg,'time','uniform1f');
 
-    glp.addAttribute(renderPrg,'position',3);
+    glp.setAttribute(renderPrg,'position',3);
     glp.addUniform(renderPrg,'texture','uniform1i');
     glp.addUniform(renderPrg,'resolution','uniform2fv');
 
@@ -86,6 +88,7 @@ function init(){
         glp.setUniform('texture',(bn == 0) ? 1 : 0);
         glp.setUniform('drawPos',dPos);
         glp.setUniform('drawPow',dPow);
+        glp.setUniform('time',time);
         glp.drawElements();
 
         glp.selectFramebuffer(null);
@@ -102,13 +105,14 @@ function init(){
 
     window.addEventListener('touchmove',(e)=>{
         dPos = [e.changedTouches[0].pageX,window.innerHeight -e.changedTouches[0].pageY];
-        dPow = e.touches[0].force;
+        dPow = 10;
+        
         e.preventDefault();
     },{passive:false});
 
     window.addEventListener('mousemove',(e)=>{
         dPos = [e.clientX,window.innerHeight - e.clientY];
-        dPow = 1;
+        dPow = 10;
         e.preventDefault();
     },{passive:false});
 }

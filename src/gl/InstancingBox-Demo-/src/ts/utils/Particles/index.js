@@ -5,21 +5,20 @@ import vert from './shaders/vertex.glsl';
 
 import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
 
-export default class Boids{
+export default class Particles{
 
-    constructor(renderer,range){
+    constructor(renderer,color){
         this.renderer = renderer;
 
         this.computeRenderer;
-        this.computeTextureWidth = 85;
+        this.computeTextureWidth = 128;
         this.numParticle = this.computeTextureWidth * this.computeTextureWidth;
-
+        
         this.obj;
-        this.color = new THREE.Vector3(1,1,1);
+        this.color = color;
 
         this.time = 0;
         this.clock = new THREE.Clock();
-        this.range = range;
 
         this.comTexs = {
             position:{
@@ -50,17 +49,24 @@ export default class Boids{
 
         this.computeRenderer.setVariableDependencies( this.comTexs.position.texture, [ this.comTexs.position.texture, this.comTexs.velocity.texture] );
         this.comTexs.position.uniforms = this.comTexs.position.texture.material.uniforms;
+        this.comTexs.position.uniforms.start =  { type:"v3", value : this.startPos};
+        this.comTexs.position.uniforms.mouse =  { type:"v2" , value : new THREE.Vector2(0,0)};
+        this.comTexs.position.uniforms.shot =  { type:"b" , value : false};
 
         this.computeRenderer.setVariableDependencies( this.comTexs.velocity.texture, [ this.comTexs.position.texture, this.comTexs.velocity.texture] );  
         this.comTexs.velocity.uniforms = this.comTexs.velocity.texture.material.uniforms;
-        this.comTexs.velocity.uniforms.time = { value: 0};
+        this.comTexs.velocity.uniforms.mouse =  { type:"v2", value : new THREE.Vector2(0,0)};
+        this.comTexs.velocity.uniforms.start =  { type:"v3", value : this.startPos};
 
         this.computeRenderer.init();
     }
 
     update(){
         this.time += this.clock.getDelta();
-        this.comTexs.velocity.uniforms.time.value = this.time;
+        this.comTexs.position.uniforms.start =  { type:"v3", value : this.startPos};
+        this.comTexs.velocity.uniforms.start =  { type:"v3", value : this.startPos};
+        this.comTexs.velocity.uniforms.goal =  { type:"v3", value : this.goalPos};
+
         this.computeRenderer.compute();
         this.uni.texturePosition.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.position.texture).texture;
         this.uni.textureVelocity.value = this.computeRenderer.getCurrentRenderTarget(this.comTexs.velocity.texture).texture;
@@ -68,7 +74,7 @@ export default class Boids{
 
     initPosition(tex){
         var texArray = tex.image.data;
-        let range = new THREE.Vector3(4,4,4);
+        let range = new THREE.Vector3(1,1,1);
         for(var i = 0; i < texArray.length; i +=4){
             texArray[i + 0] = Math.random() * range.x - range.x / 2;
             texArray[i + 1] = Math.random() * range.y - range.y / 2;
@@ -80,9 +86,10 @@ export default class Boids{
     initVelocity(tex){
         var texArray = tex.image.data;
         for(var i = 0; i < texArray.length; i +=4){
-            texArray[i + 0] = Math.random() * 1.0 - 0.5;
-            texArray[i + 1] = Math.random() * 1.0 - 0.5;
-            texArray[i + 2] = Math.random() * 1.0 - 0.5;
+            texArray[i + 0] = Math.random() * 20 - 10;
+            texArray[i + 1] = Math.random() * 20 - 10;
+            texArray[i + 2] = Math.random() * 20 - 10;
+            texArray[i + 3] = 0;
         }
     }
 
@@ -104,8 +111,8 @@ export default class Boids{
                 uv[p++] = j / ( this.computeTextureWidth - 1);
             }
         }
-        geo.addAttribute('position', new THREE.BufferAttribute( pArray, 3 ) );
-        geo.addAttribute('uv', new THREE.BufferAttribute( uv, 2 ) );
+        geo.setAttribute('position', new THREE.BufferAttribute( pArray, 3 ) );
+        geo.setAttribute('uv', new THREE.BufferAttribute( uv, 2 ) );
 
         this.uni = {
             texturePosition : {value: null},

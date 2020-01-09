@@ -34,15 +34,15 @@ window.addEventListener('load',() =>{
 
 function init(){
 
-    glp.addAttribute(initParticlePrg,'position',3);
+    glp.setAttribute(initParticlePrg,'position',3);
     glp.addUniform(initParticlePrg,'resolution','uniform2fv');
 
-    glp.addAttribute(particlePrg,'position',3);
+    glp.setAttribute(particlePrg,'position',3);
     glp.addUniform(particlePrg,'resolution','uniform2fv');
     glp.addUniform(particlePrg,'posTexture','uniform1i');
     glp.addUniform(particlePrg,'time','uniform1f');
 
-    glp.addAttribute(scenePrg,'index',1);
+    glp.setAttribute(scenePrg,'index',1);
     glp.addUniform(scenePrg,'mvp','uniformMatrix4fv')
     glp.addUniform(scenePrg,'time','uniform1f');
     glp.addUniform(scenePrg,'num','uniform1f');

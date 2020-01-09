@@ -158,9 +158,9 @@ export class BloodTrails extends THREE.Object3D{
         let indices = new Uint32Array( indexArray );
         let uvx = new Float32Array( uvXArray );
 
-        geo.addAttribute( 'position', new THREE.BufferAttribute( pos, 3 ) );
-        geo.addAttribute( 'uvx', new THREE.BufferAttribute( uvx, 1 ) );
-        geo.addAttribute( 'normal', new THREE.BufferAttribute( normal, 3 ) );
+        geo.setAttribute( 'position', new THREE.BufferAttribute( pos, 3 ) );
+        geo.setAttribute( 'uvx', new THREE.BufferAttribute( uvx, 1 ) );
+        geo.setAttribute( 'normal', new THREE.BufferAttribute( normal, 3 ) );
         geo.setIndex( new THREE.BufferAttribute( indices, 1 ) );
 
         //instanecing attribute
@@ -171,7 +171,7 @@ export class BloodTrails extends THREE.Object3D{
         }
 
         let uvy = new Float32Array( uvYArray );
-        geo.addAttribute( 'uvy', new THREE.InstancedBufferAttribute( uvy, 1, false, 1 ) );
+        geo.setAttribute( 'uvy', new THREE.InstancedBufferAttribute( uvy, 1, false, 1 ) );
 
         let customUni = {
             texturePosition: {

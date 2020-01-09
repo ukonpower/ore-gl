@@ -135,8 +135,8 @@ export default class Particle{
                 uv[p++] = j / ( this.computeTextureWidth - 1);
             }
         }
-        this.geo.addAttribute('position', new THREE.BufferAttribute( pArray, 3 ) );
-        this.geo.addAttribute('uv', new THREE.BufferAttribute( uv, 2 ) );
+        this.geo.setAttribute('position', new THREE.BufferAttribute( pArray, 3 ) );
+        this.geo.setAttribute('uv', new THREE.BufferAttribute( uv, 2 ) );
 
         //コンピュートシェーダーからのテクスチャを受け取るuniformを設定
         this.uni = {

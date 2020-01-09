@@ -117,13 +117,13 @@ export class Dandelion extends THREE.Object3D{
 		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.5, 0.01, 1, 20 );
 
         let vertice = ( fluffMesh.attributes.position as THREE.BufferAttribute).clone();
-        geo.addAttribute( 'position', vertice );
+        geo.setAttribute( 'position', vertice );
 
         let normal = ( fluffMesh.attributes.normal as THREE.BufferAttribute ).clone();
-        geo.addAttribute( 'normals', normal );
+        geo.setAttribute( 'normals', normal );
 
         let uv = ( fluffMesh.attributes.normal as THREE.BufferAttribute ).clone();
-        geo.addAttribute( 'uv', uv );
+        geo.setAttribute( 'uv', uv );
 
         let indices = fluffMesh.index.clone();
 		geo.setIndex( indices );
@@ -152,9 +152,9 @@ export class Dandelion extends THREE.Object3D{
 		
 		console.log( computeCoord );
 		
-        geo.addAttribute('num', n);
-        geo.addAttribute('computeCoord', computeCoord);
-        geo.addAttribute('offsetPos', offsetPos);
+        geo.setAttribute('num', n);
+        geo.setAttribute('computeCoord', computeCoord);
+        geo.setAttribute('offsetPos', offsetPos);
 
         let cUni = {
             time: {

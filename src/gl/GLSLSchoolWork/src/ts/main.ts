@@ -13,4 +13,4 @@ class App {
     }
 }
 
-document.addEventListener('load', () => { new App() } );
+window.addEventListener('load', () => { new App() } );

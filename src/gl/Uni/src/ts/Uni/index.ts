@@ -24,13 +24,13 @@ export default class Flower extends THREE.Object3D{
         let geo = new THREE.InstancedBufferGeometry();
 
         let vertice = (originBox.attributes.position as THREE.BufferAttribute).clone();
-        geo.addAttribute('position', vertice);
+        geo.setAttribute('position', vertice);
 
         let normal = (originBox.attributes.normal as THREE.BufferAttribute).clone();
-        geo.addAttribute('normals', normal);
+        geo.setAttribute('normals', normal);
 
         let uv = (originBox.attributes.normal as THREE.BufferAttribute).clone();
-        geo.addAttribute('uv', uv);
+        geo.setAttribute('uv', uv);
 
         let indices = originBox.index.clone();
         geo.setIndex(indices);
@@ -46,8 +46,8 @@ export default class Flower extends THREE.Object3D{
             num.setX(i, i);
         }
 
-        geo.addAttribute('offsetPos', offsetPos);
-        geo.addAttribute('num', num);
+        geo.setAttribute('offsetPos', offsetPos);
+        geo.setAttribute('num', num);
 
         let cUni = {
             time: {

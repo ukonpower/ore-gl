@@ -66,7 +66,7 @@ module.exports = class GLpower{
         }
     }
 
-    addAttribute(prgIndex,name,stride){
+    setAttribute(prgIndex,name,stride){
         this.program[prgIndex].attLocation[name] = this.gl.getAttribLocation(this.program[prgIndex].program,name);
         this.program[prgIndex].attStride[name] = stride;
         

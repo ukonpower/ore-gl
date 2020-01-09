@@ -37,13 +37,13 @@ export class Fireworks extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 
 		let pos = ( planeGeo.attributes.position as THREE.BufferAttribute).clone();
-        geo.addAttribute( 'position', pos );
+        geo.setAttribute( 'position', pos );
 
         let normal = ( planeGeo.attributes.normal as THREE.BufferAttribute ).clone();
-        geo.addAttribute( 'normals', normal );
+        geo.setAttribute( 'normals', normal );
 
         let uv = ( planeGeo.attributes.uv as THREE.BufferAttribute ).clone();
-        geo.addAttribute( 'uv', uv );
+        geo.setAttribute( 'uv', uv );
 
         let indices = planeGeo.index.clone();
 		geo.setIndex( indices );
@@ -65,9 +65,9 @@ export class Fireworks extends THREE.Object3D{
 			
 		}
 
-		geo.addAttribute( 'n', n );
-		geo.addAttribute( 'round', round );
-		geo.addAttribute( 'theta', theta );
+		geo.setAttribute( 'n', n );
+		geo.setAttribute( 'round', round );
+		geo.setAttribute( 'theta', theta );
 
 		let baseMat = THREE.ShaderLib.standard;
 

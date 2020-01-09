@@ -117,8 +117,8 @@ export default class Trails{
             }
         }
         
-        geo.addAttribute('position', new THREE.BufferAttribute( pArray, 3 ) );
-        geo.addAttribute('uv', new THREE.BufferAttribute( uv, 2 ) );
+        geo.setAttribute('position', new THREE.BufferAttribute( pArray, 3 ) );
+        geo.setAttribute('uv', new THREE.BufferAttribute( uv, 2 ) );
         geo.setIndex(new THREE.BufferAttribute(indices,1));
 
         this.uni = {

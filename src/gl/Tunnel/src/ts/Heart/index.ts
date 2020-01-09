@@ -61,13 +61,13 @@ export class Heart extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 
 		let pos = ( cyGeo.attributes.position as THREE.BufferAttribute).clone();
-        geo.addAttribute( 'position', pos );
+        geo.setAttribute( 'position', pos );
 
         let normal = ( cyGeo.attributes.normal as THREE.BufferAttribute ).clone();
-        geo.addAttribute( 'normals', normal );
+        geo.setAttribute( 'normals', normal );
 
         let uv = ( cyGeo.attributes.uv as THREE.BufferAttribute ).clone();
-        geo.addAttribute( 'uv', uv );
+        geo.setAttribute( 'uv', uv );
 
         let indices = cyGeo.index.clone();
 		geo.setIndex( indices );
@@ -83,8 +83,8 @@ export class Heart extends THREE.Object3D{
 
 		}
 		
-		geo.addAttribute( 'n', n );
-		geo.addAttribute( 'group', group );
+		geo.setAttribute( 'n', n );
+		geo.setAttribute( 'group', group );
 
 		let baseMat = THREE.ShaderLib.standard;
 

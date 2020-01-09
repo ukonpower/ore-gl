@@ -21,13 +21,13 @@ export default class Sumo {
         let geo = new THREE.InstancedBufferGeometry();
 
         let vertice = originBox.attributes.position.clone();
-        geo.addAttribute('position', vertice);
+        geo.setAttribute('position', vertice);
 
         let normal = originBox.attributes.normal.clone();
-        geo.addAttribute('normals', normal);
+        geo.setAttribute('normals', normal);
 
         let uv = originBox.attributes.normal.clone();
-        geo.addAttribute('uv', uv);
+        geo.setAttribute('uv', uv);
 
         let indices = originBox.index.clone();
         geo.setIndex(indices);
@@ -46,8 +46,8 @@ export default class Sumo {
             num.setX(i, i);
         }
 
-        geo.addAttribute('offsetPos', offsetPos);
-        geo.addAttribute('num', num);
+        geo.setAttribute('offsetPos', offsetPos);
+        geo.setAttribute('num', num);
 
         let cUni = {
             time: {

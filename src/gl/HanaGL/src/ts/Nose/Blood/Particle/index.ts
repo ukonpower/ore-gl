@@ -93,8 +93,8 @@ export class BloodParticle extends THREE.Object3D{
 
 		}
 		
-		geo.addAttribute( 'computeCoord', new THREE.BufferAttribute( new Float32Array( computeCoord ), 2 ) );
-		geo.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positionArray ), 3 ) );
+		geo.setAttribute( 'computeCoord', new THREE.BufferAttribute( new Float32Array( computeCoord ), 2 ) );
+		geo.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( positionArray ), 3 ) );
 		
 		this.pointUniforms = {
 			texturePosition:{
