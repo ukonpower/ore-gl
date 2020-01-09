@@ -51,7 +51,7 @@ export default class MainScene extends BaseScene {
         this.action;
 
         let loader = new GLTFLoader();
-        loader.load('./models/camera.glb', (gltf) => {
+        loader.load('./assets/models/camera.glb', (gltf) => {
             var scene = gltf.scene;
             this.animations = gltf.animations;
             
@@ -62,7 +62,7 @@ export default class MainScene extends BaseScene {
             this.startAnimation();
         });
 
-        loader.load('./models/objects.glb', (gltf) => {
+        loader.load('./assets/models/objects.glb', (gltf) => {
             var models = gltf.scene;
 
             this.suzanne = models.getObjectByName('Suzanne');
