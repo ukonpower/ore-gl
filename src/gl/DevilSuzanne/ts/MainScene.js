@@ -7,6 +7,7 @@ import ppFrag from './shaders/pp.fs';
 import alphaFrag from './shaders/alpha.fs';
 import standardVert from './shaders/standard.vs';
 
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default class MainScene extends BaseScene {
 
