@@ -8,6 +8,7 @@ import ppFrag from './shaders/pp.fs';
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default class MainScene extends BaseScene {
 
@@ -43,10 +44,10 @@ export default class MainScene extends BaseScene {
         this.back = new Background();
         this.scene.add(this.back.obj);
 
-        let loader = new THREE.GLTFLoader();
+        let loader = new GLTFLoader();
         this.cake;
 
-        loader.load('./models/happybirthday.glb', (gltf) => {
+        loader.load('./assets/happybirthday.glb', (gltf) => {
             this.cake = gltf.scene;
             this.cake.traverse((child) => {
                 if (child.isMesh) {

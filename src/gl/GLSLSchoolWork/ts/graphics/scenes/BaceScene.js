@@ -1,9 +1,4 @@
 import * as THREE from 'three'
-import GLTF2Loader from 'three-gltf2-loader'
-
-GLTF2Loader(THREE);
-
-
 export default class BaceScene {
     constructor(canvas) {
         this.scene = new THREE.Scene();

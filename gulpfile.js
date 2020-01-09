@@ -81,7 +81,7 @@ function buildAllGLs( cb ){
                 .pipe( gulp.dest( distGLItemDir + "/css/" ) )
 
             //copy files
-            gulp.src( glDir + files[i] + '/src/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
+            gulp.src( glDir + files[i] + '/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
 
             gulp.src( glItemDir + '/' + files[i] + '-thumbnail.png', { allowEmpty: true } ).pipe( gulp.dest( distGLItemDir) );
             
@@ -176,7 +176,8 @@ function pugDev(){
                 title: title,
             }
         }))
-        .pipe(gulp.dest( distDir ));
+        .pipe( gulp.dest( distDir ) )
+        .unpipe( browserSync.reload() );
     
 }
 
@@ -209,9 +210,10 @@ function watch(){
     console.log( distDir );
     
     gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
-    gulp.watch( srcDir + '/pug/**/*', gulp.task( pugDev ) );
-    gulp.watch( srcDir + '/scss/*.scss', gulp.task( sassDev ) );
-    gulp.watch( srcDir + '/html/**/*', gulp.task( copyDevFiles ) );
+    gulp.watch( srcDir + '/pug/**/*', gulp.series( pugDev ) );
+    gulp.watch( srcDir + '/scss/**/*', gulp.series( sassDev ) );
+    gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
+    gulp.watch( srcDir + '/assets/**/*', gulp.series( copyDevFiles ) );
 
 }
 
@@ -243,6 +245,3 @@ exports.default = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, 
 
 //build GLs
 exports.gl = gulp.series( setDevGLPath, cleanDevFiles, develop );
-
-//build topVisual and GLs
-// exports.build = gulp.series( cleanAllFiles, buildTopVisual, setDevTopVisualPath, develop );

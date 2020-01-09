@@ -8,6 +8,7 @@ import ppFrag from './shaders/pp.fs';
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default class MainScene extends BaseScene {
 
@@ -43,7 +44,7 @@ export default class MainScene extends BaseScene {
         this.floor = new Floor();
         this.scene.add(this.floor.obj);
 
-        let loader = new THREE.GLTFLoader();
+        let loader = new GLTFLoader();
 
         loader.load('./assets/models/ramen.glb', (gltf) => {
             var object = gltf.scene;

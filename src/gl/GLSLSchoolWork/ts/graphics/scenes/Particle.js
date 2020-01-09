@@ -3,7 +3,7 @@ import comShaderVelocity from '../shaders/computeVelocity.glsl';
 import comShaderTime from '../shaders/computeTime.glsl';
 import frag from '../shaders/fragment.glsl';
 import vert from '../shaders/vertex.glsl';
-import GPUComputationRenderer from '../utils/libs/GPUComputationRenderer';
+import {GPUComputationRenderer} from 'three/examples/jsm/misc/GPUComputationRenderer';
 import Timer from '../utils/Timer.js';
 
 import * as THREE from 'three';

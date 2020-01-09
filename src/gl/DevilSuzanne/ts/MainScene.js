@@ -50,7 +50,7 @@ export default class MainScene extends BaseScene {
         this.animations;
         this.action;
 
-        let loader = new THREE.GLTFLoader();
+        let loader = new GLTFLoader();
         loader.load('./models/camera.glb', (gltf) => {
             var scene = gltf.scene;
             this.animations = gltf.animations;

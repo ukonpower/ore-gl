@@ -4,17 +4,17 @@ import Cursor from './Cursor';
 export default class ThreeGraphic{
         constructor(){
         this.currentScene;
-        this.canvas = $('#main_graphic');
-        this.canvas.css('height',innerHeight);
+        this.canvas = document.querySelector('#main_graphic');
+        this.canvas.style.height = innerHeight;
 
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.shadowMapEnabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        this.renderer.setSize(this.canvas.innerWidth(),this.canvas.innerHeight());
+        this.renderer.setSize(window.innerWidth,window.innerHeight);
         this.renderer.setPixelRatio(1);
 
-        this.canvas.prepend(this.renderer.domElement);
-        this.canvas.children('canvas').css('position','absolute');
+        this.canvas.appendChild(this.renderer.domElement);
+        this.canvas.querySelector('canvas').style.position = 'absolute';
 
         this.cursor = new Cursor();
     

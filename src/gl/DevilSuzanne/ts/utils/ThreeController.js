@@ -1,7 +1,7 @@
 import Cursor from './Cursor';
 import * as THREE from 'three';
-import GLTF2Loader from 'three-gltf2-loader'
-GLTF2Loader(THREE);
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
+
 window.THREE = THREE;
 
 export default class ThreeGraphic{

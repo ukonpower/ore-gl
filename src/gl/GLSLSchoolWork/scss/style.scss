@@ -1,26 +1,37 @@
-@charset "utf-8";
+*{
+    margin: 0;
+    padding: 0;
+} 
 
-* {
-    margin: 0px;
-    padding: 0px;
-    background-color: black;
-}
-
-.back{
-    overflow: hidden;
-    font-family: 'Comfortaa', sans-serif;
-    position: absolute;
-    left: 5%;
-    top: 30px;
-    text-decoration: none;
-    color: white;
-    background-color: rgba(0, 0, 0, 0);
-    user-select: none;
-}
-
-canvas {
-    position: absolute;
-    margin: 0px auto;
+html body{
     width: 100%;
     height: 100%;
+}
+
+#main_graphic{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.option-list{
+    position: absolute;
+    z-index: 99;
+    width: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 30px;
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    &-item{
+        &-button{
+            padding: 10px 30%;
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            background-color: rgba($color: #000000, $alpha: 0.5);
+        }
+    }
 }

@@ -6,6 +6,8 @@ import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.j
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
 
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
+
 import mainVisualVert from '../shaders/bg.vs';
 import mainVisualFrag from '../shaders/bg.fs';
 
@@ -116,7 +118,7 @@ export default class MainScene extends BaceScene {
     }
 
     init() {
-        let loader = new THREE.GLTFLoader();
+        let loader = new GLTFLoader();
 
         loader.load('./assets/models/glslschool.glb', (gltf) => {
             var object = gltf.scene;

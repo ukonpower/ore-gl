@@ -1,25 +1,19 @@
 html(lang="ja")
     head
-        script.
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
-            gtag('config', 'UA-112004110-3');
+        include ../../../common/pug/analytics.pug
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title=title
         link(rel="stylesheet", href="./css/style.css" type="text/css")
     body
-        .main_graphic
+        #main_graphic
         ul.option-list
-            li .option-list-item
+            li.option-list-item
                 button.option-list-item-button#shot SHOT
-            li .option-list-item
-                button.option-list-item-button#shot FEVER
-            li .option-list-item
-                button.option-list-item-button#shot Rotate
+            li.option-list-item
+                button.option-list-item-button#fever FEVER
+            li.option-list-item
+                button.option-list-item-button#rot Rotate
         a(href="../../").back Back
         script(src="./js/main.js")
