@@ -11,12 +11,12 @@ class APP{
 		
 		this.canvas = document.querySelector( "#canvas" );
 
-        this.controller = new ORE.Controller({
+		this.controller = new ORE.Controller({
 			canvas: this.canvas,
 			retina: true
 		});
 
-        this.scene = new TopScene();
+		this.scene = new TopScene();
 		this.controller.bindScene( this.scene );
 		
 	}

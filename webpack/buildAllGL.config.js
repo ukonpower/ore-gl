@@ -1,9 +1,9 @@
 module.exports = {
 	mode: 'development',
 	entry: {
-    },
-    output: {
-    },
+	},
+	output: {
+	},
 	resolve: {
 		modules: ['node_modules'],
 		extensions: ['.ts', '.js']
@@ -15,18 +15,18 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: 'ts-loader',
 				options: {
-                    configFile: 'webpack/tsconfig/dev.json'
-                }
+					configFile: 'webpack/tsconfig/dev.json'
+				}
 			},
 			{
-                test: /\.(glsl|vs|fs)$/,
-                loader: 'shader-loader',
-                options: {
-                    glsl: {
-                        chunkPath: "src/glsl-chunks"
-                    }
-                }
-            }
+				test: /\.(glsl|vs|fs)$/,
+				loader: 'shader-loader',
+				options: {
+					glsl: {
+						chunkPath: "src/glsl-chunks"
+					}
+				}
+			}
 		]
 	}
 };

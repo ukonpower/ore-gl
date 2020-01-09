@@ -1,12 +1,12 @@
 //
 // Description : Array and textureless GLSL 2D simplex noise function.
-//      Author : Ian McEwan, Ashima Arts.
+//	  Author : Ian McEwan, Ashima Arts.
 //  Maintainer : stegu
-//     Lastmod : 20110822 (ijm)
-//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
-//               Distributed under the MIT License. See LICENSE file.
-//               https://github.com/ashima/webgl-noise
-//               https://github.com/stegu/webgl-noise
+//	 Lastmod : 20110822 (ijm)
+//	 License : Copyright (C) 2011 Ashima Arts. All rights reserved.
+//			   Distributed under the MIT License. See LICENSE file.
+//			   https://github.com/ashima/webgl-noise
+//			   https://github.com/stegu/webgl-noise
 // 
 
 vec3 mod289(vec3 x) {
@@ -24,9 +24,9 @@ vec3 permute(vec3 x) {
 float snoise(vec2 v)
   {
   const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
-                      0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
-                     -0.577350269189626,  // -1.0 + 2.0 * C.x
-                      0.024390243902439); // 1.0 / 41.0
+					  0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
+					 -0.577350269189626,  // -1.0 + 2.0 * C.x
+					  0.024390243902439); // 1.0 / 41.0
 // First corner
   vec2 i  = floor(v + dot(v, C.yy) );
   vec2 x0 = v -   i + dot(i, C.xx);

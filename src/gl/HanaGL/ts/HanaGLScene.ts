@@ -35,7 +35,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.loadModels();
 		
-        let light = new THREE.DirectionalLight();
+		let light = new THREE.DirectionalLight();
 		light.position.set( 2.0, 10.0, 3.0 );
 		light.intensity = 0.5;
 		this.scene.add( light );
@@ -128,7 +128,7 @@ export class DandelionScene extends ORE.BaseScene{
 	
 	}
 
-    onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
+	onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
 
 		if( cursor.position.x < window.innerWidth / 2 ){
 
@@ -143,7 +143,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 	}
 
-    onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
+	onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
 
 		event.preventDefault();
 

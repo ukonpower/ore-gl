@@ -12,17 +12,17 @@ const del = require( 'del' );
 const fs = require( 'fs' );
 
 const options = minimist( process.argv.slice( 2 ), {
-    default: {
-        name: null,
-        P: false,
-    }
+	default: {
+		name: null,
+		P: false,
+	}
 });
 
 const srcPath = './src';
 const publicPath = './public';
 
 /*-------------------
-    Production
+	Production
 --------------------*/
 
 const glDir = srcPath + '/gl/';
@@ -30,94 +30,94 @@ const distGLDir =  publicPath + '/gl/';
 
 function buildTopVisual( cb ){
 
-    // min build
-    let conf = require( './webpack/webpack.config' );
+	// min build
+	let conf = require( './webpack/webpack.config' );
 
-    conf.main = ''
+	conf.main = ''
 
-    webpackStream( conf, webpack )
-        .pipe( gulp.dest( publicPath + '/js/' ) );
+	webpackStream( conf, webpack )
+		.pipe( gulp.dest( publicPath + '/js/' ) );
 
 
-    cb();
+	cb();
 
 }
 
 function buildAllGLs( cb ){
 
-    fs.readdir( glDir, ( err, files ) => {
+	fs.readdir( glDir, ( err, files ) => {
 
-        if ( err ) throw err;
+		if ( err ) throw err;
 
-        let conf = require( './webpack/buildAllGL.config' );
+		let conf = require( './webpack/buildAllGL.config' );
 
-        for ( let i = 0; i < files.length; i++ ) {
+		for ( let i = 0; i < files.length; i++ ) {
 
-            if( files[i] == '.DS_Store' ) continue;
-            
-            let glItemDir = glDir + files[i];
-            let distGLItemDir = distGLDir + files[i];
+			if( files[i] == '.DS_Store' ) continue;
+			
+			let glItemDir = glDir + files[i];
+			let distGLItemDir = distGLDir + files[i];
 
-            //set webpack entry files
-            conf.entry[files[i]] = glItemDir + '/ts/main.ts';     
+			//set webpack entry files
+			conf.entry[files[i]] = glItemDir + '/ts/main.ts';	 
 
-            //pug
-            gulp.src([ glItemDir + '/pug/**/*.pug', '!' + glItemDir + '/pug/**/_*.pug'] )
-                .pipe(plumber())
-                .pipe(pug({
-                    pretty: true,
-                    locals: {
-                        title: files[i],
-                    }
-                }))
-                .pipe(gulp.dest( distGLItemDir ));
+			//pug
+			gulp.src([ glItemDir + '/pug/**/*.pug', '!' + glItemDir + '/pug/**/_*.pug'] )
+				.pipe(plumber())
+				.pipe(pug({
+					pretty: true,
+					locals: {
+						title: files[i],
+					}
+				}))
+				.pipe(gulp.dest( distGLItemDir ));
 
-            //sass
-            gulp.src( glItemDir + "/scss/style.scss" )
-                .pipe( plumber() )
-                .pipe( autoprefixer() )
-                .pipe( sass() )
-                .pipe( cssmin() )
-                .pipe( gulp.dest( distGLItemDir + "/css/" ) )
+			//sass
+			gulp.src( glItemDir + "/scss/style.scss" )
+				.pipe( plumber() )
+				.pipe( autoprefixer() )
+				.pipe( sass() )
+				.pipe( cssmin() )
+				.pipe( gulp.dest( distGLItemDir + "/css/" ) )
 
-            //copy files
-            gulp.src( glDir + files[i] + '/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
+			//copy files
+			gulp.src( glDir + files[i] + '/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
 
-            gulp.src( glItemDir + '/' + files[i] + '-thumbnail.png', { allowEmpty: true } ).pipe( gulp.dest( distGLItemDir) );
-            
-        }
-        
-        conf.output.filename = '[name]/js/main.js';
+			gulp.src( glItemDir + '/' + files[i] + '-thumbnail.png', { allowEmpty: true } ).pipe( gulp.dest( distGLItemDir) );
+			
+		}
+		
+		conf.output.filename = '[name]/js/main.js';
 
-        //webpack
-        webpackStream( conf, webpack )
-            .pipe( gulp.dest( distGLDir ) )
-            .on( 'end', cb )
+		//webpack
+		webpackStream( conf, webpack )
+			.pipe( gulp.dest( distGLDir ) )
+			.on( 'end', cb )
 
-    });
+	});
 
 }
 
 function cleanAllFiles( cb ){
 
-    del([
+	del([
 
-        publicPath
-        
-    ],{
+		publicPath
+		
+	],{
 
-        force: true,
+		force: true,
 
-    }).then( ( paths ) => {
+	}).then( ( paths ) => {
 
-        cb();
+		cb();
 
-    });
+	});
 
 }
 
 /*-------------------
-    Development
+	Development
 --------------------*/
 
 let srcDir = '';
@@ -125,119 +125,119 @@ let distDir = '';
 
 function copyDevFiles( cb ){
 
-    gulp.src( srcDir + '/assets/**/*' ).pipe( gulp.dest( distDir + '/assets/' ) );
+	gulp.src( srcDir + '/assets/**/*' ).pipe( gulp.dest( distDir + '/assets/' ) );
 
-    browserSync.reload();
-    
-    cb();
+	browserSync.reload();
+	
+	cb();
 
 }
 
 function cleanDevFiles( cb ){
 
-    del([
+	del([
 
-        distDir
-        
-    ],{
+		distDir
+		
+	],{
 
-        force: true,
+		force: true,
 
-    }).then( ( paths ) => {
+	}).then( ( paths ) => {
 
-        cb();
+		cb();
 
-    });
+	});
 
 }
 
 function webpackDev(){
 
-    let conf = require( './webpack/dev.config' );
-    conf.entry.main = srcDir + '/ts/main.ts';
-    conf.output.filename = 'main.js';
-    conf.mode = options.P ? 'production' : 'development';
+	let conf = require( './webpack/dev.config' );
+	conf.entry.main = srcDir + '/ts/main.ts';
+	conf.output.filename = 'main.js';
+	conf.mode = options.P ? 'production' : 'development';
 
-    return webpackStream( conf, webpack )
-        .pipe( gulp.dest( distDir + "/js/" ) )
-        .on( 'end', browserSync.reload )
+	return webpackStream( conf, webpack )
+		.pipe( gulp.dest( distDir + "/js/" ) )
+		.on( 'end', browserSync.reload )
 
 }
 
 function pugDev(){
 
-    let title = options.name || 'Ore-GL';
-    
-    return gulp.src([ srcDir + '/pug/**/*.pug', '!' + srcDir + '/pug/**/_*.pug'] )
-        .pipe(plumber())
-        .pipe(pug({
-            pretty: true,
-            locals: {
-                title: title,
-            }
-        }))
-        .pipe( gulp.dest( distDir ) )
-        .unpipe( browserSync.reload() );
-    
+	let title = options.name || 'Ore-GL';
+	
+	return gulp.src([ srcDir + '/pug/**/*.pug', '!' + srcDir + '/pug/**/_*.pug'] )
+		.pipe(plumber())
+		.pipe(pug({
+			pretty: true,
+			locals: {
+				title: title,
+			}
+		}))
+		.pipe( gulp.dest( distDir ) )
+		.unpipe( browserSync.reload() );
+	
 }
 
 function sassDev(){
 
-    return gulp.src( srcDir + "/scss/style.scss" )
-        .pipe( plumber() )
-        .pipe( sass() )
-        .pipe( autoprefixer() )
-        .pipe( cssmin() )
-        .pipe( gulp.dest( distDir + "/css/" ) )
-        .pipe( browserSync.stream() )
+	return gulp.src( srcDir + "/scss/style.scss" )
+		.pipe( plumber() )
+		.pipe( sass() )
+		.pipe( autoprefixer() )
+		.pipe( cssmin() )
+		.pipe( gulp.dest( distDir + "/css/" ) )
+		.pipe( browserSync.stream() )
 
 }
 
 function brSync(){
 
-    browserSync.init({
-        server: {
-            baseDir: distDir,
-            index: "index.html",
-        },
-    });
+	browserSync.init({
+		server: {
+			baseDir: distDir,
+			index: "index.html",
+		},
+	});
 
 }
 
 function watch(){
 
-    console.log( srcDir );
-    console.log( distDir );
-    
-    gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
-    gulp.watch( srcDir + '/pug/**/*', gulp.series( pugDev ) );
-    gulp.watch( srcDir + '/scss/**/*', gulp.series( sassDev ) );
-    gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
-    gulp.watch( srcDir + '/assets/**/*', gulp.series( copyDevFiles ) );
+	console.log( srcDir );
+	console.log( distDir );
+	
+	gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
+	gulp.watch( srcDir + '/pug/**/*', gulp.series( pugDev ) );
+	gulp.watch( srcDir + '/scss/**/*', gulp.series( sassDev ) );
+	gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
+	gulp.watch( srcDir + '/assets/**/*', gulp.series( copyDevFiles ) );
 
 }
 
 function setDevGLPath( cb ){
-    
-    srcDir = srcPath + '/gl/' + options.name;
-    distDir = publicPath + '/gl/' + options.name + '/public';
+	
+	srcDir = srcPath + '/gl/' + options.name;
+	distDir = publicPath + '/gl/' + options.name + '/public';
 
-    cb();
+	cb();
 }
 
 function setDevTopVisualPath( cb ){
 
-    srcDir = srcPath + '/topVisual';
-    distDir = publicPath;
+	srcDir = srcPath + '/topVisual';
+	distDir = publicPath;
 
-    cb();
+	cb();
 
 }
 
 let develop = gulp.series( 
-    copyDevFiles,
-    gulp.parallel( pugDev, webpackDev, sassDev ),
-    gulp.parallel( brSync, watch ),
+	copyDevFiles,
+	gulp.parallel( pugDev, webpackDev, sassDev ),
+	gulp.parallel( brSync, watch ),
 );
 
 //build topVisual
