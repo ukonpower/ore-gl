@@ -55,7 +55,7 @@ function buildAllGLs( cb ){
 
             if( files[i] == '.DS_Store' ) continue;
             
-            let glItemDir = glDir + files[i] + '/src';
+            let glItemDir = glDir + files[i];
             let distGLItemDir = distGLDir + files[i];
 
             //set webpack entry files
@@ -217,8 +217,8 @@ function watch(){
 
 function setDevGLPath( cb ){
     
-    srcDir = srcPath + '/gl/' + options.name + '/src';
-    distDir = srcPath + '/gl/' + options.name + '/public';
+    srcDir = srcPath + '/gl/' + options.name;
+    distDir = publicPath + '/gl/' + options.name + '/public';
 
     cb();
 }
