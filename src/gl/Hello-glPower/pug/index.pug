@@ -1,0 +1,21 @@
+html(lang="ja")
+    head
+        script(async src="https://www.googletagmanager.com/gtag/js?id=UA-112004110-3")
+        script.
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', 'UA-112004110-3');
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title=title
+        link(href="https://fonts.googleapis.com/css?family=Comfortaa|M+PLUS+Rounded+1c", rel="stylesheet")
+        link(rel="stylesheet", href="../css/style.css" type="text/css")
+        link(rel="stylesheet", href="./css/style.css" type="text/css")
+    body
+        a(href="../../").back Back
+        canvas#canvas
+        script(src="./js/main.js")
