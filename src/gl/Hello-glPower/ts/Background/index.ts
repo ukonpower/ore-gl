@@ -12,6 +12,9 @@ export class Background extends GLP.RenderingObject{
 		let uniforms = {
 			time: {
 				value: 0
+			},
+			aspect: {
+				value: 1
 			}
 		}
 
@@ -36,6 +39,12 @@ export class Background extends GLP.RenderingObject{
 
 		this.uniforms.time.value = time;
 
+	}
+	
+	public resize( aspect: number ){
+
+		this.uniforms.aspect.value = aspect;
+		
 	}
 	
 }

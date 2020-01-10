@@ -29,9 +29,11 @@ void main( void ){
 
 	vec3 pos = position;
 
-	float n = random( vec2( ind, time ) ) * 1.0 + 1.0;
+	float n = random( vec2( ind, time ) ) * 1.0 + 0.9;
 
 	float theta = time * 0.03;
+
+	pos *= ( sin( time * 0.1 ) + 1.0 ) * 0.1 + 0.9;
 
 	pos.xz *= rotate( sin( theta) * 0.5 );
 	pos.yz *= rotate( sin( -theta * 1.5 ) * 0.2 );

@@ -18,6 +18,7 @@ export class APP{
 
 	private glpower: glPower;
 	private floatingObj: FloatingObj;
+	private floatingObjMesh: FloatingObj;
 	private background: Background;
 
 	private rend: boolean = true;
@@ -51,11 +52,15 @@ export class APP{
 		this.glpower = new glPower( this.gl );
 		this.scene.add( this.glpower );
 		
-		this.floatingObj = new FloatingObj( this.gl );
+		this.floatingObj = new FloatingObj( this.gl, 300, this.gl.LINES );
 		this.floatingObj.name = 'floating obj';
 		this.scene.add( this.floatingObj );
 		
+		this.floatingObjMesh = new FloatingObj( this.gl,400, this.gl.TRIANGLES );
+		this.scene.add( this.floatingObjMesh );
+		
 		this.background = new Background( this.gl );
+		this.background.resize( this.camera.aspect );
 		this.background.name = 'background';
 		this.scene.add( this.background );
 		
@@ -68,6 +73,8 @@ export class APP{
 		this.glpower.update( this.time );
 
 		this.floatingObj.update( this.time )
+		
+		this.floatingObjMesh.update( this.time );
 		
 		this.background.update( this.time );
 
@@ -84,6 +91,7 @@ export class APP{
 	private resize(){
 
 		this.camera.aspect = window.innerWidth / window.innerHeight;
+		this.background.resize( this.camera.aspect );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 
 	}

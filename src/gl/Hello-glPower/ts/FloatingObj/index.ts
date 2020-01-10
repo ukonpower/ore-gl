@@ -7,12 +7,18 @@ export class FloatingObj extends GLP.Empty{
 
 	private gl: WebGLRenderingContext;
 	private uni: GLP.Uniforms;
+	private drawType: number;
+
+	private count: number;
 	
-	constructor( gl: WebGLRenderingContext ){
+	constructor( gl: WebGLRenderingContext, count: number, drawType: number ){
 
 		super();
 
 		this.gl = gl;
+
+		this.count = count;
+		this.drawType = drawType;
 		
 		this.initMesh();
 		
@@ -47,7 +53,7 @@ export class FloatingObj extends GLP.Empty{
 			let offsetPos = [];
 			let n = [];
 			
-			for( let i = 0; i < 1000; i++ ){
+			for( let i = 0; i < this.count; i++ ){
 
 				n.push( i );
 				
@@ -65,7 +71,7 @@ export class FloatingObj extends GLP.Empty{
 			let obj = new GLP.RenderingObject({
 				geo: geo,
 				mat: mat,
-				drawType: this.gl.TRIANGLES
+				drawType: this.drawType
 			});
 			obj.name = 'floating obj';
 	

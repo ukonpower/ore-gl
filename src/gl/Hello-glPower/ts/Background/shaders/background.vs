@@ -5,6 +5,7 @@ attribute vec3 normal;
 attribute vec2 uv;
 
 uniform float time;
+uniform float aspect;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
@@ -20,7 +21,7 @@ void main( void ){
 	vec3 pos = position;
 	pos.z = 1.0;
 
-	vUv = uv;
+	vUv = uv * vec2( aspect, 1.0 ) + vec2( 0.5 * ( 1.0 - aspect), 0.0 );
 
     gl_Position = vec4( pos, 1.0 );
 

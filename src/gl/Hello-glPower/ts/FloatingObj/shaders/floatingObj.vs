@@ -10,7 +10,6 @@ varying vec3 vColor;
 
 uniform float time;
 uniform mat4 modelViewMatrix;
-uniform mat4 invModelMatrix;
 uniform mat4 projectionMatrix;
 
 mat2 rotate(float rad) {
@@ -27,15 +26,17 @@ void main( void ){
 
 	vec3 oPos = offsetPos;
 
-	float mpos = 100.0;
+	float mpos = 50.0;
+
+	pos *= ( sin( num * 0.1 + time * 0.01 ) + 1.0 ) * 0.5 + 0.1;
 
 	pos.yz *= rotate( sin( pos.x * 1.0 + time * 0.1 ) * 0.5 );
 
-	oPos.z = mod( oPos.z + time * 0.1, mpos) - (mpos - 2.0);
+	oPos.z = mod( oPos.z + time * 0.1, mpos) - ( ( mpos / 2.0 ) + 20.0 );
 
 	vec3 gPos = pos + oPos;
 
-	gPos.xy *= rotate( sin( gPos.z * 0.1 ) + offsetPos.z );
+	gPos.xy *= rotate( ( gPos.z * ( sin( time * 0.005 ) * 0.2 ) ) + offsetPos.z  * 10.0);
 
 	float res = (sin( time * 0.05 + num ) + 1.0 ) * 19.0 + 0.5;
 
@@ -46,11 +47,6 @@ void main( void ){
 	vec4 mvPosition = modelViewMatrix * vec4( gPos, 1.0 );
     gl_Position = projectionMatrix * mvPosition;
 
-	gl_PointSize = 100.0;
-
-	vec3 invLight = normalize( invModelMatrix * vec4( 0.0, 1.0, 0.0, 0.0 ) ).xyz;
-    float diffuse = clamp(dot( normal, invLight ), 0.1, 1.0);
-
-	vColor = vec3( diffuse * 3.0 );
+	vColor = vec3( sin( num * 2.0 + time * 0.1 ), sin( num * 2.0 + time * 0.01 ), sin( num + 0.1 ) );
 
 }
