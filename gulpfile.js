@@ -28,21 +28,6 @@ const publicPath = './public';
 const glDir = srcPath + '/gl/';
 const distGLDir =  publicPath + '/gl/';
 
-function buildTopVisual( cb ){
-
-	// min build
-	let conf = require( './webpack/webpack.config' );
-
-	conf.main = ''
-
-	webpackStream( conf, webpack )
-		.pipe( gulp.dest( publicPath + '/js/' ) );
-
-
-	cb();
-
-}
-
 function buildAllGLs( cb ){
 
 	fs.readdir( glDir, ( err, files ) => {
@@ -207,9 +192,6 @@ function brSync(){
 
 function watch(){
 
-	console.log( srcDir );
-	console.log( distDir );
-	
 	gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
 	gulp.watch( srcDir + '/pug/**/*', gulp.series( pugDev ) );
 	gulp.watch( srcDir + '/scss/**/*', gulp.series( sassDev ) );
