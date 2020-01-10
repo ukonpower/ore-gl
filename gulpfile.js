@@ -143,10 +143,11 @@ function webpackDev(){
 	conf.entry.main = srcDir + '/ts/main.ts';
 	conf.output.filename = 'main.js';
 	conf.mode = options.P ? 'production' : 'development';
-
+	
 	return webpackStream( conf, webpack )
-		.pipe( gulp.dest( distDir + "/js/" ) )
 		.on( 'end', browserSync.reload )
+		.on( 'error', function() { this.emit( 'end' ) } )
+		.pipe( gulp.dest( distDir + "/js/" ) );
 
 }
 
@@ -197,6 +198,10 @@ function watch(){
 	gulp.watch( srcDir + '/scss/**/*', gulp.series( sassDev ) );
 	gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
 	gulp.watch( srcDir + '/assets/**/*', gulp.series( copyDevFiles ) );
+	
+	let commonDir = './src/common';
+	gulp.watch( commonDir + '/ts/**/*', gulp.series( webpackDev ) );
+	gulp.watch( commonDir + '/pug/**/*', gulp.series( pugDev ) );
 
 }
 
@@ -233,6 +238,6 @@ let build = gulp.series(
 exports.default = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, develop );
 
 //build GLs
-exports.gl = gulp.series( setDevGLPath, cleanDevFiles, develop );
+exports.devGL = gulp.series( setDevGLPath, cleanDevFiles, develop );
 
 exports.build = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, build );
