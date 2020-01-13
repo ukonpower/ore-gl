@@ -35,14 +35,14 @@ void main() {
   if( time > 0.0 ){
 
     float scale = 0.08;
-    vel += snoise3D( pos );
-    vel.y += 0.1;
-    vel *= 0.9;
+    vel += snoise3D( pos * 0.1 );
+    vel.y += 0.6;
+    vel *= 0.94;
 
   }else{
 
-    lifeTime = 1.0 + snoise( vec4( uv.xyy * 100.0, time ) ) * 1.0;
-    vel = vec3( 0.0, -10.0, 0.0 );
+    lifeTime = 1.0 + snoise( vec4( uv.xyy * 100.0, time ) ) * 3.0;
+    vel = vec3( pos.x * 20., -20.0, 0.0 );
 
   }
   

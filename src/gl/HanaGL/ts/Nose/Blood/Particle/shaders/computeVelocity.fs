@@ -25,23 +25,33 @@ void main( void ){
 
 	vec4 posData = texture2D( texturePosition, uv );
 	vec3 pos = posData.xyz;
+	float time = posData.w;
 
 	vec4 velData = texture2D( textureVelocity, uv );
 	vec3 vel = velData.xyz;
 	float lifeTime = velData.w;
 
-	if( posData.w > 0.0 ){
+	if( time == 0.0 ){
 
-		vel *= 0.90;
-		vel += snoise3D( pos * 1.0 + ( uv.x + uv.y) );
+		lifeTime = snoise( vec4( uv.xyy * 100.0, time ) ) * 5.0 + 0.1;
+		vel = vec3( 0.0, -12.0 - 2.0 * abs( snoise( vec4( uv.xxy * 1.0, time ) ) ), 0.0 );
+		vel.x += pos.x * 15.0;
+		
+	}
+
+	if( time < lifeTime ){
+
+		vel *= 0.95;
+		vel += snoise3D( pos * 0.8 );
+		vel.y += 0.15;
 		
 	}else{
 
-		lifeTime = snoise( vec4( uv.xyy * 100.0, time ) );
-		vel = vec3( 0.0, -12.0 - 2.0 * abs( snoise( vec4( uv.xxy * 1.0, time ) ) ), 0.0 );
-		vel.x += pos.x * 6.0;
+
+		vel *= 0.0;
 
 	}
+
 
 
 	gl_FragColor = vec4( vel, lifeTime );

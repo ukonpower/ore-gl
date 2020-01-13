@@ -90,8 +90,6 @@ export class Nose extends THREE.Object3D{
 
 	public update( deltaTime: number ){
 
-		this.rotateY( 0.05);
-
 		this.time += deltaTime;
 
 		this.blood.update( deltaTime );

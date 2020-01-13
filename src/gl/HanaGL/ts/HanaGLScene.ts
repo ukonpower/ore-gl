@@ -55,12 +55,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 	private loadModels(){
 
-		// DRACOLoader.setDecoderPath( './assets/draco/' );
-
 		let loader = new GLTFLoader();
-		// loader.setDRACOLoader( new DRACOLoader() );
-
-		// DRACOLoader.getDecoderModule();
 
 		loader.load( './assets/model/nose.glb', ( gltf ) => {
 

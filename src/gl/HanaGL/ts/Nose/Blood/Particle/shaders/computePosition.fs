@@ -23,7 +23,7 @@ void main( void ){
 	if( time < lifeTime ){
 		
 		pos += vel * deltaTime;
-		posData.w += 1.0 * deltaTime;
+		posData.w += deltaTime;
 
 	}else{
 
@@ -33,7 +33,7 @@ void main( void ){
 			random( vec2( time + vec2( 44.39,49. ) ) )
 		) - 0.5;
 
-		pos = eruptionPos + rndOffset * 0.3;
+		pos = eruptionPos + rndOffset * 0.2;
 
 		if( isSplash ){
 			

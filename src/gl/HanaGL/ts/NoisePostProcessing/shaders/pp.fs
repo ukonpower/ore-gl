@@ -24,11 +24,11 @@ void main(void){
 
     for(int i = 0; i < N; i++){
 
-        vec2 v = vig *( 1.0 + float(i) * 0.03);
+        vec2 v = vig *( 1.0 + float(i) * 0.02);
 
         c.x += texture2D(backbuffer, uv - ( v + dir * ( 1.0 ) ) ).x;
-        c.y += texture2D(backbuffer, uv - ( v + dir * ( 1.3 ) ) ).y;
-        c.z += texture2D(backbuffer, uv - ( v + dir * ( 1.6 ) ) ).z;
+        c.y += texture2D(backbuffer, uv - ( v + dir * ( 1.1 ) ) ).y;
+        c.z += texture2D(backbuffer, uv - ( v + dir * ( 1.2 ) ) ).z;
     }
     c /= float(N) - 1.0;
 
