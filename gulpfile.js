@@ -238,6 +238,6 @@ let build = gulp.series(
 exports.default = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, develop );
 
 //build GLs
-exports.devGL = gulp.series( setDevGLPath, cleanDevFiles, develop );
+exports.gl = gulp.series( setDevGLPath, cleanDevFiles, develop );
 
 exports.build = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, build );

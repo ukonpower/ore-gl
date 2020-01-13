@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import NoisePostProcessing from './NoisePostProcessing';
 import { Nose } from './Nose';
 import { Finger } from './Finger';
+import { TouchScreen } from './TouchScreen';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
@@ -14,6 +15,7 @@ export class DandelionScene extends ORE.BaseScene{
 	private nose: Nose;
 
 	private finger: Finger;
+	private touchScreen: TouchScreen;
 
 	private noisePP: NoisePostProcessing;
 
@@ -21,7 +23,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 		super();
 
-		this.name = "DandelionScene";
+		this.name = "HanaGLScene";
 	
 	}
 
@@ -32,6 +34,8 @@ export class DandelionScene extends ORE.BaseScene{
 		this.renderer = this.gProps.renderer;
 		
 		this.camera.position.set( 0, 0 ,10 );
+
+		this.gProps.cursor.hoverMode = true;
 
 		this.loadModels();
 		
@@ -72,9 +76,12 @@ export class DandelionScene extends ORE.BaseScene{
 		this.nose = new Nose( this.renderer, scene );
 		this.scene.add( this.nose );
 		
-		// this.finger = new Finger( scene );
-		// this.scene.add( this.finger );
+		this.finger = new Finger( scene );
+		this.nose.add( this.finger );
 
+		this.touchScreen = new TouchScreen();
+		this.scene.add( this.touchScreen );
+		
 	}
 
 	animate( deltaTime: number ){
@@ -89,9 +96,8 @@ export class DandelionScene extends ORE.BaseScene{
 
 		if( this.finger ){
 
-			// this.finger.position.y = Math.sin( this.time * 3.0 ) * 0.8;
 
-			// this.nose.updateFingerPos( this.finger.position );
+			this.nose.updateFingerPos( this.finger.getWorldPosition( new THREE.Vector3() ) );
 
 		}
 
@@ -125,15 +131,15 @@ export class DandelionScene extends ORE.BaseScene{
 
 	onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
 
-		if( cursor.position.x < window.innerWidth / 2 ){
+		// if( cursor.position.x < window.innerWidth / 2 ){
 
-			this.nose.splash( this.scene.getObjectByName('splash_right').position );
+		// 	this.nose.splash( this.scene.getObjectByName('splash_right').position );
 
-		}else{
+		// }else{
 
-			this.nose.splash( this.scene.getObjectByName('splash_left').position );
+		// 	this.nose.splash( this.scene.getObjectByName('splash_left').position );
 
-		}
+		// }
 
 
 	}
@@ -141,6 +147,7 @@ export class DandelionScene extends ORE.BaseScene{
 	onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
 
 		event.preventDefault();
+
 
 	}
 
@@ -151,7 +158,23 @@ export class DandelionScene extends ORE.BaseScene{
 	}
 	
 	onHover( cursor: ORE.Cursor ) {
+		
+		if( this.finger ){
+			
+			let halfWidth = innerWidth / 2;
+			let halfHeight = innerHeight / 2;
+			let pos = new THREE.Vector2( ( cursor.hoverPosition.x - halfWidth ) / halfWidth, -( cursor.hoverPosition.y - halfHeight ) / halfHeight );
 
+			let p = this.touchScreen.getTouchPos( this.camera, pos );
+			
+			if( p ){
+
+				this.finger.position.set( p.x, p.y, 0 );
+				
+			}
+
+		}
+		
 	}
 
 }

@@ -33,7 +33,7 @@ void main( void ){
 
 	if( time == 0.0 ){
 
-		lifeTime = snoise( vec4( uv.xyy * 100.0, time ) ) * 5.0 + 0.1;
+		lifeTime = snoise( vec4( uv.xyy * 10.0, time * 10.0 ) ) * 5.0 + 0.3;
 		vel = vec3( 0.0, -12.0 - 2.0 * abs( snoise( vec4( uv.xxy * 1.0, time ) ) ), 0.0 );
 		vel.x += pos.x * 15.0;
 		
@@ -42,7 +42,7 @@ void main( void ){
 	if( time < lifeTime ){
 
 		vel *= 0.95;
-		vel += snoise3D( pos * 0.8 );
+		vel += snoise3D( pos * 0.65 * ( 1.0 - ( posData.w / velData.w) + 0.2 ) );
 		vel.y += 0.15;
 		
 	}else{

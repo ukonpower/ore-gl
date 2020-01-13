@@ -2,7 +2,8 @@ import * as ORE from '../..';
 
 import comShaderPosition from './shaders/computePosition.glsl';
 import comShaderVelocity from './shaders/computeVelocity.glsl';
-import vert from './shaders/fish.vs';
+import vert from './shaders/trails.vs';
+import frag from './shaders/trails.fs';
 
 
 import * as THREE from 'three';
@@ -191,7 +192,7 @@ export class BloodTrails extends THREE.Object3D{
         let mat = new THREE.ShaderMaterial( {
             uniforms: this.uni,
             vertexShader: vert,
-            fragmentShader: phong.fragmentShader,
+            fragmentShader: frag,
             lights: true,
             flatShading: true,
             // depthTest: false,

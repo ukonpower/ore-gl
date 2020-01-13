@@ -121,13 +121,12 @@ export class Nose extends THREE.Object3D{
 
 	public updateFingerPos( fingerPos: THREE.Vector3 ){
 
-
 		let lenRight = new THREE.Vector3().subVectors( fingerPos, this.rightPoint.getWorldPosition( new THREE.Vector3() ) ).length();
 		let lenLeft = new THREE.Vector3().subVectors( fingerPos, this.leftPoint.getWorldPosition( new THREE.Vector3() ) ).length();
 
 		let spl = false;
 
-		if( lenRight < 0.5 ){
+		if( lenRight < 0.1 ){
 
 			this.splash( this.rightPoint.position );
 			spl = true;
@@ -147,11 +146,6 @@ export class Nose extends THREE.Object3D{
 
 		}
 
-		console.log( this.rightPoint.position);
-		
-		console.log(this.rightPoint.getWorldPosition( new THREE.Vector3() ) );
-		
-		// console.log(lenRight, lenLeft);
 		
 	}
 }

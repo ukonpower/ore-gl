@@ -46,10 +46,12 @@ void main() {
             random( vec2( time + vec2( 44.39,49. ) ) )
         ) - 0.5;
 
-        pos = eruptionPos + rndOffset * 0.2;
+        pos = eruptionPos + rndOffset * 0.1;
 
         if( isSplash ){
-            time = 0.0;
+            if( length( rndOffset )  > 0.1 ){
+                time = 0.0;
+            }
         }
 
     }

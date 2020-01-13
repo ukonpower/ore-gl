@@ -27,7 +27,7 @@ export class Blood extends THREE.Object3D{
 		this.particle = new BloodParticle( this.renderer, 200 );
 		this.add( this.particle );
 
-		this.trails = new BloodTrails( this.renderer, 20, 20 );
+		this.trails = new BloodTrails( this.renderer, 128, 20 );
 		this.add( this.trails );
 
 	}

@@ -35,17 +35,20 @@ void main() {
   if( time > 0.0 ){
 
     float scale = 0.08;
-    vel += snoise3D( pos * 0.1 );
-    vel.y += 0.6;
-    vel *= 0.94;
+    vel += snoise3D( pos * 0.65 );
+    vel.y += 0.15;
+    vel *= 0.95;
 
   }else{
 
-    lifeTime = 1.0 + snoise( vec4( uv.xyy * 100.0, time ) ) * 3.0;
-    vel = vec3( pos.x * 20., -20.0, 0.0 );
+    lifeTime = 1.0 + snoise( vec4( uv.xyy * 100.0, time ) ) * 4.0;
+    // vel = vec3( pos.x * 17., -16.0, 0.0 );
+    vel = vec3( 0.0, -12.0 - 2.0 * abs( snoise( vec4( uv.xxy * 1.0, time ) ) ), 0.0 );
+		vel.x += pos.x * 15.0;
 
   }
   
 
   gl_FragColor = vec4( vel.xyz, lifeTime );
+
 }

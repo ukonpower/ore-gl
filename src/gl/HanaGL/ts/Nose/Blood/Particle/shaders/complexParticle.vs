@@ -17,10 +17,10 @@ void main(void){
 	vec4 velData = texture2D( textureVelocity, computeCoord / num );
 
 	vec3 c = vec3(0.0);
-	vColor = vec4( posData.w + 0.4 , velData.w * 0.02, 0.0, 0.5 );
-	vColor.xyz += abs( velData.xyz ) * 0.1;
+	vColor = vec4( posData.w + 0.4 , velData.w * 0.00, 0.0, 0.9 );
+	vColor.xyz += normalize( velData.xyz ) * ( posData.w / velData.w ) * 0.7 ;
 	
-	gl_PointSize = ( windowSizeY / 50.0 ) * smoothstep( 1.5, 0.0,  posData.w );
+	gl_PointSize = ( windowSizeY / 70.0 ) * ( 1.0 - ( posData.w / velData.w ) * 1.0 );
 	// gl_PointSize = 2.0;
 
 	pos *= 0.6;
