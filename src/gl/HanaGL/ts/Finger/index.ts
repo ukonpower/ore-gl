@@ -4,6 +4,7 @@ import { Mesh, MeshBasicMaterial } from 'three';
 
 export class Finger extends THREE.Object3D{
 
+	private newestPos: THREE.Vector3 = new THREE.Vector3();
 	private wireFinger: THREE.Mesh;
 	private meshFinger: THREE.Mesh;
 
@@ -31,8 +32,20 @@ export class Finger extends THREE.Object3D{
 
 	}
 
-	public update(){
+	public updatePos( pos?: THREE.Vector3 ){
 
+		if( pos ){
+
+			this.newestPos = pos.clone();
+			
+		}
+		
+		let diff = this.newestPos.sub( this.position );
+		
+		diff.multiplyScalar( 0.1 );
+
+		this.position.add( diff );
+		
 	}
 	
 }

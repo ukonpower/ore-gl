@@ -8,7 +8,7 @@ import { TouchScreen } from './TouchScreen';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
-export class DandelionScene extends ORE.BaseScene{
+export class HanaGLScene extends ORE.BaseScene{
 
 	private renderer: THREE.WebGLRenderer;
 
@@ -96,7 +96,6 @@ export class DandelionScene extends ORE.BaseScene{
 
 		if( this.finger ){
 
-
 			this.nose.updateFingerPos( this.finger.getWorldPosition( new THREE.Vector3() ) );
 
 		}
@@ -169,7 +168,7 @@ export class DandelionScene extends ORE.BaseScene{
 			
 			if( p ){
 
-				this.finger.position.set( p.x, p.y, 0 );
+				this.finger.updatePos( new THREE.Vector3( p.x, p.y, 0 ) );
 				
 			}
 

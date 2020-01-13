@@ -1,10 +1,10 @@
 import * as ORE from 'ore-three-ts';
-import {DandelionScene} from './HanaGLScene';
+import { HanaGLScene } from './HanaGLScene';
 
 class APP{
 	private canvas: any;
 	private controller: ORE.Controller;
-	private scene: DandelionScene;
+	private scene: HanaGLScene;
 
 	constructor(){
 		
@@ -17,7 +17,7 @@ class APP{
 
 		})
 
-		this.controller.bindScene( new DandelionScene() );
+		this.controller.bindScene( new HanaGLScene() );
 
 	}
 
