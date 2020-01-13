@@ -146,6 +146,7 @@ export class Nose extends THREE.Object3D{
 
 		}
 
+		return spl;
 		
 	}
 }

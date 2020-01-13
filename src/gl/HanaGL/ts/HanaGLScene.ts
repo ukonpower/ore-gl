@@ -74,6 +74,7 @@ export class HanaGLScene extends ORE.BaseScene{
 	private createObjects( scene: THREE.Scene ){
 
 		this.nose = new Nose( this.renderer, scene );
+		this.nose.position.y = 0.6;
 		this.scene.add( this.nose );
 		
 		this.finger = new Finger( scene );
@@ -96,8 +97,14 @@ export class HanaGLScene extends ORE.BaseScene{
 
 		if( this.finger ){
 
-			this.nose.updateFingerPos( this.finger.getWorldPosition( new THREE.Vector3() ) );
+			let isSplash = this.nose.updateFingerPos( this.finger.getWorldPosition( new THREE.Vector3() ) );
 
+			this.camera.position.x = this.finger.position.x * 0.3;
+			this.camera.position.y = this.finger.position.y * 0.3;
+			this.camera.lookAt( this.finger.position.x * 0.00, this.finger.position.y * 0.00, 0 );
+
+			this.noisePP.isGlitch( isSplash );
+			
 		}
 
 		this.noisePP.render( this.scene, this.camera );

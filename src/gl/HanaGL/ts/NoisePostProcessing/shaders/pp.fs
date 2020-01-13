@@ -2,7 +2,7 @@ uniform sampler2D backbuffer;
 varying vec2 vUv;
 
 uniform float time;
-
+uniform float nw;
 #define N 16
 
 $random
@@ -21,6 +21,16 @@ void main(void){
     vec2 dir = vec2( cos(rad), sin(rad)) * 0.02 * length( u );
 
     float rnd = random(uv + random(vec2(time)));
+
+    if(nw > 0.01){
+        // uv.x += sin(uv.y * 500.0) * nw;
+        vec2 n = vec2( random( vec2( time ) ) - 0.5, random( vec2( time + 20.0 ) ) - 0.5 );
+        uv += n * 0.5;
+
+        uv.x += step(0.5,snoise(vec3(uv.y * 2.0,uv.y * 2.0,time * 10.0))) * 0.1;
+
+        c += step(0.5,snoise(vec3(uv.y * 2.0 + 100.,uv.y * 2.0,time * 10.0)));
+    }
 
     for(int i = 0; i < N; i++){
 

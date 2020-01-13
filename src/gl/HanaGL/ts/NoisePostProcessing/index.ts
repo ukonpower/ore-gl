@@ -21,6 +21,9 @@ export default class NoisePostProcessing extends THREE.Object3D{
 				uniforms:{
 					time: { 
 						value: 0,
+					},
+					nw: {
+						value: 0
 					}
 				}
 			}
@@ -39,8 +42,10 @@ export default class NoisePostProcessing extends THREE.Object3D{
 		this.pp.render(scene,camera);
 	}
 
-	addNoise(){
-		this.ppParam[0].uniforms.nw.value = 1.0;
+	isGlitch( isGlitch: boolean ){
+
+		this.ppParam[0].uniforms.nw.value = isGlitch ? 1 : 0;
+
 	}
 
 	resize( args: ORE.ResizeArgs ){
