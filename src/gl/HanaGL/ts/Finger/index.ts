@@ -4,7 +4,7 @@ import { Mesh, MeshBasicMaterial } from 'three';
 
 export class Finger extends THREE.Object3D{
 
-	private newestPos: THREE.Vector3 = new THREE.Vector3();
+	private newestPos: THREE.Vector3 = new THREE.Vector3( 10, 0, 0 );
 	private wireFinger: THREE.Mesh;
 	private meshFinger: THREE.Mesh;
 
@@ -28,24 +28,30 @@ export class Finger extends THREE.Object3D{
 			roughness: 0.9,
 		})
 
+		this.position.copy( this.meshFinger.position );
+
 		this.add( this.meshFinger );
+
+		this.meshFinger.position.set( 0, 0, 0 );
 
 	}
 
-	public updatePos( pos?: THREE.Vector3 ){
+	public updatePos(){
 
-		if( pos ){
-
-			this.newestPos = pos.clone();
-			
-		}
-
+		console.log( this.newestPos );
+		
 		let diff = this.newestPos.clone().sub( this.position );
 		
 		diff.multiplyScalar( 0.1 );
 
 		this.position.add( diff );
 		
+	}
+
+	public setPos( pos: THREE.Vector3 ){
+
+		this.newestPos = pos.clone();
+
 	}
 	
 }

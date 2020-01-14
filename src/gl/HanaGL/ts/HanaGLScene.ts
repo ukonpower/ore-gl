@@ -139,23 +139,12 @@ export class HanaGLScene extends ORE.BaseScene{
 
 	onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
 
-		// if( cursor.position.x < window.innerWidth / 2 ){
-
-		// 	this.nose.splash( this.scene.getObjectByName('splash_right').position );
-
-		// }else{
-
-		// 	this.nose.splash( this.scene.getObjectByName('splash_left').position );
-
-		// }
-
 
 	}
 
 	onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
 
 		event.preventDefault();
-
 
 	}
 
@@ -177,7 +166,7 @@ export class HanaGLScene extends ORE.BaseScene{
 			
 			if( p ){
 
-				this.finger.updatePos( new THREE.Vector3( p.x, p.y, 0 ) );
+				this.finger.setPos( new THREE.Vector3( p.x, p.y + 0.5, 0 ) );
 				
 			}
 
