@@ -156,6 +156,10 @@ export class HanaGLScene extends ORE.BaseScene{
 	
 	onHover( cursor: ORE.Cursor ) {
 		
+		if( cursor.hoverPosition.x != cursor.hoverPosition.x ){ 
+			return;
+		}
+		
 		if( this.finger ){
 			
 			let halfWidth = innerWidth / 2;
