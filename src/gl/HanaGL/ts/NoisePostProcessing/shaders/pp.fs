@@ -26,13 +26,13 @@ void main(void){
 
 	if(nw > 0.1){
 	// if(true){
-		uv.x += sin(uv.y * 500.0) * nw;
+		// uv.x += sin(uv.y * 500.0) * nw;
 		vec2 n = vec2( random( vec2( time ) ) - 0.5, random( vec2( time + 20.0 ) ) - 0.5 );
-		uv += n * 0.1;
+		uv += n * 0.01;
 
 		noise = step(0.5,snoise(vec3(uv.y * 2.0,uv.y * 2.0,time * 10.0))) * 0.1;
 
-		uv.x += noise * 0.3;
+		uv.x += noise * 0.01;
 
 		c += step(0.5,snoise(vec3(uv.y * 2.0 + 100.,uv.y * 2.0,time * 10.0)));
 		
@@ -42,7 +42,7 @@ void main(void){
 
 		vec2 v = vig *( 1.0 + float(i) * 0.02);
 
-		c.x += texture2D(backbuffer, uv - ( v + dir * ( 1.0 ) ) + vec2( noise, 0.0 ) ).x;
+		c.x += texture2D(backbuffer, uv - ( v + dir * ( 1.0 ) ) + vec2( noise * 0.05, 0.0 ) ).x;
 		c.y += texture2D(backbuffer, uv - ( v + dir * ( 1.1 ) ) ).y;
 		c.z += texture2D(backbuffer, uv - ( v + dir * ( 1.2 ) ) ).z;
 		

@@ -3,4 +3,4 @@
 	url = https://github.com/ukonpower/ore-three-ts.git
 [submodule "src/common/ts/glpower"]
 	path = src/common/ts/glpower
-	url = ghttps://github.com/ukonpower/glpower.git
+	url = https://github.com/ukonpower/glpower.git

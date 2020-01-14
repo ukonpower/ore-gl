@@ -126,14 +126,14 @@ export class Nose extends THREE.Object3D{
 
 		let spl = false;
 
-		if( lenRight < 0.1 ){
+		if( lenRight < 0.2 ){
 
 			this.splash( this.rightPoint.position );
 			spl = true;
 
 		}
 
-		if( lenLeft < 0.1 ){
+		if( lenLeft < 0.2 ){
 
 			this.splash( this.leftPoint.position );
 			spl = true;

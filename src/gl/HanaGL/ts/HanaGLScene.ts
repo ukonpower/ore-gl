@@ -103,6 +103,8 @@ export class HanaGLScene extends ORE.BaseScene{
 			this.camera.position.y = this.finger.position.y * 0.3;
 			this.camera.lookAt( this.finger.position.x * 0.00, this.finger.position.y * 0.00, 0 );
 
+			this.finger.updatePos();
+			
 			this.noisePP.isGlitch( isSplash );
 			
 		}

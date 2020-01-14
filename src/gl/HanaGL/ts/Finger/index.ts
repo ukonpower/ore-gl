@@ -39,8 +39,8 @@ export class Finger extends THREE.Object3D{
 			this.newestPos = pos.clone();
 			
 		}
-		
-		let diff = this.newestPos.sub( this.position );
+
+		let diff = this.newestPos.clone().sub( this.position );
 		
 		diff.multiplyScalar( 0.1 );
 
