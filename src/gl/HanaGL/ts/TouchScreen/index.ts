@@ -6,7 +6,7 @@ export class TouchScreen extends THREE.Mesh{
 	
 	constructor(){
 
-		let geo = new THREE.PlaneGeometry( 5, 5 );
+		let geo = new THREE.PlaneGeometry( 10, 10 );
 		let mat = new THREE.MeshBasicMaterial({
 			visible: false
 		});
