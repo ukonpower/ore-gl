@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import * as ORE from 'ore-three-ts';
 import { Blood } from './Blood';
 
-
+import meshFrag from './shaders/noseMesh.fs';
+import wireFrag from './shaders/noseWire.fs';
+import vert from './shaders/nose.vs';
 
 export class Nose extends THREE.Object3D{
 
@@ -30,7 +32,6 @@ export class Nose extends THREE.Object3D{
 
 		this.renderer = renderer;
 
-		
 		this.animator = new ORE.Animator();
 
 		this.craeteObjects( gltfScene );
@@ -39,12 +40,35 @@ export class Nose extends THREE.Object3D{
 
 	private craeteObjects( gltfScene: THREE.Scene ){
 
+		this.commonUniforms = {
+			opacity: {
+				value: 0
+			}
+		}
+
 		/*-------------------------
 			Mesh
 		--------------------------*/
+
+		this.meshUniforms = THREE.ShaderLib.standard.uniforms;
+		this.meshUniforms.opacity = this.commonUniforms.opacity;
+
+		// let uni = {
+		// 	opacity: this.commonUniforms.opacity
+		// }
+
+		// this.meshUniforms = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, uni ])
 		
 		this.meshNose = ( gltfScene.getObjectByName( 'Nose' ) as THREE.Mesh ).clone();
 		this.meshNose.material = new THREE.ShaderMaterial({
+			fragmentShader: meshFrag,
+			vertexShader: vert,
+			uniforms: this.meshUniforms,
+			lights: true,
+			extensions: {
+				derivatives: true
+			},
+			transparent: true
 		});
 
 		this.animator.addVariable('opacity', 0.0 );
@@ -61,12 +85,16 @@ export class Nose extends THREE.Object3D{
 
 		this.wireNose = ( gltfScene.getObjectByName( 'Nose' ) as THREE.Mesh ).clone();
 		this.wireNose.scale.set( 1.01, 1.01, 1.01 );
-		this.wireNose.material = new THREE.MeshBasicMaterial({
-			color: 0xffffff,
-			wireframe: true,
+		this.meshNose.material = new THREE.ShaderMaterial({
+			fragmentShader: wireFrag,
+			vertexShader: vert,
+			uniforms: this.meshUniforms,
+			lights: true,
+			extensions: {
+				derivatives: true
+			},
 			transparent: true,
 		});
-
 		this.add( this.wireNose );
 
 		/*-------------------------
@@ -94,8 +122,7 @@ export class Nose extends THREE.Object3D{
 
 		this.animator.update( deltaTime );
 		
-		(this.meshNose.material as THREE.MeshStandardMaterial).opacity = this.animator.getValue('opacity');
-		(this.wireNose.material as THREE.MeshStandardMaterial).opacity = this.animator.getValue('opacity');
+		this.commonUniforms.opacity.value = this.animator.getValue( 'opacity' );
 
 	}
 
