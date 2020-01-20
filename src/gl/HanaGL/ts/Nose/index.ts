@@ -4,7 +4,9 @@ import { Blood } from './Blood';
 
 import meshFrag from './shaders/noseMesh.fs';
 import wireFrag from './shaders/noseWire.fs';
-import vert from './shaders/nose.vs';
+
+import meshVert from './shaders/noseMesh.vs';
+import wireVert from './shaders/noseWire.vs';
 
 export class Nose extends THREE.Object3D{
 
@@ -24,7 +26,8 @@ export class Nose extends THREE.Object3D{
 
 	private commonUniforms: ORE.Uniforms;
 	private meshUniforms: ORE.Uniforms;
-	private wireUniforms: ORE.Uniforms;
+
+	private isSplash: boolean = false;
 
 	constructor( renderer: THREE.WebGLRenderer, gltfScene: THREE.Scene ){
 
@@ -43,6 +46,12 @@ export class Nose extends THREE.Object3D{
 		this.commonUniforms = {
 			opacity: {
 				value: 0
+			},
+			splash: {
+				value: 0
+			},
+			time: {
+				value: 0
 			}
 		}
 
@@ -52,6 +61,9 @@ export class Nose extends THREE.Object3D{
 
 		this.meshUniforms = THREE.ShaderLib.standard.uniforms;
 		this.meshUniforms.opacity = this.commonUniforms.opacity;
+		this.meshUniforms.splash = this.commonUniforms.splash;
+		this.meshUniforms.time = this.commonUniforms.time;
+
 
 		// let uni = {
 		// 	opacity: this.commonUniforms.opacity
@@ -62,7 +74,7 @@ export class Nose extends THREE.Object3D{
 		this.meshNose = ( gltfScene.getObjectByName( 'Nose' ) as THREE.Mesh ).clone();
 		this.meshNose.material = new THREE.ShaderMaterial({
 			fragmentShader: meshFrag,
-			vertexShader: vert,
+			vertexShader: meshVert,
 			uniforms: this.meshUniforms,
 			lights: true,
 			extensions: {
@@ -77,6 +89,8 @@ export class Nose extends THREE.Object3D{
 		this.animator.addVariable('pos', 1 );
 		this.animator.animate('pos', 0 );
 
+		this.animator.addVariable('splash', 0, { func: ORE.Easings.easeOutCubic } );
+
 		this.add( this.meshNose );
 
 		/*-------------------------
@@ -84,16 +98,16 @@ export class Nose extends THREE.Object3D{
 		--------------------------*/
 
 		this.wireNose = ( gltfScene.getObjectByName( 'Nose' ) as THREE.Mesh ).clone();
-		this.wireNose.scale.set( 1.01, 1.01, 1.01 );
-		this.meshNose.material = new THREE.ShaderMaterial({
+		this.wireNose.material = new THREE.ShaderMaterial({
 			fragmentShader: wireFrag,
-			vertexShader: vert,
+			vertexShader: wireVert,
 			uniforms: this.meshUniforms,
 			lights: true,
 			extensions: {
 				derivatives: true
 			},
 			transparent: true,
+			wireframe: true
 		});
 		this.add( this.wireNose );
 
@@ -114,25 +128,38 @@ export class Nose extends THREE.Object3D{
 
 	}
 
-	public update( deltaTime: number ){
-
-		this.time += deltaTime;
+	public update( time: number, deltaTime: number ){
 
 		this.blood.update( deltaTime );
 
 		this.animator.update( deltaTime );
+
+		this.commonUniforms.time.value = time;
 		
 		this.commonUniforms.opacity.value = this.animator.getValue( 'opacity' );
+		this.commonUniforms.splash.value = this.animator.getValue( 'splash' );
 
 	}
 
 	public splash( pos: THREE.Vector3 ){
+
+		if( this.isSplash ) return;
+
+		this.isSplash = true;
+		
+		this.animator.animate( 'splash', 1, 0.3 );
 
 		this.blood.splash( pos );
 
 	}
 
 	public heal(){
+
+		if( !this.isSplash ) return;
+
+		this.isSplash = false;
+
+		this.animator.animate( 'splash', 0, 0.3 );
 
 		this.blood.heal( );
 

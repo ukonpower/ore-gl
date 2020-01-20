@@ -45,21 +45,23 @@ export class BloodTrails extends THREE.Object3D{
             velocity: this.gcController.createKernel( comShaderVelocity )
         }
 
-        //create initialize texture
-        let initPosTex = this.gcController.createInitializeTexture();
-        this.initPosition( initPosTex );
-
         //create data
-        this.positionData = this.gcController.createData({
-            magFilter: THREE.NearestFilter,
-            minFilter: THREE.NearestFilter,
-        });
-        this.velocityData = this.gcController.createData({
-            magFilter: THREE.NearestFilter,
-            minFilter: THREE.NearestFilter,
-        });
-        initPosTex.dispose();
+        this.positionData = this.gcController.createData(
+            this.createInitData(),
+            {
+                magFilter: THREE.NearestFilter,
+                minFilter: THREE.NearestFilter,
+            }
+        );
 
+        this.velocityData = this.gcController.createData(
+            this.createInitData(),
+            {
+                magFilter: THREE.NearestFilter,
+                minFilter: THREE.NearestFilter,
+            }
+        );
+        
         //set uniforms
         this.kernels.position.uniforms.texturePosition = { value: null };
         this.kernels.position.uniforms.textureVelocity = { value: null };
@@ -78,31 +80,29 @@ export class BloodTrails extends THREE.Object3D{
 
     }
 
-    initPosition( tex: THREE.DataTexture ) {
+    private createInitData() {
         
-        var texArray = tex.image.data;
+        let dataArray = [];
         let range = new THREE.Vector3( 10, 10, 10);
     
-        for ( var i = 0; i < texArray.length; i += this.length * 4 ) {
-    
-            let x = Math.random() * range.x - range.x / 2;
-            let y = Math.random() * range.y - range.y / 2;
-            let z = Math.random() * range.z - range.z / 2;
-    
-            for ( let j = 0; j < this.length * 4; j += 4 ) {
-                texArray[i + j + 0] = x;
-                texArray[i + j + 1] = y;
-                texArray[i + j + 2] = z;
-                texArray[i + j + 3] = 1.0;
-    
+        for( let i = 0; i < this.num; i++ ){
+
+            let time = 1000;
+            
+            for( let j = 0; j < this.length; j++ ){
+
+                dataArray.push( 0, 0, 0, time );
+
             }
-    
+            
         }
-    
+
+        return new THREE.DataTexture( new Float32Array( dataArray ), this.num, this.length, THREE.RGBAFormat, THREE.FloatType );
+
     }
 
     createTrails() {
-        
+        1
         let geo = new THREE.InstancedBufferGeometry();
 
         let posArray = [];

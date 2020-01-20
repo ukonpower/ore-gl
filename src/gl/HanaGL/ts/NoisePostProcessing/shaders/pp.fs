@@ -32,7 +32,7 @@ void main(void){
 
 		noise = step(0.5,snoise(vec3(uv.y * 2.0,uv.y * 2.0,time * 10.0))) * 0.1;
 
-		uv.x += noise * 0.01;
+		uv.x += noise * 0.2;
 
 		c += step(0.5,snoise(vec3(uv.y * 2.0 + 100.,uv.y * 2.0,time * 10.0)));
 		
@@ -43,8 +43,8 @@ void main(void){
 		vec2 v = vig *( 1.0 + float(i) * 0.02);
 
 		c.x += texture2D(backbuffer, uv - ( v + dir * ( 1.0 ) ) + vec2( noise * 0.05, 0.0 ) ).x;
-		c.y += texture2D(backbuffer, uv - ( v + dir * ( 1.1 ) ) ).y;
-		c.z += texture2D(backbuffer, uv - ( v + dir * ( 1.2 ) ) ).z;
+		c.y += texture2D(backbuffer, uv - ( v + dir * ( 1.3 ) ) ).y;
+		c.z += texture2D(backbuffer, uv - ( v + dir * ( 1.6 ) ) ).z;
 		
 	}
 	c /= float(N) - 1.0;

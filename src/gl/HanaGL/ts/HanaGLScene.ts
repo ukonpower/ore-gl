@@ -91,7 +91,7 @@ export class HanaGLScene extends ORE.BaseScene{
 
 		if( this.nose ){
 
-			this.nose.update( deltaTime );
+			this.nose.update( this.time, deltaTime );
 
 		}
 

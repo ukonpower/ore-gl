@@ -41,9 +41,9 @@ void main() {
     }else{
 
         vec3 rndOffset = vec3(
-            random( vec2( time ) ),
-            random( vec2( time + vec2(4.,655.) ) ),
-            random( vec2( time + vec2( 44.39,49. ) ) )
+            random( vec2( time + uv.y ) ),
+            random( vec2( time + uv.y + vec2(4.,655.) ) ),
+            random( vec2( time + uv.y + vec2( 44.39,49. ) ) )
         ) - 0.5;
 
         pos = eruptionPos + rndOffset * 0.1;
