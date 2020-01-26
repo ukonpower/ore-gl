@@ -41,6 +41,12 @@ export class Nose extends THREE.Object3D{
 
 	}
 
+	public get splashValue(){
+
+		return this.animator.getValue( 'splash' );
+		
+	}
+	
 	private craeteObjects( gltfScene: THREE.Scene ){
 
 		this.commonUniforms = {

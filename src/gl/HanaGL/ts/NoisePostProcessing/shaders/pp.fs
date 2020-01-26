@@ -3,6 +3,7 @@ varying vec2 vUv;
 
 uniform float time;
 uniform float nw;
+uniform float splash;
 #define N 16
 
 $random
@@ -40,9 +41,9 @@ void main(void){
 
 	for(int i = 0; i < N; i++){
 
-		vec2 v = vig *( 1.0 + float(i) * 0.02);
+		vec2 v = vig *( 1.0 + float(i) * (0.01 + splash * 0.02 ));
 
-		c.x += texture2D(backbuffer, uv - ( v + dir * ( 1.0 ) ) + vec2( noise * 0.05, 0.0 ) ).x;
+		c.x += texture2D(backbuffer, uv - ( v + dir * ( 1.0 ) ) + vec2( noise * 0.01, 0.0 ) ).x;
 		c.y += texture2D(backbuffer, uv - ( v + dir * ( 1.3 ) ) ).y;
 		c.z += texture2D(backbuffer, uv - ( v + dir * ( 1.6 ) ) ).z;
 		

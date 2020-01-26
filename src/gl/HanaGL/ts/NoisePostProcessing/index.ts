@@ -22,7 +22,10 @@ export default class NoisePostProcessing extends THREE.Object3D{
 					time: { 
 						value: 0,
 					},
-					nw: {
+					splash: {
+						value: 0
+					},
+					nw: { 
 						value: 0
 					}
 				}
@@ -32,20 +35,21 @@ export default class NoisePostProcessing extends THREE.Object3D{
 		this.pp = new ORE.PostProcessing(this.renderer,this.ppParam)
 	}
 
-	update(time){
+	update( time: number, splash: number ){
 		
 		this.ppParam[0].uniforms.time.value = time;
+		this.ppParam[0].uniforms.splash.value = splash;
 
-	}
-
-	render(scene:THREE.Scene,camera:THREE.Camera){
-		this.pp.render(scene,camera);
 	}
 
 	isGlitch( isGlitch: boolean ){
 
 		this.ppParam[0].uniforms.nw.value = isGlitch ? 1 : 0;
 
+	}
+
+	render(scene:THREE.Scene,camera:THREE.Camera){
+		this.pp.render(scene,camera);
 	}
 
 	resize( args: ORE.ResizeArgs ){

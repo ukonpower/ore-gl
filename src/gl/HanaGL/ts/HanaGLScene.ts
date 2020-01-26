@@ -7,6 +7,7 @@ import { TouchScreen } from './TouchScreen';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import Background from './Background';
 
 export class HanaGLScene extends ORE.BaseScene{
 
@@ -16,6 +17,8 @@ export class HanaGLScene extends ORE.BaseScene{
 
 	private finger: Finger;
 	private touchScreen: TouchScreen;
+
+	private background: Background;
 
 	private noisePP: NoisePostProcessing;
 
@@ -52,8 +55,10 @@ export class HanaGLScene extends ORE.BaseScene{
 		plight.position.set( 0.0, -3.0, 1.0 );
 		this.scene.add( plight );
 
+		this.background = new Background();
+		// this.scene.add( this.background );
+
 		this.noisePP = new NoisePostProcessing( this.renderer );
-		
 
 	}
 
@@ -87,7 +92,8 @@ export class HanaGLScene extends ORE.BaseScene{
 
 	animate( deltaTime: number ){
 
-		this.noisePP.update( this.time );
+		this.background.update( this.time );
+		this.noisePP.update( this.time, this.nose && this.nose.splashValue );
 
 		if( this.nose ){
 
@@ -100,7 +106,7 @@ export class HanaGLScene extends ORE.BaseScene{
 			let isSplash = this.nose.updateFingerPos( this.finger.getWorldPosition( new THREE.Vector3() ) );
 
 			this.camera.position.x = this.finger.position.x * 0.3;
-			this.camera.position.y = this.finger.position.y * 0.3;
+			this.camera.position.y = this.finger.position.y * 0.3 - 1;
 			this.camera.lookAt( this.finger.position.x * 0.00, this.finger.position.y * 0.00, 0 );
 
 			this.finger.updatePos();
