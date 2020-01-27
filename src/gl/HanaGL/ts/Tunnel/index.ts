@@ -55,9 +55,6 @@ export class Tunnel extends THREE.Object3D{
 	public update( deltaTime: number, splash: number ){
 
 		this.uniforms.splash.value = splash
-
-		console.log( this.uniforms.time.value );
-		
 		this.uniforms.time.value += deltaTime * ( 1.0 + (splash || 0.0)* 5.0 );
 
 	}
