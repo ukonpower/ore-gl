@@ -86,7 +86,7 @@ export class Nose extends THREE.Object3D{
 			extensions: {
 				derivatives: true
 			},
-			transparent: true
+			transparent: true,
 		});
 
 		this.animator.addVariable('opacity', 0.0 );
@@ -153,7 +153,7 @@ export class Nose extends THREE.Object3D{
 
 		this.isSplash = true;
 		
-		this.animator.animate( 'splash', 1, 0.3 );
+		this.animator.animate( 'splash', 1, 0.5 );
 
 		this.blood.splash( pos );
 
@@ -165,7 +165,7 @@ export class Nose extends THREE.Object3D{
 
 		this.isSplash = false;
 
-		this.animator.animate( 'splash', 0, 0.3 );
+		this.animator.animate( 'splash', 0, 0.5 );
 
 		this.blood.heal( );
 

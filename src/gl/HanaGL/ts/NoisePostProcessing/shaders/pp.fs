@@ -26,16 +26,15 @@ void main(void){
 	float noise = 0.0;
 
 	if(nw > 0.1){
-	// if(true){
-		// uv.x += sin(uv.y * 500.0) * nw;
+
 		vec2 n = vec2( random( vec2( time ) ) - 0.5, random( vec2( time + 20.0 ) ) - 0.5 );
 		uv += n * 0.01;
 
 		noise = step(0.5,snoise(vec3(uv.y * 2.0,uv.y * 2.0,time * 10.0))) * 0.1;
 
-		uv.x += noise * 0.2;
+		uv.x += noise * 0.1;
 
-		c += step(0.5,snoise(vec3(uv.y * 2.0 + 100.,uv.y * 2.0,time * 10.0)));
+		c += step(0.5,snoise(vec3(uv.y * 2.0 + 100.,uv.y * 2.0,time * 10.0))) * 0.2;
 		
 	}
 
@@ -50,6 +49,7 @@ void main(void){
 	}
 	c /= float(N) - 1.0;
 
-	c += rnd * 0.1;
+	c += rnd * ( 0.1 + splash * 0.01 );
+
 	gl_FragColor = vec4(c,1.0);
 }
