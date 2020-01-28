@@ -109,9 +109,10 @@ function cleanAllFiles( cb ){
 let srcDir = '';
 let distDir = '';
 
-function copyDevFiles( cb ){
+function copyFiles( cb ){
 
 	gulp.src( srcDir + '/assets/**/*' ).pipe( gulp.dest( distDir + '/assets/' ) );
+	gulp.src( './src/conf/**/*' ).pipe( gulp.dest( distDir ) );
 
 	browserSync.reload();
 	
@@ -196,8 +197,8 @@ function watch(){
 	gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
 	gulp.watch( srcDir + '/pug/**/*', gulp.series( pugDev ) );
 	gulp.watch( srcDir + '/scss/**/*', gulp.series( sassDev ) );
-	gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
-	gulp.watch( srcDir + '/assets/**/*', gulp.series( copyDevFiles ) );
+	gulp.watch( srcDir + '/html/**/*', gulp.series( copyFiles ) );
+	gulp.watch( srcDir + '/assets/**/*', gulp.series( copyFiles ) );
 	
 	let commonDir = './src/common';
 	gulp.watch( commonDir + '/ts/**/*', gulp.series( webpackDev ) );
@@ -223,13 +224,13 @@ function setDevTopVisualPath( cb ){
 }
 
 let develop = gulp.series( 
-	copyDevFiles,
+	copyFiles,
 	gulp.parallel( pugDev, webpackDev, sassDev ),
 	gulp.parallel( brSync, watch ),
 );
 
 let build = gulp.series( 
-	copyDevFiles,
+	copyFiles,
 	gulp.parallel( pugDev, webpackDev, sassDev ),
 );
 
