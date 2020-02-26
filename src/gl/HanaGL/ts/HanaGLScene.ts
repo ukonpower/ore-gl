@@ -40,8 +40,6 @@ export class HanaGLScene extends ORE.BaseScene{
 		
 		this.camera.position.set( 0, 0 ,10 );
 
-		this.gProps.cursor.hoverMode = true;
-
 		this.loadModels();
 		
 		let light = new THREE.DirectionalLight();

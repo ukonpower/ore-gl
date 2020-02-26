@@ -34,9 +34,10 @@
 		"webpack-stream": "^5.2.1"
 	},
 	"dependencies": {
+		"cannon": "^0.6.2",
 		"matrixgl": "^1.0.1",
-		"ore-three-ts": "^0.3.8",
-		"three": "^0.112.0",
-		"three-effectcomposer-es6": "0.0.4"
+		"oimo": "^1.0.9",
+		"ore-three-ts": "^0.3.10",
+		"three": "^0.112.0"
 	}
 }
