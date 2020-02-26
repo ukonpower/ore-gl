@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import { Blood } from './Blood';
 
 import meshFrag from './shaders/noseMesh.fs';
@@ -43,7 +43,7 @@ export class Nose extends THREE.Object3D{
 
 	public get splashValue(){
 
-		return this.animator.getValue( 'splash' );
+		return this.animator.get<number>( 'splash' );
 		
 	}
 	
@@ -89,13 +89,13 @@ export class Nose extends THREE.Object3D{
 			transparent: true,
 		});
 
-		this.animator.addVariable('opacity', 0.0 );
+		this.animator.add<number>({ name: 'opacity', initValue: 0.0 });
 		this.animator.animate( 'opacity', 1.0, 3 );
 
-		this.animator.addVariable('pos', 1 );
+		this.animator.add<number>({ name: 'pos', initValue: 1 });
 		this.animator.animate('pos', 0 );
 
-		this.animator.addVariable('splash', 0, { func: ORE.Easings.easeOutCubic } );
+		this.animator.add<number>({ name: 'splash', initValue: 0, easing: { func: ORE.Easings.easeOutCubic } });
 
 		this.add( this.meshNose );
 
@@ -142,8 +142,8 @@ export class Nose extends THREE.Object3D{
 
 		this.commonUniforms.time.value = time;
 		
-		this.commonUniforms.opacity.value = this.animator.getValue( 'opacity' );
-		this.commonUniforms.splash.value = this.animator.getValue( 'splash' );
+		this.commonUniforms.opacity.value = this.animator.get( 'opacity' );
+		this.commonUniforms.splash.value = this.animator.get( 'splash' );
 
 	}
 

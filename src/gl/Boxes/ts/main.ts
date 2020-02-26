@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import MainScene from './MainScene';
 
 class APP{

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import { Mesh, MeshBasicMaterial } from 'three';
 
 export class Finger extends THREE.Object3D{

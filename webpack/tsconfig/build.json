@@ -3,7 +3,8 @@
 	"compilerOptions": {
 		"rootDir": "../../src",
 		"declaration": true,
-		"declarationDir": "../../types"
+		"declarationDir": "../../types",
+		"baseUrl": "."
 	},
 	"include": ["../../src"]
 }

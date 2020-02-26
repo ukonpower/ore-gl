@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import {DandelionScene} from './DandelionScene';
 
 class APP{

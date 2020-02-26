@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 
 import vert from './shaders/floor.vs';
 import frag from './shaders/floor.fs';

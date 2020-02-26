@@ -2,7 +2,7 @@ import vert from './shaders/fluidGeometry.vs';
 import frag from './shaders/fluidGeometry.fs';
 
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import { StableFluids } from '../StableFluids';
 
 export default class FluidGeometry extends THREE.Object3D{

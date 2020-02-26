@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 
 import frag from './shaders/Tunnel.fs';
 import vert from './shaders/Tunnel.vs';

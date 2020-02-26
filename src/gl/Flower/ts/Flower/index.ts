@@ -2,7 +2,7 @@ import vert from './shaders/flower.vs';
 import frag from './shaders/flower.fs';
 
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import { Vector2 } from 'three';
 
 export default class Flower extends THREE.Object3D{

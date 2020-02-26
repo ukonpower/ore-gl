@@ -9,7 +9,12 @@
 		"dom"
 		],
 		"typeRoots": ["node_modules/@types"],
-		"rootDir": "./"
+		"rootDir": "./",
+		"baseUrl": ".",
+		"paths": {
+			"@ore-three-ts" : ["./src/common/ts/ore-three-ts/src"],
+			"@glpower" : ["./src/common/ts/glpower/src"]
+		}
 	},
 	"include": ["./"]
   }

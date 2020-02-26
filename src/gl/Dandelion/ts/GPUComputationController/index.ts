@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 
 import passThroughVert from './shaders/passThrough.vs';
 import passThroughFrag from './shaders/passThrough.fs';

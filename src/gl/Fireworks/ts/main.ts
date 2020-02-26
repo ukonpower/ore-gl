@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import { FireworksScene } from './FireworksScene';
 
 class APP{

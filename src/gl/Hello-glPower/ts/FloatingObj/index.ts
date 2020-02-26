@@ -1,4 +1,4 @@
-import * as GLP from '../../../../common/ts/glpower/src';
+import * as GLP from '@glpower';
 
 import vert from './shaders/floatingObj.vs';
 import frag from './shaders/floatingObj.fs';

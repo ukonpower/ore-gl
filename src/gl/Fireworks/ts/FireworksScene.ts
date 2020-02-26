@@ -1,8 +1,7 @@
-import * as ORE from 'ore-three-ts'
+import * as ORE from '@ore-three-ts'
 import * as THREE from 'three';
 import { Fireworks } from './Fireworks';
 import Background from './Background';
-import { MouseVertexRotator } from 'ore-three-ts';
 
 export class FireworksScene extends ORE.BaseScene{
 
@@ -111,7 +110,7 @@ export class FireworksScene extends ORE.BaseScene{
 				this.scene.remove( this.fireworks );
 				this.fireworks.dispose();
 				this.fireworks = new Fireworks();
-				this.rotator = new MouseVertexRotator( this.fireworks, this.fireworks.uniforms );
+				this.rotator = new ORE.MouseVertexRotator( this.fireworks, this.fireworks.uniforms );
 				this.scene.add( this.fireworks );
 			});
 

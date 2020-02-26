@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 
 import Background from './utils/Background';
 import MainObj from './utils/MainObj';

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Uniforms } from 'ore-three-ts';
+import { Uniforms } from '@ore-three-ts';
 
 import passThroughVert from './shaders/passThrough.vs';
 import passThroughFrag from './shaders/passThrough.fs';

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts'
+import * as ORE from '@ore-three-ts'
 
 import comShaderPosition from './shaders/computePosition.fs';
 import comShaderVelosity from './shaders/computeVelocity.fs';

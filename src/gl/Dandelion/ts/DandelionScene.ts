@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three-ts'
+import * as ORE from '@ore-three-ts'
 import * as THREE from 'three';
 import { Dandelion } from './Dandelion';
 import Floor from './Floor';

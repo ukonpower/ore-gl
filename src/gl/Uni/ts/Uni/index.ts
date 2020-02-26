@@ -2,7 +2,7 @@ import vert from './shaders/uni.vs';
 import frag from './shaders/uni.fs';
 
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from '@ore-three-ts';
 import { Vector2 } from 'three';
 import { MouseVertexRotator } from '../MouseVertexRotator';
 

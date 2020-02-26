@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from '../../../../common/ts/ore-three-ts/src';
+import * as ORE from '@ore-three-ts';
 
 import bgFrag from './shaders/bg.fs';
 

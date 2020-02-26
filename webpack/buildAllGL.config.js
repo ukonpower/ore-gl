@@ -1,3 +1,5 @@
+const path = require( 'path' );
+
 module.exports = {
 	mode: 'development',
 	entry: {
@@ -6,7 +8,11 @@ module.exports = {
 	},
 	resolve: {
 		modules: ['node_modules'],
-		extensions: ['.ts', '.js']
+		extensions: ['.ts', '.js'],
+		alias: {
+            "@ore-three-ts": path.resolve(__dirname, '../src/common/ts/ore-three-ts/src'),
+            "@glpower": path.resolve(__dirname, '../src/common/ts/glpower/src')
+        },
 	},
 	module: {
 		rules: [
