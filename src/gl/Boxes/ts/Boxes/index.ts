@@ -6,27 +6,28 @@ import * as ORE from '@ore-three-ts';
 import { Vector2 } from 'three';
 import { MouseVertexRotator } from '../MouseVertexRotator';
 
-export class Boxes extends THREE.Object3D{
+export class Boxes extends THREE.Object3D {
+
 	private uni: any;
 	private size: THREE.Vector2;
 	private num:number;
 	public mouseVertRotator: MouseVertexRotator;
 
 	constructor() {
-		
+
 		super();
-		
+
 		this.num = 10;
 
-		this.size = new THREE.Vector2( 1,1 );
-		
+		this.size = new THREE.Vector2( 1, 1 );
+
 		this.createBoxes();
-		
+
 	}
 
 	createBoxes() {
-		
-		let originBox = new THREE.BoxBufferGeometry( 0.1,0.1,0.1,5,30 );
+
+		let originBox = new THREE.BoxBufferGeometry( 0.1, 0.1, 0.1, 5, 30 );
 		let geo = new THREE.InstancedBufferGeometry();
 
 		let vertice = ( originBox.attributes.position as THREE.BufferAttribute ).clone();
@@ -47,24 +48,24 @@ export class Boxes extends THREE.Object3D{
 
 		let cnt = 0;
 
-		for ( let i = 0; i < this.num; i++ ) {
+		for ( let i = 0; i < this.num; i ++ ) {
 
-			for( let j = 0; j < this.num; j++ ){
+			for ( let j = 0; j < this.num; j ++ ) {
 
-				for( let k = 0; k < this.num; k++ ){
-					
+				for ( let k = 0; k < this.num; k ++ ) {
+
 					let x = ( i - ( ( this.num - 1 ) / 2 ) ) * 0.2;
 					let y = ( j - ( ( this.num - 1 ) / 2 ) ) * 0.2;
 					let z = ( k - ( ( this.num - 1 ) / 2 ) ) * 0.2;
 
 					posArray.push( x, y, z );
-					numArray.push( cnt++ );
-		
-					
+					numArray.push( cnt ++ );
+
+
 				}
-				
+
 			}
-			
+
 		}
 
 
@@ -81,7 +82,7 @@ export class Boxes extends THREE.Object3D{
 			all: {
 				value: this.num
 			}
-		}
+		};
 
 		this.uni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
 		this.uni.roughness.value = 0.8;
@@ -93,12 +94,12 @@ export class Boxes extends THREE.Object3D{
 			flatShading: true,
 			lights: true,
 			side: THREE.DoubleSide
-		} )
+		} );
 
-		let boxes = new THREE.Mesh( geo, mat )
+		let boxes = new THREE.Mesh( geo, mat );
 		boxes.position.y = 0.00;
 
-		this.mouseVertRotator = new MouseVertexRotator( boxes, this.uni ) ;
+		this.mouseVertRotator = new MouseVertexRotator( boxes, this.uni );
 
 		this.add( boxes );
 

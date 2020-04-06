@@ -8,7 +8,7 @@ import wireFrag from './shaders/noseWire.fs';
 import meshVert from './shaders/noseMesh.vs';
 import wireVert from './shaders/noseWire.vs';
 
-export class Nose extends THREE.Object3D{
+export class Nose extends THREE.Object3D {
 
 	private renderer: THREE.WebGLRenderer;
 
@@ -29,7 +29,7 @@ export class Nose extends THREE.Object3D{
 
 	private isSplash: boolean = false;
 
-	constructor( renderer: THREE.WebGLRenderer, gltfScene: THREE.Group ){
+	constructor( renderer: THREE.WebGLRenderer, gltfScene: THREE.Group ) {
 
 		super();
 
@@ -41,13 +41,13 @@ export class Nose extends THREE.Object3D{
 
 	}
 
-	public get splashValue(){
+	public get splashValue() {
 
 		return this.animator.get<number>( 'splash' );
-		
+
 	}
-	
-	private craeteObjects( gltfScene: THREE.Group ){
+
+	private craeteObjects( gltfScene: THREE.Group ) {
 
 		this.commonUniforms = {
 			opacity: {
@@ -59,7 +59,7 @@ export class Nose extends THREE.Object3D{
 			time: {
 				value: 0
 			}
-		}
+		};
 
 		/*-------------------------
 			Mesh
@@ -76,9 +76,9 @@ export class Nose extends THREE.Object3D{
 		// }
 
 		// this.meshUniforms = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, uni ])
-		
+
 		this.meshNose = ( gltfScene.getObjectByName( 'Nose' ) as THREE.Mesh ).clone();
-		this.meshNose.material = new THREE.ShaderMaterial({
+		this.meshNose.material = new THREE.ShaderMaterial( {
 			fragmentShader: meshFrag,
 			vertexShader: meshVert,
 			uniforms: this.meshUniforms,
@@ -87,15 +87,15 @@ export class Nose extends THREE.Object3D{
 				derivatives: true
 			},
 			transparent: true,
-		});
+		} );
 
-		this.animator.add<number>({ name: 'opacity', initValue: 0.0 });
+		this.animator.add<number>( { name: 'opacity', initValue: 0.0 } );
 		this.animator.animate( 'opacity', 1.0, 3 );
 
-		this.animator.add<number>({ name: 'pos', initValue: 1 });
-		this.animator.animate('pos', 0 );
+		this.animator.add<number>( { name: 'pos', initValue: 1 } );
+		this.animator.animate( 'pos', 0 );
 
-		this.animator.add<number>({ name: 'splash', initValue: 0, easing: { func: ORE.Easings.easeOutCubic } });
+		this.animator.add<number>( { name: 'splash', initValue: 0, easing: { func: ORE.Easings.easeOutCubic } } );
 
 		this.add( this.meshNose );
 
@@ -104,7 +104,7 @@ export class Nose extends THREE.Object3D{
 		--------------------------*/
 
 		this.wireNose = ( gltfScene.getObjectByName( 'Nose' ) as THREE.Mesh ).clone();
-		this.wireNose.material = new THREE.ShaderMaterial({
+		this.wireNose.material = new THREE.ShaderMaterial( {
 			fragmentShader: wireFrag,
 			vertexShader: wireVert,
 			uniforms: this.meshUniforms,
@@ -114,7 +114,7 @@ export class Nose extends THREE.Object3D{
 			},
 			transparent: true,
 			wireframe: true
-		});
+		} );
 		this.add( this.wireNose );
 
 		/*-------------------------
@@ -134,34 +134,34 @@ export class Nose extends THREE.Object3D{
 
 	}
 
-	public update( time: number, deltaTime: number ){
+	public update( time: number, deltaTime: number ) {
 
 		this.blood.update( deltaTime );
 
 		this.animator.update( deltaTime );
 
 		this.commonUniforms.time.value = time;
-		
+
 		this.commonUniforms.opacity.value = this.animator.get( 'opacity' );
 		this.commonUniforms.splash.value = this.animator.get( 'splash' );
 
 	}
 
-	public splash( pos: THREE.Vector3 ){
+	public splash( pos: THREE.Vector3 ) {
 
-		if( this.isSplash ) return;
+		if ( this.isSplash ) return;
 
 		this.isSplash = true;
-		
+
 		this.animator.animate( 'splash', 1, 0.5 );
 
 		this.blood.splash( pos );
 
 	}
 
-	public heal(){
+	public heal() {
 
-		if( !this.isSplash ) return;
+		if ( ! this.isSplash ) return;
 
 		this.isSplash = false;
 
@@ -171,34 +171,35 @@ export class Nose extends THREE.Object3D{
 
 	}
 
-	public updateFingerPos( fingerPos: THREE.Vector3 ){
+	public updateFingerPos( fingerPos: THREE.Vector3 ) {
 
 		let lenRight = new THREE.Vector3().subVectors( fingerPos, this.rightPoint.getWorldPosition( new THREE.Vector3() ) ).length();
 		let lenLeft = new THREE.Vector3().subVectors( fingerPos, this.leftPoint.getWorldPosition( new THREE.Vector3() ) ).length();
 
 		let spl = false;
 
-		if( lenRight < 0.2 ){
+		if ( lenRight < 0.2 ) {
 
 			this.splash( this.rightPoint.position );
 			spl = true;
 
 		}
 
-		if( lenLeft < 0.2 ){
+		if ( lenLeft < 0.2 ) {
 
 			this.splash( this.leftPoint.position );
 			spl = true;
 
 		}
 
-		if( !spl ){
+		if ( ! spl ) {
 
 			this.heal();
 
 		}
 
 		return spl;
-		
+
 	}
+
 }

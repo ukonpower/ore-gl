@@ -1,4 +1,5 @@
 const gulp = require( 'gulp' );
+const gulpIf = require( 'gulp-if' );
 const pug = require( 'gulp-pug' );
 const autoprefixer = require( 'gulp-autoprefixer' );
 const plumber = require( 'gulp-plumber' );
@@ -8,6 +9,7 @@ const minimist = require( 'minimist' );
 const webpackStream = require( 'webpack-stream' );
 const webpack = require( 'webpack' );
 const browserSync = require( 'browser-sync' );
+const eslint = require( 'gulp-eslint' );
 const del = require( 'del' );
 const fs = require( 'fs' );
 
@@ -20,6 +22,33 @@ const options = minimist( process.argv.slice( 2 ), {
 
 const srcPath = './src';
 const publicPath = './public';
+
+function isFixed( file ) {
+
+	return file.eslint != null && file.eslint.fixed;
+
+}
+
+function esLint( cb ) {
+
+	let paths = [
+		'./src/gl',
+		'./src/topVisual'
+	];
+
+	for ( let i = 0; i < paths.length; i ++ ) {
+
+		gulp.src( paths[ i ] + '**/*.js' )
+			.pipe( eslint( { useEslintrc: true, fix: true } ) ) // .eslintrc を参照
+			.pipe( eslint.format() )
+			.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
+			.pipe( eslint.failAfterError() );
+
+	}
+
+	cb();
+
+}
 
 /*-------------------
 	Production
@@ -240,5 +269,7 @@ exports.default = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, 
 
 //build GLs
 exports.gl = gulp.series( setDevGLPath, cleanDevFiles, develop );
+
+exports.lint = gulp.series( esLint );
 
 exports.build = gulp.series( cleanAllFiles, buildAllGLs, setDevTopVisualPath, build );

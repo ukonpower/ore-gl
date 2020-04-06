@@ -3,58 +3,63 @@ import * as ORE from '@ore-three-ts';
 
 import ppFrag from './shaders/pp.fs';
 
-export default class NoisePostProcessing extends THREE.Object3D{
-	
+export default class NoisePostProcessing extends THREE.Object3D {
+
 	private pp: ORE.PostProcessing;
 	private renderer: THREE.WebGLRenderer;
 	private ppParam: any;
 
 
-	constructor(renderer: THREE.WebGLRenderer){
+	constructor( renderer: THREE.WebGLRenderer ) {
+
 		super();
-		
+
 		this.renderer = renderer;
 
 		this.ppParam = [
 			{
 				fragmentShader: ppFrag,
-				uniforms:{
-					time: { 
+				uniforms: {
+					time: {
 						value: 0,
 					},
 					splash: {
 						value: 0
 					},
-					nw: { 
+					nw: {
 						value: 0
 					}
 				}
 			}
-		]
+		];
 
-		this.pp = new ORE.PostProcessing(this.renderer,this.ppParam)
-	}
-
-	update( time: number, splash: number ){
-		
-		this.ppParam[0].uniforms.time.value = time;
-		this.ppParam[0].uniforms.splash.value = splash;
+		this.pp = new ORE.PostProcessing( this.renderer, this.ppParam );
 
 	}
 
-	isGlitch( isGlitch: boolean ){
+	update( time: number, splash: number ) {
 
-		this.ppParam[0].uniforms.nw.value = isGlitch ? 1 : 0;
+		this.ppParam[ 0 ].uniforms.time.value = time;
+		this.ppParam[ 0 ].uniforms.splash.value = splash;
 
 	}
 
-	render(scene:THREE.Scene,camera:THREE.Camera){
-		this.pp.render(scene,camera);
+	isGlitch( isGlitch: boolean ) {
+
+		this.ppParam[ 0 ].uniforms.nw.value = isGlitch ? 1 : 0;
+
 	}
 
-	resize( args: ORE.ResizeArgs ){
-		
+	render( scene:THREE.Scene, camera:THREE.Camera ) {
+
+		this.pp.render( scene, camera );
+
+	}
+
+	resize( args: ORE.ResizeArgs ) {
+
 		this.pp.resize( args.windowPixelSize );
 
 	}
+
 }

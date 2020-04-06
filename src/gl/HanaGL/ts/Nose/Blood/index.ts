@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { BloodParticle } from './Particle';
 import { BloodTrails } from './Trails';
 
-export class Blood extends THREE.Object3D{
+export class Blood extends THREE.Object3D {
 
 	private renderer: THREE.WebGLRenderer;
 
@@ -12,7 +12,7 @@ export class Blood extends THREE.Object3D{
 	private isSplash: boolean = false;
 	private eruptionPos: THREE.Vector3;
 
-	constructor( renderer: THREE.WebGLRenderer ){
+	constructor( renderer: THREE.WebGLRenderer ) {
 
 		super();
 
@@ -22,7 +22,7 @@ export class Blood extends THREE.Object3D{
 
 	}
 
-	private createParticle(){
+	private createParticle() {
 
 		this.particle = new BloodParticle( this.renderer, 128 );
 		this.add( this.particle );
@@ -32,21 +32,21 @@ export class Blood extends THREE.Object3D{
 
 	}
 
-	public update( deltaTime: number ){
+	public update( deltaTime: number ) {
 
 		this.particle.update( deltaTime );
 		this.trails.update( deltaTime );
 
 	}
 
-	public splash( pos: THREE.Vector3 ){
-		
+	public splash( pos: THREE.Vector3 ) {
+
 		this.particle.splash( pos );
 		this.trails.splash( pos );
 
 	}
 
-	public heal(){
+	public heal() {
 
 		this.particle.heal();
 		this.trails.heal();

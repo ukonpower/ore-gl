@@ -3,14 +3,23 @@ import ThreeGraphic from './graphics/utils/ThreeGraphic';
 
 class App {
 
-    constructor() {
-        this.init();
-    }
+	constructor() {
 
-    init() {
-        let threeGraphic = new ThreeGraphic();
-        threeGraphic.setScene(new MainScene(threeGraphic.renderer));
-    }
+		this.init();
+
+	}
+
+	init() {
+
+		let threeGraphic = new ThreeGraphic();
+		threeGraphic.setScene( new MainScene( threeGraphic.renderer ) );
+
+	}
+
 }
 
-window.addEventListener('load', () => { new App() } );
+window.addEventListener( 'load', () => {
+
+	new App();
+
+} );

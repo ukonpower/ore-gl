@@ -2,74 +2,84 @@ import vert from './shaders/voxelCube.vs';
 import frag from './shaders/voxelCube.fs';
 
 export default class InstansingBox {
-    constructor(size, res) {
-        this.size = size;
-        this.res = res;
-        this.num = Math.pow(this.res, 3);
 
-        this.obj;
-        this.time = 0;
+	constructor( size, res ) {
 
-        this.createVoxel();
-    }
+		this.size = size;
+		this.res = res;
+		this.num = Math.pow( this.res, 3 );
 
-    createVoxel() {
-        let s = this.size / (this.res - 1) * 0.8;
-        let originBox = new THREE.BoxBufferGeometry(s, s, s);
-        let geo = new THREE.InstancedBufferGeometry();
+		this.obj;
+		this.time = 0;
 
-        let vertice = originBox.attributes.position.clone();
-        geo.setAttribute('position', vertice);
+		this.createVoxel();
 
-        let normal = originBox.attributes.normal.clone();
-        geo.setAttribute('normals', normal);
+	}
 
-        let uv = originBox.attributes.normal.clone();
-        geo.setAttribute('uv', uv);
+	createVoxel() {
 
-        let indices = originBox.index.clone();
-        geo.setIndex(indices);
+		let s = this.size / ( this.res - 1 ) * 0.8;
+		let originBox = new THREE.BoxBufferGeometry( s, s, s );
+		let geo = new THREE.InstancedBufferGeometry();
 
-        let offsetPos = new THREE.InstancedBufferAttribute(new Float32Array(this.num * 3), 3, false, );
-        let num = new THREE.InstancedBufferAttribute(new Float32Array(this.num * 1), 1, false, 1);
+		let vertice = originBox.attributes.position.clone();
+		geo.setAttribute( 'position', vertice );
+
+		let normal = originBox.attributes.normal.clone();
+		geo.setAttribute( 'normals', normal );
+
+		let uv = originBox.attributes.normal.clone();
+		geo.setAttribute( 'uv', uv );
+
+		let indices = originBox.index.clone();
+		geo.setIndex( indices );
+
+		let offsetPos = new THREE.InstancedBufferAttribute( new Float32Array( this.num * 3 ), 3, false, );
+		let num = new THREE.InstancedBufferAttribute( new Float32Array( this.num * 1 ), 1, false, 1 );
 
 
-        this.space = this.size / this.res;
-        for (let i = 0; i < this.num; i++) {
-            let x = this.space * (i % (this.res)) - this.size / 2 + this.space / 2;
-            let y = this.space * (Math.floor(i / (this.res)) % this.res) - this.size / 2 + this.space / 2;
-            let z = this.space * Math.floor(i / (this.res * this.res)) - this.size / 2 + this.space / 2;
+		this.space = this.size / this.res;
+		for ( let i = 0; i < this.num; i ++ ) {
 
-            offsetPos.setXYZ(i, x, y, z);
-            num.setX(i, i);
-        }
+			let x = this.space * ( i % ( this.res ) ) - this.size / 2 + this.space / 2;
+			let y = this.space * ( Math.floor( i / ( this.res ) ) % this.res ) - this.size / 2 + this.space / 2;
+			let z = this.space * Math.floor( i / ( this.res * this.res ) ) - this.size / 2 + this.space / 2;
 
-        geo.setAttribute('offsetPos', offsetPos);
-        geo.setAttribute('num', num);
+			offsetPos.setXYZ( i, x, y, z );
+			num.setX( i, i );
 
-        let cUni = {
-            time: {
-                value: 0
-            }
-        }
+		}
 
-        this.uni = THREE.UniformsUtils.merge([THREE.ShaderLib.standard.uniforms, cUni]);
-        this.uni.diffuse.value = new THREE.Vector3(1.0, 1.0, 1.0);
-        this.uni.roughness.value = 0.7;
+		geo.setAttribute( 'offsetPos', offsetPos );
+		geo.setAttribute( 'num', num );
 
-        let mat = new THREE.ShaderMaterial({
-            vertexShader: vert,
-            fragmentShader: frag,
-            uniforms: this.uni,
-            flatShading: true,
-            lights: true
-        })
+		let cUni = {
+			time: {
+				value: 0
+			}
+		};
 
-        this.obj = new THREE.Mesh(geo, mat);
-    }
+		this.uni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
+		this.uni.diffuse.value = new THREE.Vector3( 1.0, 1.0, 1.0 );
+		this.uni.roughness.value = 0.7;
 
-    update(deltaTime) {
-        this.time += deltaTime;
-        this.uni.time.value = this.time;
-    }
+		let mat = new THREE.ShaderMaterial( {
+			vertexShader: vert,
+			fragmentShader: frag,
+			uniforms: this.uni,
+			flatShading: true,
+			lights: true
+		} );
+
+		this.obj = new THREE.Mesh( geo, mat );
+
+	}
+
+	update( deltaTime ) {
+
+		this.time += deltaTime;
+		this.uni.time.value = this.time;
+
+	}
+
 }

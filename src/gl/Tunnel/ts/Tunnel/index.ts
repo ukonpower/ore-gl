@@ -5,12 +5,12 @@ import frag from './shaders/Tunnel.fs';
 import vert from './shaders/Tunnel.vs';
 import { throwStatement } from 'babel-types';
 
-export class Tunnel extends THREE.Object3D{
+export class Tunnel extends THREE.Object3D {
 
 	private time: number = 0;
 	public uniforms: ORE.Uniforms;
 
-	constructor( ){
+	constructor( ) {
 
 		super();
 
@@ -18,19 +18,19 @@ export class Tunnel extends THREE.Object3D{
 
 	}
 
-	private createMesh(){
+	private createMesh() {
 
 		let cUni = {
 			time: {
 				value: 0
 			}
-		}
+		};
 
 		let baseMat = THREE.ShaderLib.standard;
-		this.uniforms = THREE.UniformsUtils.merge([cUni, baseMat.uniforms]);
+		this.uniforms = THREE.UniformsUtils.merge( [ cUni, baseMat.uniforms ] );
 
 		let geo = new THREE.PlaneBufferGeometry( 1, 1, 10, 100 );
-		let mat = new THREE.ShaderMaterial({
+		let mat = new THREE.ShaderMaterial( {
 			vertexShader: vert,
 			fragmentShader: frag,
 			uniforms: this.uniforms,
@@ -38,7 +38,7 @@ export class Tunnel extends THREE.Object3D{
 			side: THREE.DoubleSide,
 			flatShading: true,
 			transparent: true,
-		})
+		} );
 
 		let point = new THREE.Points( geo, mat );
 		point.renderOrder = 5;
@@ -46,7 +46,7 @@ export class Tunnel extends THREE.Object3D{
 
 	}
 
-	public update( time: number ){
+	public update( time: number ) {
 
 		this.uniforms.time.value = time;
 

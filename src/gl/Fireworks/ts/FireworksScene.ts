@@ -1,11 +1,11 @@
-import * as ORE from '@ore-three-ts'
+import * as ORE from '@ore-three-ts';
 import * as THREE from 'three';
 import { Fireworks } from './Fireworks';
 import Background from './Background';
 
-import { MouseVertexRotator } from './MouseVertexRotator'
+import { MouseVertexRotator } from './MouseVertexRotator';
 
-export class FireworksScene extends ORE.BaseScene{
+export class FireworksScene extends ORE.BaseScene {
 
 	private fireworks: Fireworks;
 	private bloom: ORE.BloomFilter;
@@ -15,21 +15,21 @@ export class FireworksScene extends ORE.BaseScene{
 
 	private touchTime: number = 0;
 
-	constructor(){
+	constructor() {
 
 		super();
 
 		this.name = "FireworksScene";
-	
+
 	}
 
-	onBind( gPorps: ORE.GlobalProperties ){
+	onBind( gPorps: ORE.GlobalProperties ) {
 
 		super.onBind( gPorps );
 
 		this.renderer = this.gProps.renderer;
-		
-		this.camera.position.set( 0, 0 ,5 );
+
+		this.camera.position.set( 0, 0, 5 );
 		this.camera.lookAt( 0.0, 0, 0 );
 
 		this.fireworks = new Fireworks();
@@ -55,7 +55,7 @@ export class FireworksScene extends ORE.BaseScene{
 
 	}
 
-	animate( deltaTime: number ){
+	animate( deltaTime: number ) {
 
 		this.fireworks.update( deltaTime );
 		this.rotator.update();
@@ -63,39 +63,40 @@ export class FireworksScene extends ORE.BaseScene{
 		this.background.update( this.time );
 
 		this.bloom.render( this.scene, this.camera );
-	
+
 	}
 
 	onResize( args: ORE.ResizeArgs ) {
-	
+
 		super.onResize( args );
 
 		this.bloom.resize( args.windowPixelSize );
 
-		if( args.aspectRatio> 1.0 ){
+		if ( args.aspectRatio > 1.0 ) {
+
 			// pc
 
 			this.camera.position.z = 5;
 			this.camera.lookAt( 0.0, 0, 0 );
-			
-			
-		}else{
-			
+
+
+		} else {
+
 			// sumaho
 			this.camera.position.z = 6;
 			this.camera.lookAt( 0.0, 0, 0 );
 
 		}
-	
+
 	}
 
-    onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
+	onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
 
 		this.touchTime = this.time;
 
 	}
 
-    onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
+	onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
 
 		this.rotator.addVelocity( cursor.delta );
 
@@ -105,19 +106,22 @@ export class FireworksScene extends ORE.BaseScene{
 
 	onTouchEnd( cursor: ORE.Cursor, event: MouseEvent ) {
 
-		if(  this.time - this.touchTime < 0.1){
+		if ( this.time - this.touchTime < 0.1 ) {
 
-			this.fireworks.changeColor(()=>{
+			this.fireworks.changeColor( ()=>{
+
 				this.scene.remove( this.fireworks );
 				this.fireworks.dispose();
 				this.fireworks = new Fireworks();
 				this.rotator = new MouseVertexRotator( this.fireworks, this.fireworks.uniforms );
 				this.scene.add( this.fireworks );
-			});
+
+			} );
 
 		}
+
 	}
-	
+
 	onHover( cursor: ORE.Cursor ) {
 
 	}

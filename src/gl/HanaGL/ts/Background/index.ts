@@ -3,15 +3,15 @@ import * as ORE from '@ore-three-ts';
 
 import bgFrag from './shaders/bg.fs';
 
-export default class Background extends THREE.Object3D{
-	
+export default class Background extends THREE.Object3D {
+
 	private bg: ORE.Background;
 	private uni: any;
 
-	constructor(){
+	constructor() {
 
 		super();
-	
+
 		this.uni = {
 			time: {
 				value: 0
@@ -19,9 +19,9 @@ export default class Background extends THREE.Object3D{
 			tex: {
 				value: null
 			}
-		}
-		
-		this.bg = new ORE.Background( { fragmentShader: bgFrag, uniforms: this.uni} );
+		};
+
+		this.bg = new ORE.Background( { fragmentShader: bgFrag, uniforms: this.uni } );
 
 		this.add( this.bg );
 
@@ -30,12 +30,12 @@ export default class Background extends THREE.Object3D{
 		loader.load( './assets/img/tex.jpg', ( tex ) => {
 
 			this.uni.tex.value = tex;
-			
-		})
-		
+
+		} );
+
 	}
 
-	public update( time: number ){
+	public update( time: number ) {
 
 		this.uni.time.value = time;
 

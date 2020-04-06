@@ -5,7 +5,7 @@ import MainObj from './utils/MainObj';
 import Fish from './utils/Fish';
 import * as THREE from 'three';
 
-export class TopScene extends ORE.BaseScene{
+export class TopScene extends ORE.BaseScene {
 
 	private ext: boolean;
 
@@ -24,19 +24,19 @@ export class TopScene extends ORE.BaseScene{
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ){
+	public onBind( gProps: ORE.GlobalProperties ) {
 
 		this.renderer = gProps.renderer;
 
-		if ( !this.renderer.extensions.get( 'ANGLE_instanced_arrays' ) || !this.renderer.extensions.get( 'OES_texture_float' ) ) {
+		if ( ! this.renderer.extensions.get( 'ANGLE_instanced_arrays' ) || ! this.renderer.extensions.get( 'OES_texture_float' ) ) {
 
 			document.querySelector( '.worning' ).classList.add( 'v' );
 			this.ext = false;
-			
-		}else{
+
+		} else {
 
 			this.ext = true;
-			
+
 		}
 
 		this.init();
@@ -46,56 +46,57 @@ export class TopScene extends ORE.BaseScene{
 		document.querySelector( '.about-link' ).addEventListener( 'click', () => {
 
 			document.querySelector( '.about' ).classList.toggle( 'v' );
-			
+
 		} );
 
 		document.querySelector( '.about-close' ).addEventListener( 'click', () => {
 
 			document.querySelector( '.about' ).classList.toggle( 'v' );
-			
+
 		} );
 
 		document.querySelector( ".loading" ).classList.add( "hide" );
 
 		let elms = document.querySelectorAll( '.title' );
 
-		for( let i = 0; i < elms.length; i++ ){
+		for ( let i = 0; i < elms.length; i ++ ) {
 
 			elms[ i ].classList.add( 'v' );
-			
+
 		}
-		
+
 		( document.querySelector( '.about' ) as HTMLElement ).style.transition = '.8s cubic-bezier( .55, .02, .23, .98 )';
 
-		if( !this.ext ){
+		if ( ! this.ext ) {
 
 			let extElms = document.querySelectorAll( ".content-list-item-link.ext" );
 
-			for( let i = 0; i < extElms.length; i++ ){
+			for ( let i = 0; i < extElms.length; i ++ ) {
 
-				extElms[ i ].addEventListener( 'click',( e )=>{
-					
+				extElms[ i ].addEventListener( 'click', ( e )=>{
+
 					e.preventDefault();
-					
-				} )
-				
+
+				} );
+
 			}
-			
+
 			let worningElms = document.querySelectorAll( ".content-list-item-worning" );
 
-			for( let i = 0; i < worningElms.length; i++ ){
+			for ( let i = 0; i < worningElms.length; i ++ ) {
 
 				( worningElms[ i ] as HTMLElement ).style.opacity = '0';
-				
+
 			}
+
 		}
-		
+
 	}
-	
+
 	private init() {
 
 		this.time = Math.random() * 100;
-		
+
 		this.camera.position.set( 0, 0, 9 );
 
 		this.cyOffset = 0;
@@ -106,7 +107,7 @@ export class TopScene extends ORE.BaseScene{
 
 		let dLight = new THREE.DirectionalLight();
 		dLight.intensity = 0.7;
-		dLight.position.set( 0.1, 10, -2 );
+		dLight.position.set( 0.1, 10, - 2 );
 		this.scene.add( dLight );
 
 		let pLight = new THREE.PointLight();
@@ -117,7 +118,7 @@ export class TopScene extends ORE.BaseScene{
 
 		pLight = new THREE.PointLight();
 		pLight.color = new THREE.Color( 0x4400ff );
-		pLight.position.set( -10, 0, 5 );
+		pLight.position.set( - 10, 0, 5 );
 		pLight.intensity = 1;
 		this.scene.add( pLight );
 
@@ -136,7 +137,7 @@ export class TopScene extends ORE.BaseScene{
 			this.fish.setCamY( this.camera.position.y );
 			this.fish.obj.frustumCulled = false;
 			this.scene.add( this.fish.obj );
-			
+
 		}
 
 		this.raycaster = new THREE.Raycaster();
@@ -151,22 +152,23 @@ export class TopScene extends ORE.BaseScene{
 		if ( this.bg ) {
 
 			this.bg.update( this.time );
-			
+
 		}
 
 		if ( this.mainObj ) {
-			
+
 			this.mainObj.update( this.time );
-			
+
 		}
 
 		if ( this.fish ) {
-			
+
 			this.fish.update( this.time );
-			
+
 		}
 
 		this.renderer.render( this.scene, this.camera );
+
 	}
 
 	private ray( cursor ) {
@@ -175,11 +177,11 @@ export class TopScene extends ORE.BaseScene{
 		let halfHeight = innerHeight / 2;
 		let pos = new THREE.Vector2( ( cursor.x - halfWidth ) / halfWidth, ( cursor.y - halfHeight ) / halfHeight );
 
-		pos.y *= -1;
+		pos.y *= - 1;
 
 		this.raycaster.setFromCamera( pos, this.camera );
 		let intersects = this.raycaster.intersectObjects( [ this.plane ] );
-		
+
 		if ( intersects.length > 0 ) {
 
 			let point = intersects[ 0 ].point;
@@ -188,7 +190,7 @@ export class TopScene extends ORE.BaseScene{
 		} else {
 
 			return null;
-			
+
 		}
 
 	}
@@ -196,35 +198,35 @@ export class TopScene extends ORE.BaseScene{
 	public onResize( resizeArgs: ORE.ResizeArgs ) {
 
 		super.onResize( resizeArgs );
-		
-		if ( resizeArgs.aspectRatio  < 1 ) {
+
+		if ( resizeArgs.aspectRatio < 1 ) {
 
 			this.camera.position.x = 1;
 			this.camera.position.z = 13;
-			this.cyOffset = -1.0;
-			
+			this.cyOffset = - 1.0;
+
 		} else {
-			
+
 			this.camera.position.x = 0;
 			this.camera.position.z = 10;
 			this.cyOffset = 0;
-			
+
 		}
-		
+
 		this.camera.aspect = resizeArgs.aspectRatio;
 		this.camera.updateProjectionMatrix();
-		this.camera.position.y = window.pageYOffset * -0.004 + this.cyOffset;
-		
+		this.camera.position.y = window.pageYOffset * - 0.004 + this.cyOffset;
+
 	}
 
 	onScroll() {
-		
+
 		let offset = window.pageYOffset;
-		
+
 		if ( this.camera ) {
 
-			this.camera.position.y = offset * -0.004 + this.cyOffset;
-			
+			this.camera.position.y = offset * - 0.004 + this.cyOffset;
+
 		}
 
 		if ( this.fish ) {
@@ -238,7 +240,7 @@ export class TopScene extends ORE.BaseScene{
 			const top = elm.getBoundingClientRect().top + window.pageYOffset;
 
 			if ( top < window.pageYOffset + window.innerHeight / 5 * 4 ) {
-				
+
 				elm.classList.add( 'v' );
 
 			}

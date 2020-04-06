@@ -1,9 +1,9 @@
-import * as ORE from '@ore-three-ts'
+import * as ORE from '@ore-three-ts';
 import * as THREE from 'three';
 import FluidGeometry from './FluidGeometry';
 import NoisePostProcessing from './NoisePostProcessing';
 
-export default class MainScene extends ORE.BaseScene{
+export default class MainScene extends ORE.BaseScene {
 
 	private light: THREE.Light;
 	private alight: THREE.Light;
@@ -17,111 +17,112 @@ export default class MainScene extends ORE.BaseScene{
 
 	private pp: NoisePostProcessing;
 
-	constructor(){
-		
+	constructor() {
+
 		super();
 
 		this.name = "MainScene";
-	
+
 	}
 
-	onBind( gProps: ORE.GlobalProperties ){
-		
+	onBind( gProps: ORE.GlobalProperties ) {
+
 		super.onBind( gProps );
 
 		this.renderer = this.gProps.renderer;
 
-        this.light = new THREE.DirectionalLight();
-        this.light.position.y = 10;
-        this.light.position.z = 10;
-		this.scene.add(this.light);
+		this.light = new THREE.DirectionalLight();
+		this.light.position.y = 10;
+		this.light.position.z = 10;
+		this.scene.add( this.light );
 
 		this.alight = new THREE.AmbientLight();
 		this.alight.intensity = 0.5;
-		this.scene.add(this.alight);
+		this.scene.add( this.alight );
 
 		this.fluidGeometry = new FluidGeometry( this.renderer );
-		this.scene.add(this.fluidGeometry);
+		this.scene.add( this.fluidGeometry );
 
-		this.pp = new NoisePostProcessing(this.renderer);
-		
+		this.pp = new NoisePostProcessing( this.renderer );
+
 		let screengeo = new THREE.PlaneGeometry( 15.0, 15.0 );
-		let mat = new THREE.MeshNormalMaterial({
+		let mat = new THREE.MeshNormalMaterial( {
 			side: THREE.DoubleSide
-		});
+		} );
 		mat.visible = false;
 
 		this.screen = new THREE.Mesh( screengeo, mat );
-		this.scene.add(this.screen);
+		this.scene.add( this.screen );
 
 		this.raycaster = new THREE.Raycaster();
 
 	}
 
-	animate(){
-		
-		this.fluidGeometry.update(this.time);
+	animate() {
 
-		this.renderer.render(this.scene,this.camera);
+		this.fluidGeometry.update( this.time );
+
+		this.renderer.render( this.scene, this.camera );
 
 	}
 
-	onResize( args: ORE.ResizeArgs) {
+	onResize( args: ORE.ResizeArgs ) {
 
 		super.onResize( args );
-		
-		if(args.aspectRatio > 1.0){
-		
+
+		if ( args.aspectRatio > 1.0 ) {
+
 			this.camera.position.z = 7;
-		
-		}else{
-		
+
+		} else {
+
 			this.camera.position.z = 10;
-		
+
 		}
-		
-		this.camera.lookAt(0,-0.0,0);
+
+		this.camera.lookAt( 0, - 0.0, 0 );
 		this.pp.resize( args.windowPixelSize.x, args.windowPixelSize.y );
-	
+
 	}
 
-    onTouchStart( cursor: ORE.Cursor, event:MouseEvent) {
-	
+	onTouchStart( cursor: ORE.Cursor, event:MouseEvent ) {
+
 		this.touchStart = this.time;
-	
+
 	}
 
-    onTouchMove( cursor: ORE.Cursor, event:MouseEvent) {
+	onTouchMove( cursor: ORE.Cursor, event:MouseEvent ) {
 
 		var halfWidth = innerWidth / 2;
-        var halfHeight = innerHeight / 2;
-		var pointer = new THREE.Vector2(( cursor.position.x - halfWidth) / halfWidth, ( cursor.position.y - halfHeight) / halfHeight);
-		pointer.y *= -1;
+		var halfHeight = innerHeight / 2;
+		var pointer = new THREE.Vector2( ( cursor.position.x - halfWidth ) / halfWidth, ( cursor.position.y - halfHeight ) / halfHeight );
+		pointer.y *= - 1;
 
-        this.raycaster.setFromCamera(pointer, this.camera); 
-		var intersects = this.raycaster.intersectObjects([this.screen]);
+		this.raycaster.setFromCamera( pointer, this.camera );
+		var intersects = this.raycaster.intersectObjects( [ this.screen ] );
 
 		let pos = new THREE.Vector2();
 
-		if(intersects.length > 0){
+		if ( intersects.length > 0 ) {
 
-            var point = intersects[0].point;   
-			pos.set( ( point.x + 7.5 ) / 15, (point.y + 7.5 ) / 15 );
+			var point = intersects[ 0 ].point;
+			pos.set( ( point.x + 7.5 ) / 15, ( point.y + 7.5 ) / 15 );
 
 		}
 
-		let vec = new THREE.Vector2( cursor.delta.x, -cursor.delta.y );
+		let vec = new THREE.Vector2( cursor.delta.x, - cursor.delta.y );
 
-		this.fluidGeometry.setPointer( pos, vec);
-	
+		this.fluidGeometry.setPointer( pos, vec );
+
 		event.preventDefault();
 
 	}
 
-    onTouchEnd( cursor: ORE.Cursor, event:MouseEvent) {
+	onTouchEnd( cursor: ORE.Cursor, event:MouseEvent ) {
 
 		this.fluidGeometry.setPointer( new THREE.Vector2( 0, 0 ), new THREE.Vector2( 0, 0 ) );
 
-		
+
 	}
+
 }

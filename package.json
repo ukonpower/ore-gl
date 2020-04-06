@@ -13,9 +13,13 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^2.23.0",
+		"@typescript-eslint/parser": "^2.23.0",
 		"browser-sync": "^2.26.7",
 		"copy-webpack-plugin": "^5.0.4",
 		"del": "^5.1.0",
+		"eslint": "^6.8.0",
+		"eslint-config-mdcs": "^4.2.3",
 		"gulp": "^4.0.2",
 		"gulp-autoprefixer": "^7.0.0",
 		"gulp-cssmin": "^0.2.0",
@@ -35,6 +39,8 @@
 	},
 	"dependencies": {
 		"cannon": "^0.6.2",
+		"gulp-eslint": "^6.0.0",
+		"gulp-if": "^3.0.0",
 		"lethargy": "^1.0.9",
 		"matrixgl": "^1.0.1",
 		"oimo": "^1.0.9",

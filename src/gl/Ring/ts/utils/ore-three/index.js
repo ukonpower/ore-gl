@@ -8,74 +8,104 @@ window.THREE = THREE;
 ------------------------------------------------------------------------------------*/
 
 export class Controller {
-    constructor(canvas,retina) {
-        this.currentScene;
-        this.canvas = canvas;
 
-        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas});
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(retina ? window.devicePixelRatio : 1);
+	constructor( canvas, retina ) {
 
-        this.pageScroll = false;
-        this.cursor = new Cursor();
-        this.cursor.onTouchStart = this.onTouchStart.bind(this);
-        this.cursor.onTouchMove = this.onTouchMove.bind(this);
-        this.cursor.onTouchEnd = this.onTouchEnd.bind(this);
+		this.currentScene;
+		this.canvas = canvas;
 
-        window.addEventListener('orientationchange', this.onOrientationDevice.bind(this));
-        window.addEventListener('resize', this.onWindowResize.bind(this));
+		this.renderer = new THREE.WebGLRenderer( { canvas: this.canvas } );
+		this.renderer.setSize( window.innerWidth, window.innerHeight );
+		this.renderer.setPixelRatio( retina ? window.devicePixelRatio : 1 );
 
-        this.animate();
-    }
+		this.pageScroll = false;
+		this.cursor = new Cursor();
+		this.cursor.onTouchStart = this.onTouchStart.bind( this );
+		this.cursor.onTouchMove = this.onTouchMove.bind( this );
+		this.cursor.onTouchEnd = this.onTouchEnd.bind( this );
 
-    animate() {
-        if (this.currentScene) {
-            this.currentScene.tick();
-        }
-        requestAnimationFrame(this.animate.bind(this));
-    }
+		window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
+		window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
 
-    setScene(scene) {
-        console.log('setScene');
-        this.currentScene = scene;
-        this.onWindowResize();
-    }
+		this.animate();
 
-    onWindowResize() {
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        this.renderer.setSize(width, height);
+	}
 
-        if (this.currentScene) {
-            this.currentScene.Resize(width, height);
-        }
-    }
+	animate() {
 
-    onOrientationDevice() {
-        this.onWindowResize();
-    }
+		if ( this.currentScene ) {
 
-    onTouchStart(event) {
-        if (this.currentScene) {
-            this.currentScene.onTouchStart(this.cursor);
-        }
-    }
+			this.currentScene.tick();
 
-    onTouchMove(event) {
-        if (!this.pageScroll) {
-            event.preventDefault();
-        }
+		}
+		requestAnimationFrame( this.animate.bind( this ) );
 
-        if (this.currentScene) {
-            this.currentScene.onTouchMove(this.cursor);
-        }
-    }
+	}
 
-    onTouchEnd(event) {
-        if (this.currentScene) {
-            this.currentScene.onTouchEnd(this.cursor);
-        }
-    }
+	setScene( scene ) {
+
+		console.log( 'setScene' );
+		this.currentScene = scene;
+		this.onWindowResize();
+
+	}
+
+	onWindowResize() {
+
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		this.renderer.setSize( width, height );
+
+		if ( this.currentScene ) {
+
+			this.currentScene.Resize( width, height );
+
+		}
+
+	}
+
+	onOrientationDevice() {
+
+		this.onWindowResize();
+
+	}
+
+	onTouchStart( event ) {
+
+		if ( this.currentScene ) {
+
+			this.currentScene.onTouchStart( this.cursor );
+
+		}
+
+	}
+
+	onTouchMove( event ) {
+
+		if ( ! this.pageScroll ) {
+
+			event.preventDefault();
+
+		}
+
+		if ( this.currentScene ) {
+
+			this.currentScene.onTouchMove( this.cursor );
+
+		}
+
+	}
+
+	onTouchEnd( event ) {
+
+		if ( this.currentScene ) {
+
+			this.currentScene.onTouchEnd( this.cursor );
+
+		}
+
+	}
+
 }
 
 /*------------------------------------------------------------------------------------
@@ -83,32 +113,38 @@ export class Controller {
 ------------------------------------------------------------------------------------*/
 
 export class BaseScene {
-    constructor(renderer) {
-        this.renderer = renderer;
-        this.scene = new THREE.Scene();
-        this.clock = new THREE.Clock();
-        this.camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 1000);
-        this.time = 0;
-        this.deltaTime;
-    }
 
-    tick(){
-        this.deltaTime = this.clock.getDelta();
-        this.time += this.deltaTime;
-        this.animate();
-    }
+	constructor( renderer ) {
 
-    animate(){
-    }
+		this.renderer = renderer;
+		this.scene = new THREE.Scene();
+		this.clock = new THREE.Clock();
+		this.camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 1000 );
+		this.time = 0;
+		this.deltaTime;
 
-    onTouchStart(){
-    }
+	}
 
-    onTouchMove(){
-    }
+	tick() {
 
-    onTouchEnd(){
-    }
+		this.deltaTime = this.clock.getDelta();
+		this.time += this.deltaTime;
+		this.animate();
+
+	}
+
+	animate() {
+	}
+
+	onTouchStart() {
+	}
+
+	onTouchMove() {
+	}
+
+	onTouchEnd() {
+	}
+
 }
 
 

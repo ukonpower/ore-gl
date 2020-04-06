@@ -6,11 +6,11 @@ import { glPower } from './glPower';
 import { Background } from './Background';
 import { FloatingObj } from './FloatingObj';
 
-export class APP{
+export class APP {
 
 	private renderer: GLP.Renderer;
 	private gl: WebGLRenderingContext;
-	
+
 	private scene: GLP.Scene;
 	private camera: GLP.Camera;
 
@@ -23,12 +23,12 @@ export class APP{
 
 	private rend: boolean = true;
 
-	constructor(){
+	constructor() {
 
-		this.renderer = new GLP.Renderer({
+		this.renderer = new GLP.Renderer( {
 			canvas: document.querySelector( '#canvas' ),
 			retina: true
-		});
+		} );
 
 		this.gl = this.renderer.gl;
 
@@ -42,8 +42,8 @@ export class APP{
 
 	}
 
-	private initScene(){
-		
+	private initScene() {
+
 		this.scene = new GLP.Scene();
 
 		this.camera = new GLP.Camera( 50, 0.1, 1000, window.innerWidth / window.innerHeight );
@@ -51,44 +51,44 @@ export class APP{
 
 		this.glpower = new glPower( this.gl );
 		this.scene.add( this.glpower );
-		
+
 		this.floatingObj = new FloatingObj( this.gl, 300, this.gl.LINES );
 		this.floatingObj.name = 'floating obj';
 		this.scene.add( this.floatingObj );
-		
-		this.floatingObjMesh = new FloatingObj( this.gl,400, this.gl.TRIANGLES );
+
+		this.floatingObjMesh = new FloatingObj( this.gl, 400, this.gl.TRIANGLES );
 		this.scene.add( this.floatingObjMesh );
-		
+
 		this.background = new Background( this.gl );
 		this.background.resize( this.camera.aspect );
 		this.background.name = 'background';
 		this.scene.add( this.background );
-		
+
 	}
 
-	private animate(){
+	private animate() {
 
 		this.time += 1.0;
 
 		this.glpower.update( this.time );
 
-		this.floatingObj.update( this.time )
-		
+		this.floatingObj.update( this.time );
+
 		this.floatingObjMesh.update( this.time );
-		
+
 		this.background.update( this.time );
 
 		this.renderer.render( this.scene, this.camera );
 
-		if( this.rend ){
+		if ( this.rend ) {
 
 			requestAnimationFrame( this.animate.bind( this ) );
 
 		}
-		
+
 	}
 
-	private resize(){
+	private resize() {
 
 		this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.background.resize( this.camera.aspect );
@@ -102,4 +102,4 @@ window.addEventListener( 'DOMContentLoaded', () => {
 
 	new APP();
 
-});
+} );

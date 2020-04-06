@@ -10,7 +10,7 @@ import spFrag from './shaders/sp.fs';
 import computeFrag from './shaders/compute.fs';
 import { GPUComputationController, GPUComputationKernel, GPUcomputationData } from '../GPUComputationController';
 
-export class Heart extends THREE.Object3D{
+export class Heart extends THREE.Object3D {
 
 	private renderer: THREE.WebGLRenderer;
 
@@ -23,7 +23,7 @@ export class Heart extends THREE.Object3D{
 	private kernel: GPUComputationKernel;
 	private gpuData: GPUcomputationData;
 
-	constructor( renderer: THREE.WebGLRenderer, num: number ){
+	constructor( renderer: THREE.WebGLRenderer, num: number ) {
 
 		super();
 
@@ -35,54 +35,54 @@ export class Heart extends THREE.Object3D{
 
 	}
 
-	private initComputingShader(){
-	
-		this.gpuCon = new GPUComputationController( this.renderer, new THREE.Vector2( this.num, 1 ) )
+	private initComputingShader() {
+
+		this.gpuCon = new GPUComputationController( this.renderer, new THREE.Vector2( this.num, 1 ) );
 		this.kernel = this.gpuCon.createKernel( computeFrag );
-		this.gpuData = this.gpuCon.createData({
+		this.gpuData = this.gpuCon.createData( {
 			magFilter: THREE.LinearFilter,
 			minFilter: THREE.LinearFilter,
-		});
+		} );
 
 		this.kernel.uniforms.time = { value: 0 };
 		this.kernel.uniforms.dataTex = { value: null };
-		this.kernel.uniforms.rotVec = { value: new THREE.Vector2(0, 0) };
+		this.kernel.uniforms.rotVec = { value: new THREE.Vector2( 0, 0 ) };
 		this.kernel.uniforms.rotationQ = { value: new THREE.Quaternion() };
 
 		this.gpuCon.compute( this.kernel, this.gpuData );
 
 	}
 
-	private createMesh(){
+	private createMesh() {
 
 		let scale = 0.1;
 		let cyGeo = new THREE.BoxBufferGeometry( scale, scale, scale, 100, 1 );
-		
+
 		let geo = new THREE.InstancedBufferGeometry();
 
-		let pos = ( cyGeo.attributes.position as THREE.BufferAttribute).clone();
-        geo.setAttribute( 'position', pos );
+		let pos = ( cyGeo.attributes.position as THREE.BufferAttribute ).clone();
+		geo.setAttribute( 'position', pos );
 
-        let normal = ( cyGeo.attributes.normal as THREE.BufferAttribute ).clone();
-        geo.setAttribute( 'normals', normal );
+		let normal = ( cyGeo.attributes.normal as THREE.BufferAttribute ).clone();
+		geo.setAttribute( 'normals', normal );
 
-        let uv = ( cyGeo.attributes.uv as THREE.BufferAttribute ).clone();
-        geo.setAttribute( 'uv', uv );
+		let uv = ( cyGeo.attributes.uv as THREE.BufferAttribute ).clone();
+		geo.setAttribute( 'uv', uv );
 
-        let indices = cyGeo.index.clone();
+		let indices = cyGeo.index.clone();
 		geo.setIndex( indices );
 
 		let g = 2;
 		let n = new THREE.InstancedBufferAttribute( new Float32Array( this.num * g ), 1, false, 1 );
 		let group = new THREE.InstancedBufferAttribute( new Float32Array( this.num * g ), 1, false, 1 );
 
-		for( let i = 0; i < this.num * g; i++ ){
+		for ( let i = 0; i < this.num * g; i ++ ) {
 
 			n.setX( i, i % this.num );
-			group.setX( i, Math.floor( i / this.num ) );			
+			group.setX( i, Math.floor( i / this.num ) );
 
 		}
-		
+
 		geo.setAttribute( 'n', n );
 		geo.setAttribute( 'group', group );
 
@@ -93,16 +93,16 @@ export class Heart extends THREE.Object3D{
 				value: 0,
 			},
 			allNum: {
-				value: this.num 
+				value: this.num
 			},
 			dataTex: {
 				value: null
 			}
-		}
+		};
 
-		this.uniforms = THREE.UniformsUtils.merge([ cUni, baseMat.uniforms ]);
-		
-		let mat = new THREE.ShaderMaterial({
+		this.uniforms = THREE.UniformsUtils.merge( [ cUni, baseMat.uniforms ] );
+
+		let mat = new THREE.ShaderMaterial( {
 			vertexShader: vert,
 			fragmentShader: frag,
 			uniforms: this.uniforms,
@@ -110,8 +110,8 @@ export class Heart extends THREE.Object3D{
 			transparent: true,
 			lights: true,
 			flatShading: true,
-			depthTest: true 
-		})
+			depthTest: true
+		} );
 
 		this.mesh = new THREE.Mesh( geo, mat );
 		this.mesh.renderOrder = 3;
@@ -119,24 +119,24 @@ export class Heart extends THREE.Object3D{
 		this.add( this.mesh );
 
 		let sp = new THREE.SphereBufferGeometry( 1.5, 7, 10 );
-		let spMat = new THREE.ShaderMaterial({
+		let spMat = new THREE.ShaderMaterial( {
 			vertexShader: spVert,
 			fragmentShader: spFrag,
 			uniforms: this.uniforms
-		});
+		} );
 
 		spMat.wireframe = true;
-		
+
 	}
 
-	public update( deltaTime: number ){
+	public update( deltaTime: number ) {
 
 		this.time += deltaTime;
 
 		this.kernel.uniforms.time.value = this.time;
 		this.kernel.uniforms.rotVec.value = this.uniforms.rotVec.value;
-		if( this.uniforms.rotationQ.value )
-				this.kernel.uniforms.rotationQ.value = this.uniforms.rotationQ.value;
+		if ( this.uniforms.rotationQ.value )
+			this.kernel.uniforms.rotationQ.value = this.uniforms.rotationQ.value;
 		this.kernel.uniforms.dataTex.value = this.gpuData.buffer.texture;
 		this.gpuCon.compute( this.kernel, this.gpuData );
 

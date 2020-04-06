@@ -1,5 +1,5 @@
-import *  as THREE from 'three';
-import * as ORE from '@ore-three-ts'
+import * as THREE from 'three';
+import * as ORE from '@ore-three-ts';
 
 import { GPUComputationController, GPUcomputationData, GPUComputationKernel } from '../GPUComputationController';
 
@@ -25,18 +25,18 @@ export interface StableFluidsParam{
     pointerSize: number;
 }
 
-export class StableFluids{
+export class StableFluids {
 
     public parameter: StableFluidsParam = {
-        solverIteration: 20,
-        attenuation: 1.0,
-        alpha: 1.0,
-        beta: 1.0,
-        viscosity: 0.999,
-        screenAspect: 1.0,
-        pointerSize: 0.5,
+    	solverIteration: 20,
+    	attenuation: 1.0,
+    	alpha: 1.0,
+    	beta: 1.0,
+    	viscosity: 0.999,
+    	screenAspect: 1.0,
+    	pointerSize: 0.5,
     }
- 
+
     private gcConroller: GPUComputationController;
 
     private resolution: THREE.Vector2;
@@ -46,91 +46,91 @@ export class StableFluids{
 
     private time: number = 0;
     private renderer: THREE.WebGLRenderer;
-	
+
     constructor( renderer :THREE.WebGLRenderer, resolution: THREE.Vector2 ) {
-        
-        this.renderer = renderer;
-        this.resolution = resolution;
-        
-        this.gcConroller = new GPUComputationController( this.renderer, this.resolution );
 
-        //create kernels
-        this.kernels = {
-            divergence: this.gcConroller.createKernel( comShaderDivergence ),
-            velocity: this.gcConroller.createKernel( comShaderVelocity ),
-            pressure: this.gcConroller.createKernel( comShadePressure ),
-            advect: this.gcConroller.createKernel( comShaderAdvect )
-        }
+    	this.renderer = renderer;
+    	this.resolution = resolution;
 
-        this.kernels.divergence.uniforms.dataTex = { value: null };
+    	this.gcConroller = new GPUComputationController( this.renderer, this.resolution );
 
-        this.kernels.pressure.uniforms.dataTex = { value: null };
-        this.kernels.pressure.uniforms.alpha = { value: this.parameter.alpha };
-        this.kernels.pressure.uniforms.beta = { value: this.parameter.beta };
+    	//create kernels
+    	this.kernels = {
+    		divergence: this.gcConroller.createKernel( comShaderDivergence ),
+    		velocity: this.gcConroller.createKernel( comShaderVelocity ),
+    		pressure: this.gcConroller.createKernel( comShadePressure ),
+    		advect: this.gcConroller.createKernel( comShaderAdvect )
+    	};
 
-        this.kernels.velocity.uniforms.dataTex = { value: null };
-        this.kernels.velocity.uniforms.viscosity = { value: this.parameter.viscosity };
-        this.kernels.velocity.uniforms.screenAspect = { value: this.parameter.screenAspect };
-        this.kernels.velocity.uniforms.time = { value: this.time };
-        this.kernels.velocity.uniforms.pointerPos = { value: 0 };
-        this.kernels.velocity.uniforms.pointerVec = { value: 0 };
-        this.kernels.velocity.uniforms.pointerSize = { value: this.parameter.pointerSize };
+    	this.kernels.divergence.uniforms.dataTex = { value: null };
 
-        this.kernels.advect.uniforms.dataTex = { value: null };
-        this.kernels.advect.uniforms.attenuation = { value: this.parameter.attenuation };
+    	this.kernels.pressure.uniforms.dataTex = { value: null };
+    	this.kernels.pressure.uniforms.alpha = { value: this.parameter.alpha };
+    	this.kernels.pressure.uniforms.beta = { value: this.parameter.beta };
 
-        //create fluid data
-        this.fluidData = this.gcConroller.createData();
-        
-    }
+    	this.kernels.velocity.uniforms.dataTex = { value: null };
+    	this.kernels.velocity.uniforms.viscosity = { value: this.parameter.viscosity };
+    	this.kernels.velocity.uniforms.screenAspect = { value: this.parameter.screenAspect };
+    	this.kernels.velocity.uniforms.time = { value: this.time };
+    	this.kernels.velocity.uniforms.pointerPos = { value: 0 };
+    	this.kernels.velocity.uniforms.pointerVec = { value: 0 };
+    	this.kernels.velocity.uniforms.pointerSize = { value: this.parameter.pointerSize };
 
-    public update( deltaTime: number ) {        
+    	this.kernels.advect.uniforms.dataTex = { value: null };
+    	this.kernels.advect.uniforms.attenuation = { value: this.parameter.attenuation };
 
-        this.time += deltaTime;
-
-        this.kernels.pressure.uniforms.alpha.value = this.parameter.alpha;
-        this.kernels.pressure.uniforms.beta.value = this.parameter.beta;
-        this.kernels.velocity.uniforms.viscosity.value = this.parameter.viscosity;
-        this.kernels.velocity.uniforms.screenAspect.value = this.parameter.screenAspect;
-        this.kernels.advect.uniforms.attenuation.value = this.parameter.attenuation;
-
-        //update divergence
-        this.kernels.divergence.uniforms.dataTex.value = this.fluidData.buffer.texture;
-        this.gcConroller.compute( this.kernels.divergence, this.fluidData );
-
-        //update pressure
-        for( let i = 0; i < this.parameter.solverIteration; i++ ){
-            
-            this.kernels.pressure.uniforms.dataTex.value = this.fluidData.buffer.texture;
-            this.gcConroller.compute( this.kernels.pressure, this.fluidData );
-
-        }
-
-        //update velocity
-        this.kernels.velocity.uniforms.dataTex.value = this.fluidData.buffer.texture;
-        this.kernels.velocity.uniforms.time.value = this.time;
-        this.gcConroller.compute( this.kernels.velocity, this.fluidData );
-
-        //advect
-        this.kernels.advect.uniforms.dataTex.value = this.fluidData.buffer.texture;
-        this.gcConroller.compute( this.kernels.advect, this.fluidData );
+    	//create fluid data
+    	this.fluidData = this.gcConroller.createData();
 
     }
 
-    public setPointer( position: THREE.Vector2, vector: THREE.Vector2 ){
+    public update( deltaTime: number ) {
 
-        this.kernels.velocity.uniforms.pointerPos.value = position;
-        this.kernels.velocity.uniforms.pointerVec.value = vector;
+    	this.time += deltaTime;
+
+    	this.kernels.pressure.uniforms.alpha.value = this.parameter.alpha;
+    	this.kernels.pressure.uniforms.beta.value = this.parameter.beta;
+    	this.kernels.velocity.uniforms.viscosity.value = this.parameter.viscosity;
+    	this.kernels.velocity.uniforms.screenAspect.value = this.parameter.screenAspect;
+    	this.kernels.advect.uniforms.attenuation.value = this.parameter.attenuation;
+
+    	//update divergence
+    	this.kernels.divergence.uniforms.dataTex.value = this.fluidData.buffer.texture;
+    	this.gcConroller.compute( this.kernels.divergence, this.fluidData );
+
+    	//update pressure
+    	for ( let i = 0; i < this.parameter.solverIteration; i ++ ) {
+
+    		this.kernels.pressure.uniforms.dataTex.value = this.fluidData.buffer.texture;
+    		this.gcConroller.compute( this.kernels.pressure, this.fluidData );
+
+    	}
+
+    	//update velocity
+    	this.kernels.velocity.uniforms.dataTex.value = this.fluidData.buffer.texture;
+    	this.kernels.velocity.uniforms.time.value = this.time;
+    	this.gcConroller.compute( this.kernels.velocity, this.fluidData );
+
+    	//advect
+    	this.kernels.advect.uniforms.dataTex.value = this.fluidData.buffer.texture;
+    	this.gcConroller.compute( this.kernels.advect, this.fluidData );
+
+    }
+
+    public setPointer( position: THREE.Vector2, vector: THREE.Vector2 ) {
+
+    	this.kernels.velocity.uniforms.pointerPos.value = position;
+    	this.kernels.velocity.uniforms.pointerVec.value = vector;
 
     }
 
     public getTexture(): THREE.Texture {
 
-        return this.fluidData.buffer.texture;
+    	return this.fluidData.buffer.texture;
 
     }
 
-    public resize( width: number, height: number ){
+    public resize( width: number, height: number ) {
 
     }
 

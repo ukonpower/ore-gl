@@ -5,7 +5,7 @@ import frag from './shaders/fireworks.fs';
 import vert from './shaders/fireworks.vs';
 import { throwStatement } from 'babel-types';
 
-export class Fireworks extends THREE.Object3D{
+export class Fireworks extends THREE.Object3D {
 
 	private time: number = 0;
 	private num: number;
@@ -16,53 +16,53 @@ export class Fireworks extends THREE.Object3D{
 	private changeTime: number = 0;
 	private cb: Function;
 
-	constructor( ){
+	constructor( ) {
 
 		super();
 
-		this.num = Math.floor( Math.random() * 10) + 30;
-		this.round = Math.floor( Math.random() * 9) + 4;
+		this.num = Math.floor( Math.random() * 10 ) + 30;
+		this.round = Math.floor( Math.random() * 9 ) + 4;
 
-		console.log( this.num, this.round);
-		
+		console.log( this.num, this.round );
+
 
 		this.createMesh();
 
 	}
 
-	private createMesh(){
+	private createMesh() {
 
 		let planeGeo = new THREE.CylinderBufferGeometry( 0.05, 0.05, 1.0, 5, 10 );
 
 		let geo = new THREE.InstancedBufferGeometry();
 
-		let pos = ( planeGeo.attributes.position as THREE.BufferAttribute).clone();
-        geo.setAttribute( 'position', pos );
+		let pos = ( planeGeo.attributes.position as THREE.BufferAttribute ).clone();
+		geo.setAttribute( 'position', pos );
 
-        let normal = ( planeGeo.attributes.normal as THREE.BufferAttribute ).clone();
-        geo.setAttribute( 'normals', normal );
+		let normal = ( planeGeo.attributes.normal as THREE.BufferAttribute ).clone();
+		geo.setAttribute( 'normals', normal );
 
-        let uv = ( planeGeo.attributes.uv as THREE.BufferAttribute ).clone();
-        geo.setAttribute( 'uv', uv );
+		let uv = ( planeGeo.attributes.uv as THREE.BufferAttribute ).clone();
+		geo.setAttribute( 'uv', uv );
 
-        let indices = planeGeo.index.clone();
+		let indices = planeGeo.index.clone();
 		geo.setIndex( indices );
 
-		let n = new THREE.InstancedBufferAttribute( new Float32Array(this.num * this.round), 1, false, 1 );
-		let round = new THREE.InstancedBufferAttribute( new Float32Array(this.num * this.round), 1, false, 1 );
-		let theta = new THREE.InstancedBufferAttribute( new Float32Array(this.num * this.round), 1, false, 1 );
-		
-		for( let i = 0; i < this.round; i++ ){
+		let n = new THREE.InstancedBufferAttribute( new Float32Array( this.num * this.round ), 1, false, 1 );
+		let round = new THREE.InstancedBufferAttribute( new Float32Array( this.num * this.round ), 1, false, 1 );
+		let theta = new THREE.InstancedBufferAttribute( new Float32Array( this.num * this.round ), 1, false, 1 );
 
-			for( let j = 0; j < this.num; j++ ){
+		for ( let i = 0; i < this.round; i ++ ) {
+
+			for ( let j = 0; j < this.num; j ++ ) {
 
 				let k = i * this.num + j;
 				n.setX( k, i * this.num + j );
-				round.setX( k,  i );
+				round.setX( k, i );
 				theta.setX( k, Math.PI * 2.0 * ( j / this.num ) );
 
 			}
-			
+
 		}
 
 		geo.setAttribute( 'n', n );
@@ -75,23 +75,23 @@ export class Fireworks extends THREE.Object3D{
 			time: {
 				value: 0,
 			},
-			allRound:{
+			allRound: {
 				value: this.round
 			},
 			allNum: {
 				value: this.num * this.round
 			},
 			uColor: {
-				value: new THREE.Vector3( Math.random() * 2 - 1,Math.random() * 2 - 1,Math.random() * 2 - 1,)
+				value: new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1, )
 			},
 			changeW: {
 				value: 0
 			}
-		}
+		};
 
-		this.uniforms = THREE.UniformsUtils.merge([ cUni, baseMat.uniforms ]);
-		
-		let mat = new THREE.ShaderMaterial({
+		this.uniforms = THREE.UniformsUtils.merge( [ cUni, baseMat.uniforms ] );
+
+		let mat = new THREE.ShaderMaterial( {
 			vertexShader: vert,
 			fragmentShader: frag,
 			uniforms: this.uniforms,
@@ -99,41 +99,44 @@ export class Fireworks extends THREE.Object3D{
 			transparent: true,
 			lights: true,
 			flatShading: true
-		})
+		} );
 
 		this.mesh = new THREE.Mesh( geo, mat );
 		this.mesh.renderOrder = 3;
 
 		this.add( this.mesh );
-		
+
 	}
 
-	public update( deltaTime: number ){
+	public update( deltaTime: number ) {
 
 
-		if( this.changing ){
+		if ( this.changing ) {
 
 			let len = 0.5;
 
 			this.changeTime += deltaTime;
-			
+
 			this.uniforms.changeW.value = Math.sin( this.changeTime / len * Math.PI / 2.0 );
 
-			if( this.changeTime > len ){
-				
+			if ( this.changeTime > len ) {
+
 				this.changing = false;
 				this.changeTime = len;
 				this.time = 0;
 				this.uniforms.changeW.value = 0;
-				this.uniforms.uColor.value.set( Math.random() * 2 - 1,Math.random() * 2 - 1,Math.random() * 2 - 1,);
+				this.uniforms.uColor.value.set( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1, );
 
-				if( this.cb ){
+				if ( this.cb ) {
+
 					this.cb();
+
 				}
+
 			}
 
 
-		}else{
+		} else {
 
 			this.time += deltaTime;
 
@@ -143,11 +146,11 @@ export class Fireworks extends THREE.Object3D{
 
 	}
 
-	public changeColor( cb?: Function ){
-		
+	public changeColor( cb?: Function ) {
+
 		console.log( 'change' );
 
-		if( !this.changing ){
+		if ( ! this.changing ) {
 
 			this.changing = true;
 			this.changeTime = 0;
@@ -155,10 +158,10 @@ export class Fireworks extends THREE.Object3D{
 		}
 
 		this.cb = cb;
-		
+
 	}
 
-	public dispose(){
+	public dispose() {
 
 		this.mesh.geometry.dispose();
 

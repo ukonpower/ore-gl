@@ -4,123 +4,141 @@ import Voxel from './utils/Voxel/Voxel';
 import ppVert from './shaders/pp.vs';
 import ppFrag from './shaders/pp.fs';
 
-import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
-import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 
 export default class MainScene extends BaseScene {
 
-    constructor(renderer) {
-        super(renderer);
-        this.init();
-        this.animate();
-        this.scene.background = new THREE.Color( 0x120000 );
-        this.renderer.shadowMap.enabled = true;
-    }
+	constructor( renderer ) {
 
-    init() {
-        this.time = Math.random() * 100;
-        this.clock = new THREE.Clock();
-        this.camera.position.set(0,1,3);
+		super( renderer );
+		this.init();
+		this.animate();
+		this.scene.background = new THREE.Color( 0x120000 );
+		this.renderer.shadowMap.enabled = true;
 
-        this.light = new THREE.PointLight();
-        this.light.color = new THREE.Color(0xffffff);
-        this.light.position.set(0,0,0);
-        this.light.intensity = 1.0;
-        this.light.castShadow = true;
-        this.scene.add(this.light);
+	}
 
-        this.light = new THREE.PointLight();
-        this.light.color = new THREE.Color(0xffffff);
-        this.light.position.set(0,0,-4);
-        this.light.intensity = 1.0;
-        this.light.castShadow = true;
-        this.scene.add(this.light);
+	init() {
 
-        var planeGeo = new THREE.PlaneGeometry(15,15,100);
-        var planeMat = new THREE.MeshNormalMaterial({
-            side: THREE.DoubleSide,
-        });
-        planeMat.visible = false;
-        this.plane = new THREE.Mesh(planeGeo,planeMat);
-        this.scene.add(this.plane);
-        this.raycaster = new THREE.Raycaster();
-        this.pointer = new THREE.Vector3(0,0,0);
+		this.time = Math.random() * 100;
+		this.clock = new THREE.Clock();
+		this.camera.position.set( 0, 1, 3 );
 
-        this.voxel = new Voxel(this.renderer,1,1,1,15);
-        this.scene.add(this.voxel.obj);
+		this.light = new THREE.PointLight();
+		this.light.color = new THREE.Color( 0xffffff );
+		this.light.position.set( 0, 0, 0 );
+		this.light.intensity = 1.0;
+		this.light.castShadow = true;
+		this.scene.add( this.light );
 
-        this.composer = new EffectComposer(this.renderer);
-        this.composer.addPass(new RenderPass(this.scene,this.camera));
+		this.light = new THREE.PointLight();
+		this.light.color = new THREE.Color( 0xffffff );
+		this.light.position.set( 0, 0, - 4 );
+		this.light.intensity = 1.0;
+		this.light.castShadow = true;
+		this.scene.add( this.light );
 
-        var effect = {
-            uniforms:{
-                tDiffuse:{
-                    value: null,
-                    type:'t',
-                },
-                time: {
-                    value: 0,
-                    type: "f",
-                }
-            },
-            vertexShader: ppVert,
-            fragmentShader: ppFrag,
-        }
-        this.customPass = new ShaderPass(effect);
-        this.customPass.renderToScreen = true;
-        this.composer.addPass(this.customPass);
+		var planeGeo = new THREE.PlaneGeometry( 15, 15, 100 );
+		var planeMat = new THREE.MeshNormalMaterial( {
+			side: THREE.DoubleSide,
+		} );
+		planeMat.visible = false;
+		this.plane = new THREE.Mesh( planeGeo, planeMat );
+		this.scene.add( this.plane );
+		this.raycaster = new THREE.Raycaster();
+		this.pointer = new THREE.Vector3( 0, 0, 0 );
 
-        window.scene = this.scene;
-    }
+		this.voxel = new Voxel( this.renderer, 1, 1, 1, 15 );
+		this.scene.add( this.voxel.obj );
 
-    animate() {
-        this.time += this.clock.getDelta();
+		this.composer = new EffectComposer( this.renderer );
+		this.composer.addPass( new RenderPass( this.scene, this.camera ) );
 
-        // let r = 15;
-        // this.camera.position.set(Math.sin(this.time * 0.5) * r,2,Math.cos(this.time * 0.5) * r);
-        this.camera.position.set(0,0,-15);
-        this.camera.lookAt(0,0,0);
+		var effect = {
+			uniforms: {
+				tDiffuse: {
+					value: null,
+					type: 't',
+				},
+				time: {
+					value: 0,
+					type: "f",
+				}
+			},
+			vertexShader: ppVert,
+			fragmentShader: ppFrag,
+		};
+		this.customPass = new ShaderPass( effect );
+		this.customPass.renderToScreen = true;
+		this.composer.addPass( this.customPass );
 
-        this.voxel.update();
+		window.scene = this.scene;
 
-        // this.composer.render();
-        this.renderer.render(this.scene,this.camera);
-    }
+	}
 
-    Resize(width,height){
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-    }
+	animate() {
 
-    movePointer(cursor){
-        var halfWidth = innerWidth / 2;
-        var halfHeight = innerHeight / 2;
-        var pos = new THREE.Vector2((cursor.x - halfWidth) / halfWidth, (cursor.y - halfHeight) / halfHeight);
-        
-        pos.y *= -1;
+		this.time += this.clock.getDelta();
 
-        this.raycaster.setFromCamera(pos, this.camera); 
-        var intersects = this.raycaster.intersectObjects([this.plane]);
-        if(intersects.length > 0){
-            var point = intersects[0].point;   
-            this.pointer.copy(point);
-        }
-    }
-    
-    onTouchStart(c){
-        this.movePointer(c);
-        this.voxel.setPoint(this.pointer);
-    }
+		// let r = 15;
+		// this.camera.position.set(Math.sin(this.time * 0.5) * r,2,Math.cos(this.time * 0.5) * r);
+		this.camera.position.set( 0, 0, - 15 );
+		this.camera.lookAt( 0, 0, 0 );
 
-    onTouchMove(c){
-        this.movePointer(c);
-        this.voxel.setPoint(this.pointer);
-    }
+		this.voxel.update();
 
-    onTouchEnd(){
-        this.pointer.set(0,0,0);
-        this.voxel.setPoint(this.pointer);
-    }
+		// this.composer.render();
+		this.renderer.render( this.scene, this.camera );
+
+	}
+
+	Resize( width, height ) {
+
+		this.camera.aspect = width / height;
+		this.camera.updateProjectionMatrix();
+
+	}
+
+	movePointer( cursor ) {
+
+		var halfWidth = innerWidth / 2;
+		var halfHeight = innerHeight / 2;
+		var pos = new THREE.Vector2( ( cursor.x - halfWidth ) / halfWidth, ( cursor.y - halfHeight ) / halfHeight );
+
+		pos.y *= - 1;
+
+		this.raycaster.setFromCamera( pos, this.camera );
+		var intersects = this.raycaster.intersectObjects( [ this.plane ] );
+		if ( intersects.length > 0 ) {
+
+			var point = intersects[ 0 ].point;
+			this.pointer.copy( point );
+
+		}
+
+	}
+
+	onTouchStart( c ) {
+
+		this.movePointer( c );
+		this.voxel.setPoint( this.pointer );
+
+	}
+
+	onTouchMove( c ) {
+
+		this.movePointer( c );
+		this.voxel.setPoint( this.pointer );
+
+	}
+
+	onTouchEnd() {
+
+		this.pointer.set( 0, 0, 0 );
+		this.voxel.setPoint( this.pointer );
+
+	}
 
 }

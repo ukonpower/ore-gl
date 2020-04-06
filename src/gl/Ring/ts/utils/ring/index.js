@@ -3,65 +3,75 @@ import frag from './shaders/ring.fs';
 import * as THREE from 'three';
 
 export default class Ring {
-    constructor() {
-        this.num = 200;
-        this.size = 2;
 
-        this.obj;
-        this.time = 0;
+	constructor() {
 
-        this.createVoxel();
-    }
+		this.num = 200;
+		this.size = 2;
 
-    createVoxel() {
-        let originBox = new THREE.CylinderBufferGeometry(0.5,0.5,0.1,10,1);
-        let geo = new THREE.InstancedBufferGeometry();
+		this.obj;
+		this.time = 0;
 
-        let vertice = originBox.attributes.position.clone();
-        geo.setAttribute('position', vertice);
+		this.createVoxel();
 
-        let normal = originBox.attributes.normal.clone();
-        geo.setAttribute('normals', normal);
+	}
 
-        let uv = originBox.attributes.normal.clone();
-        geo.setAttribute('uv', uv);
+	createVoxel() {
 
-        let indices = originBox.index.clone();
-        geo.setIndex(indices);
+		let originBox = new THREE.CylinderBufferGeometry( 0.5, 0.5, 0.1, 10, 1 );
+		let geo = new THREE.InstancedBufferGeometry();
 
-        let num = new THREE.InstancedBufferAttribute(new Float32Array(this.num * 1), 1, false, 1);
+		let vertice = originBox.attributes.position.clone();
+		geo.setAttribute( 'position', vertice );
 
-        for (let i = 0; i < this.num; i++) {
-            num.setX(i, i); 
-        }
+		let normal = originBox.attributes.normal.clone();
+		geo.setAttribute( 'normals', normal );
 
-        geo.setAttribute('num', num);
+		let uv = originBox.attributes.normal.clone();
+		geo.setAttribute( 'uv', uv );
 
-        let cUni = {
-            time: {
-                value: 0
-            },
-            res:{
-                value: this.num
-            }
-        }
+		let indices = originBox.index.clone();
+		geo.setIndex( indices );
 
-        this.uni = THREE.UniformsUtils.merge([THREE.ShaderLib.standard.uniforms, cUni]);
-        this.uni.roughness.value = 0.5;
+		let num = new THREE.InstancedBufferAttribute( new Float32Array( this.num * 1 ), 1, false, 1 );
 
-        let mat = new THREE.ShaderMaterial({
-            vertexShader: vert,
-            fragmentShader: frag,
-            uniforms: this.uni,
-            flatShading: true,
-            lights: true
-        })
+		for ( let i = 0; i < this.num; i ++ ) {
 
-        this.obj = new THREE.Mesh(geo, mat);
-    }
+			num.setX( i, i );
 
-    update(deltaTime) {
-        this.time += deltaTime;
-        this.uni.time.value = this.time;
-    }
+		}
+
+		geo.setAttribute( 'num', num );
+
+		let cUni = {
+			time: {
+				value: 0
+			},
+			res: {
+				value: this.num
+			}
+		};
+
+		this.uni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
+		this.uni.roughness.value = 0.5;
+
+		let mat = new THREE.ShaderMaterial( {
+			vertexShader: vert,
+			fragmentShader: frag,
+			uniforms: this.uni,
+			flatShading: true,
+			lights: true
+		} );
+
+		this.obj = new THREE.Mesh( geo, mat );
+
+	}
+
+	update( deltaTime ) {
+
+		this.time += deltaTime;
+		this.uni.time.value = this.time;
+
+	}
+
 }

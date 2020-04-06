@@ -1,12 +1,12 @@
 import { Vector3, Vector4, Matrix4 } from 'matrixgl';
-const GLPower = require('./GLPower')
+const GLPower = require( './GLPower' );
 
-const frag = require('../shader/frag.glsl');
-const vert = require('../shader/vert.glsl');
+const frag = require( '../shader/frag.glsl' );
+const vert = require( '../shader/vert.glsl' );
 
-const renderVert = require('../shader/renderVert.glsl');
-const particleFrag = require('../shader/computeParticle.fs');
-const initParticleFrag = require('../shader/initParticle.fs');
+const renderVert = require( '../shader/renderVert.glsl' );
+const particleFrag = require( '../shader/computeParticle.fs' );
+const initParticleFrag = require( '../shader/initParticle.fs' );
 
 var canvas;
 var glp;
@@ -16,108 +16,117 @@ var particlePrg;
 var initParticlePrg;
 var time = 0;
 
-window.addEventListener('load',() =>{
-    canvas = document.getElementById("canvas");
-    // var dpr = window.devicePixelRatio || 1;
-    var dpr = 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
+window.addEventListener( 'load', () =>{
 
-    glp = new GLPower(canvas,{r:0,g:0,b:0});
+	canvas = document.getElementById( "canvas" );
+	// var dpr = window.devicePixelRatio || 1;
+	var dpr = 1;
+	canvas.width = window.innerWidth * dpr;
+	canvas.height = window.innerHeight * dpr;
 
-    scenePrg = glp.getProgram(vert,frag);
-    initParticlePrg = glp.getProgram(renderVert,initParticleFrag);
-    particlePrg = glp.getProgram(renderVert,particleFrag);
+	glp = new GLPower( canvas, { r: 0, g: 0, b: 0 } );
 
-    init();
-},false)
+	scenePrg = glp.getProgram( vert, frag );
+	initParticlePrg = glp.getProgram( renderVert, initParticleFrag );
+	particlePrg = glp.getProgram( renderVert, particleFrag );
 
-function init(){
+	init();
 
-    glp.setAttribute(initParticlePrg,'position',3);
-    glp.addUniform(initParticlePrg,'resolution','uniform2fv');
+}, false );
 
-    glp.setAttribute(particlePrg,'position',3);
-    glp.addUniform(particlePrg,'resolution','uniform2fv');
-    glp.addUniform(particlePrg,'posTexture','uniform1i');
-    glp.addUniform(particlePrg,'time','uniform1f');
+function init() {
 
-    glp.setAttribute(scenePrg,'index',1);
-    glp.addUniform(scenePrg,'mvp','uniformMatrix4fv')
-    glp.addUniform(scenePrg,'time','uniform1f');
-    glp.addUniform(scenePrg,'num','uniform1f');
-    glp.addUniform(scenePrg,'posTexture','uniform1i');
+	glp.setAttribute( initParticlePrg, 'position', 3 );
+	glp.addUniform( initParticlePrg, 'resolution', 'uniform2fv' );
+
+	glp.setAttribute( particlePrg, 'position', 3 );
+	glp.addUniform( particlePrg, 'resolution', 'uniform2fv' );
+	glp.addUniform( particlePrg, 'posTexture', 'uniform1i' );
+	glp.addUniform( particlePrg, 'time', 'uniform1f' );
+
+	glp.setAttribute( scenePrg, 'index', 1 );
+	glp.addUniform( scenePrg, 'mvp', 'uniformMatrix4fv' );
+	glp.addUniform( scenePrg, 'time', 'uniform1f' );
+	glp.addUniform( scenePrg, 'num', 'uniform1f' );
+	glp.addUniform( scenePrg, 'posTexture', 'uniform1i' );
 
 
-    var boxVertex = []
-    var particleIndex = []
+	var boxVertex = [];
+	var particleIndex = [];
 
-    let n = 512;
+	let n = 512;
 
-    for(var j = 0; j < n; j++){
-        for(var i = 0; i < n; i++){
-            boxVertex.push(0,0,0);
-            particleIndex.push(i + j * n);
-        }
-    }
+	for ( var j = 0; j < n; j ++ ) {
 
-    var boxVBO = glp.cVBO(boxVertex);
-    var indexVBO = glp.cVBO(particleIndex);
+		for ( var i = 0; i < n; i ++ ) {
 
-    glp.cFbuffer(n,n,0,true);
-    glp.cFbuffer(n,n,1,true);
+			boxVertex.push( 0, 0, 0 );
+			particleIndex.push( i + j * n );
 
-    var fBselect = 0;
+		}
 
-    glp.selectFramebuffer(0);
-    glp.selectUseProgram(initParticlePrg)
-    glp.addAttribute('position',glp.screenVBO,glp.screenIBO);
-    glp.setUniform('resolution',[n,n]);
-    glp.clear();
-    glp.drawElements();
-    glp.flush();
+	}
 
-    render();
-    
-    function render(){
-        time += 0.01666;
-        
-        const view = Matrix4.lookAt(new Vector3(0,2,5),new Vector3(0,0,0),new Vector3(0,1,0));
+	var boxVBO = glp.cVBO( boxVertex );
+	var indexVBO = glp.cVBO( particleIndex );
 
-        const perspective = Matrix4.perspective({
-            fovYRadian: 60 * Math.PI / 180,
-            aspectRatio: window.innerWidth / window.innerHeight,
-            near: 0.1,
-            far: 10
-        });
+	glp.cFbuffer( n, n, 0, true );
+	glp.cFbuffer( n, n, 1, true );
 
-        const transform = Matrix4.identity().rotateY(0).scale(2,2,2);
-        const mvp = perspective.mulByMatrix4(view).mulByMatrix4(transform);
+	var fBselect = 0;
 
-        fBselect = fBselect == 0 ? 1 : 0;
-        
-        glp.selectFramebuffer(fBselect);
-        glp.selectUseProgram(particlePrg)
-        glp.addAttribute('position',glp.screenVBO,glp.screenIBO);
-        glp.setUniform('posTexture',fBselect == 0 ? 1 : 0);
-        glp.setUniform('resolution',[n,n]);
-        glp.setUniform('time',time);
-        glp.clear();
-        glp.drawElements();
-        glp.flush();
+	glp.selectFramebuffer( 0 );
+	glp.selectUseProgram( initParticlePrg );
+	glp.addAttribute( 'position', glp.screenVBO, glp.screenIBO );
+	glp.setUniform( 'resolution', [ n, n ] );
+	glp.clear();
+	glp.drawElements();
+	glp.flush();
 
-        glp.selectFramebuffer(null);
-        glp.selectUseProgram(scenePrg);
-        glp.addAttribute('index',indexVBO,null);
-        glp.setUniform('mvp',mvp.values);
-        glp.setUniform('num',n);
-        glp.setUniform('time',time);
-        glp.setUniform('posTexture',fBselect);
+	render();
 
-        glp.clear();
-        glp.drawArrays(glp.gl.POINTS)
-        glp.flush();
+	function render() {
 
-        requestAnimationFrame(render);
-    }
+		time += 0.01666;
+
+		const view = Matrix4.lookAt( new Vector3( 0, 2, 5 ), new Vector3( 0, 0, 0 ), new Vector3( 0, 1, 0 ) );
+
+		const perspective = Matrix4.perspective( {
+			fovYRadian: 60 * Math.PI / 180,
+			aspectRatio: window.innerWidth / window.innerHeight,
+			near: 0.1,
+			far: 10
+		} );
+
+		const transform = Matrix4.identity().rotateY( 0 ).scale( 2, 2, 2 );
+		const mvp = perspective.mulByMatrix4( view ).mulByMatrix4( transform );
+
+		fBselect = fBselect == 0 ? 1 : 0;
+
+		glp.selectFramebuffer( fBselect );
+		glp.selectUseProgram( particlePrg );
+		glp.addAttribute( 'position', glp.screenVBO, glp.screenIBO );
+		glp.setUniform( 'posTexture', fBselect == 0 ? 1 : 0 );
+		glp.setUniform( 'resolution', [ n, n ] );
+		glp.setUniform( 'time', time );
+		glp.clear();
+		glp.drawElements();
+		glp.flush();
+
+		glp.selectFramebuffer( null );
+		glp.selectUseProgram( scenePrg );
+		glp.addAttribute( 'index', indexVBO, null );
+		glp.setUniform( 'mvp', mvp.values );
+		glp.setUniform( 'num', n );
+		glp.setUniform( 'time', time );
+		glp.setUniform( 'posTexture', fBselect );
+
+		glp.clear();
+		glp.drawArrays( glp.gl.POINTS );
+		glp.flush();
+
+		requestAnimationFrame( render );
+
+	}
+
 }

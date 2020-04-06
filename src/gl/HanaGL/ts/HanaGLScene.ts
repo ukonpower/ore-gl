@@ -1,4 +1,4 @@
-import * as ORE from '@ore-three-ts'
+import * as ORE from '@ore-three-ts';
 import * as THREE from 'three';
 import NoisePostProcessing from './NoisePostProcessing';
 import { Nose } from './Nose';
@@ -10,7 +10,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { Tunnel } from './Tunnel';
 import Background from './Background';
 
-export class HanaGLScene extends ORE.BaseScene{
+export class HanaGLScene extends ORE.BaseScene {
 
 	private nose: Nose;
 
@@ -22,24 +22,24 @@ export class HanaGLScene extends ORE.BaseScene{
 
 	private noisePP: NoisePostProcessing;
 
-	constructor(){
+	constructor() {
 
 		super();
 
 		this.name = "HanaGLScene";
-	
+
 	}
 
-	onBind( gPorps: ORE.GlobalProperties ){
+	onBind( gPorps: ORE.GlobalProperties ) {
 
 		super.onBind( gPorps );
 
 		this.renderer = this.gProps.renderer;
-		
-		this.camera.position.set( 0, 0 ,10 );
+
+		this.camera.position.set( 0, 0, 10 );
 
 		this.loadModels();
-		
+
 		let light = new THREE.DirectionalLight();
 		light.position.set( 2.0, 10.0, 3.0 );
 		light.intensity = 0.5;
@@ -50,7 +50,7 @@ export class HanaGLScene extends ORE.BaseScene{
 		this.scene.add( alight );
 
 		let plight = new THREE.PointLight();
-		plight.position.set( 0.0, -3.0, 1.0 );
+		plight.position.set( 0.0, - 3.0, 1.0 );
 		this.scene.add( plight );
 
 		this.background = new Background();
@@ -64,7 +64,7 @@ export class HanaGLScene extends ORE.BaseScene{
 
 	}
 
-	private loadModels(){
+	private loadModels() {
 
 		let loader = new GLTFLoader();
 
@@ -74,37 +74,37 @@ export class HanaGLScene extends ORE.BaseScene{
 
 			this.createObjects( scene );
 
-		});
-		
+		} );
+
 	}
 
-	private createObjects( scene: THREE.Group ){
+	private createObjects( scene: THREE.Group ) {
 
 		this.nose = new Nose( this.renderer, scene );
 		this.nose.position.y = 0.6;
 		this.scene.add( this.nose );
-		
+
 		this.finger = new Finger( scene );
 		this.nose.add( this.finger );
 
 		this.touchScreen = new TouchScreen();
 		this.scene.add( this.touchScreen );
-		
+
 	}
 
-	animate( deltaTime: number ){
+	animate( deltaTime: number ) {
 
 		this.background.update( this.time );
 		this.tunnel.update( deltaTime, this.nose && this.nose.splashValue );
 		this.noisePP.update( this.time, this.nose && this.nose.splashValue );
 
-		if( this.nose ){
+		if ( this.nose ) {
 
 			this.nose.update( this.time, deltaTime );
 
 		}
 
-		if( this.finger ){
+		if ( this.finger ) {
 
 			let isSplash = this.nose.updateFingerPos( this.finger.getWorldPosition( new THREE.Vector3() ) );
 
@@ -113,29 +113,29 @@ export class HanaGLScene extends ORE.BaseScene{
 			this.camera.lookAt( this.finger.position.x * 0.00, this.finger.position.y * 0.00, 0 );
 
 			this.finger.updatePos();
-			
+
 			this.noisePP.isGlitch( isSplash );
-			
+
 		}
 
 		this.noisePP.render( this.scene, this.camera );
-	
+
 	}
 
 	onResize( args: ORE.ResizeArgs ) {
-	
+
 		super.onResize( args );
 
 		this.noisePP.resize( args );
 
-		if( args.aspectRatio > 1.0 ){
+		if ( args.aspectRatio > 1.0 ) {
 
 			// pc
 			this.camera.position.z = 5;
 			this.camera.lookAt( 0.0, 0, 0 );
-			
-			
-		}else{
+
+
+		} else {
 
 			// sumaho
 			this.camera.position.z = 6;
@@ -143,7 +143,7 @@ export class HanaGLScene extends ORE.BaseScene{
 
 
 		}
-	
+
 	}
 
 	onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
@@ -158,33 +158,35 @@ export class HanaGLScene extends ORE.BaseScene{
 	}
 
 	onTouchEnd( cursor: ORE.Cursor, event: MouseEvent ) {
-		
+
 		this.nose.heal();
-		
+
 	}
-	
+
 	onHover( cursor: ORE.Cursor ) {
-		
-		if( cursor.position.x != cursor.position.x ){ 
+
+		if ( cursor.position.x != cursor.position.x ) {
+
 			return;
+
 		}
-		
-		if( this.finger ){
-			
+
+		if ( this.finger ) {
+
 			let halfWidth = innerWidth / 2;
 			let halfHeight = innerHeight / 2;
-			let pos = new THREE.Vector2( ( cursor.position.x - halfWidth ) / halfWidth, -( cursor.position.y - halfHeight ) / halfHeight );
+			let pos = new THREE.Vector2( ( cursor.position.x - halfWidth ) / halfWidth, - ( cursor.position.y - halfHeight ) / halfHeight );
 
 			let p = this.touchScreen.getTouchPos( this.camera, pos );
-			
-			if( p ){
+
+			if ( p ) {
 
 				this.finger.setPos( new THREE.Vector3( p.x, p.y + 0.5, 0 ) );
-				
+
 			}
 
 		}
-		
+
 	}
 
 }

@@ -1,49 +1,58 @@
-import {BaseScene} from './utils/ore-three/';
+import { BaseScene } from './utils/ore-three/';
 import Voxel from './utils/InstancingBox';
 
 export default class MainScene extends BaseScene {
-    constructor(renderer) {
-        super(renderer);
-        this.init();
-    }
 
-    init() {
-        this.camera.position.set(0,1.5,8);
-        this.camera.lookAt(0,0,0);
+	constructor( renderer ) {
 
-        this.light = new THREE.DirectionalLight();
-        this.light.position.y = 10;
-        this.light.position.z = 10;
-        this.scene.add(this.light);
+		super( renderer );
+		this.init();
 
-        this.alight = new THREE.AmbientLight();
-        this.alight.position.y = 10;
-        this.scene.add(this.alight);
+	}
 
-        this.voxel = new Voxel(1000);
-        this.scene.add(this.voxel.obj);
-        window.scene = this.scene;
-    }
+	init() {
 
-    animate() {
-        this.voxel.obj.rotateY(0.01);
-        this.voxel.update();
-        this.renderer.render(this.scene,this.camera);
-    }
+		this.camera.position.set( 0, 1.5, 8 );
+		this.camera.lookAt( 0, 0, 0 );
 
-    Resize(width,height){
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-    }
-    
-    onTouchStart(){
-    }
+		this.light = new THREE.DirectionalLight();
+		this.light.position.y = 10;
+		this.light.position.z = 10;
+		this.scene.add( this.light );
 
-    onTouchMove(){
-    }
+		this.alight = new THREE.AmbientLight();
+		this.alight.position.y = 10;
+		this.scene.add( this.alight );
 
-    onTouchEnd(){
+		this.voxel = new Voxel( 1000 );
+		this.scene.add( this.voxel.obj );
+		window.scene = this.scene;
 
-    }
+	}
+
+	animate() {
+
+		this.voxel.obj.rotateY( 0.01 );
+		this.voxel.update();
+		this.renderer.render( this.scene, this.camera );
+
+	}
+
+	Resize( width, height ) {
+
+		this.camera.aspect = width / height;
+		this.camera.updateProjectionMatrix();
+
+	}
+
+	onTouchStart() {
+	}
+
+	onTouchMove() {
+	}
+
+	onTouchEnd() {
+
+	}
 
 }

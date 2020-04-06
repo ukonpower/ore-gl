@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 import { StableFluids } from '../StableFluids';
 
-export default class FluidGeometry extends THREE.Object3D{
+export default class FluidGeometry extends THREE.Object3D {
 
     private uni: any;
     private resolution: THREE.Vector2;
@@ -15,105 +15,109 @@ export default class FluidGeometry extends THREE.Object3D{
 
     private memPos: THREE.Vector2;
 
-    constructor(  renderer: THREE.WebGLRenderer ) {
-        super();
-        this.renderer = renderer;
-        this.resolution = new THREE.Vector2( 512,512 );
-        this.init();
+    constructor( renderer: THREE.WebGLRenderer ) {
+
+    	super();
+    	this.renderer = renderer;
+    	this.resolution = new THREE.Vector2( 512, 512 );
+    	this.init();
+
     }
 
     init() {
 
-        this.fluid = new StableFluids(  this.renderer, new THREE.Vector2(  512, 512  )  );
-        this.fluid.parameter.viscosity = 1.0;
-        this.fluid.setPointer( new THREE.Vector2( 0, 0 ), new THREE.Vector2( 0, 0 ));
+    	this.fluid = new StableFluids( this.renderer, new THREE.Vector2( 512, 512 ) );
+    	this.fluid.parameter.viscosity = 1.0;
+    	this.fluid.setPointer( new THREE.Vector2( 0, 0 ), new THREE.Vector2( 0, 0 ) );
 
-        let originBox = new THREE.PlaneBufferGeometry( 1.0,1.0 );
-        let geo = new THREE.InstancedBufferGeometry();
+    	let originBox = new THREE.PlaneBufferGeometry( 1.0, 1.0 );
+    	let geo = new THREE.InstancedBufferGeometry();
 
-        let vertice = ( originBox.attributes.position as THREE.BufferAttribute ).clone();
-        geo.setAttribute( 'position', vertice );
+    	let vertice = ( originBox.attributes.position as THREE.BufferAttribute ).clone();
+    	geo.setAttribute( 'position', vertice );
 
-        let normal = ( originBox.attributes.normal as THREE.BufferAttribute ).clone();
-        geo.setAttribute( 'normals', normal );
+    	let normal = ( originBox.attributes.normal as THREE.BufferAttribute ).clone();
+    	geo.setAttribute( 'normals', normal );
 
-        let uv = ( originBox.attributes.uv as THREE.BufferAttribute ).clone();
-        geo.setAttribute( 'uv', uv );
+    	let uv = ( originBox.attributes.uv as THREE.BufferAttribute ).clone();
+    	geo.setAttribute( 'uv', uv );
 
-        let indices = originBox.index.clone();
-        geo.setIndex( indices );
+    	let indices = originBox.index.clone();
+    	geo.setIndex( indices );
 
-        this.num = this.resolution.x * this.resolution.y;
+    	this.num = this.resolution.x * this.resolution.y;
 
-        let offsetPos = new THREE.InstancedBufferAttribute( new Float32Array( this.num * 3 ), 3, false );
-        let offsetUV = new THREE.InstancedBufferAttribute( new Float32Array( this.num * 2 ), 2, false );
+    	let offsetPos = new THREE.InstancedBufferAttribute( new Float32Array( this.num * 3 ), 3, false );
+    	let offsetUV = new THREE.InstancedBufferAttribute( new Float32Array( this.num * 2 ), 2, false );
 
-        let num = new THREE.InstancedBufferAttribute( new Float32Array( this.num ), 1, false, 1 );
+    	let num = new THREE.InstancedBufferAttribute( new Float32Array( this.num ), 1, false, 1 );
 
-        for( let i = 0; i < this.resolution.x; i++ ){
-            
-            for( let j = 0; j < this.resolution.y; j++ ){
+    	for ( let i = 0; i < this.resolution.x; i ++ ) {
 
-                offsetUV.setXY( i * this.resolution.x + j, j / this.resolution.x, i / this.resolution.y );
-                offsetPos.setXYZ( i * this.resolution.x + j, (j - this.resolution.x / 2) / this.resolution.x, ( i - this.resolution.y / 2 ) / this.resolution.y, 0.0 );
+    		for ( let j = 0; j < this.resolution.y; j ++ ) {
 
-            }
-        }
+    			offsetUV.setXY( i * this.resolution.x + j, j / this.resolution.x, i / this.resolution.y );
+    			offsetPos.setXYZ( i * this.resolution.x + j, ( j - this.resolution.x / 2 ) / this.resolution.x, ( i - this.resolution.y / 2 ) / this.resolution.y, 0.0 );
 
-        geo.setAttribute( 'offsetPos', offsetPos );
-        geo.setAttribute( 'offsetUV', offsetUV );
-        geo.setAttribute( 'num', num );
+    		}
 
-        let cUni = {
-            time: {
-                value: 0
-            },
-            all: {
-                value: this.num
-            },
-            col: {
-                value: null
-            },
-            fluid: {
-                vlaue: this.fluid.getTexture()
-            }
-        }
+    	}
 
-        this.uni = THREE.UniformsUtils.merge( [THREE.ShaderLib.standard.uniforms, cUni] );
-        this.uni.roughness.value = 0.8;
+    	geo.setAttribute( 'offsetPos', offsetPos );
+    	geo.setAttribute( 'offsetUV', offsetUV );
+    	geo.setAttribute( 'num', num );
 
-        let mat = new THREE.ShaderMaterial( {
-            vertexShader: vert,
-            fragmentShader: frag,
-            uniforms: this.uni,
-            flatShading: true,
-            lights: true,
-            side: THREE.DoubleSide
-        } )
+    	let cUni = {
+    		time: {
+    			value: 0
+    		},
+    		all: {
+    			value: this.num
+    		},
+    		col: {
+    			value: null
+    		},
+    		fluid: {
+    			vlaue: this.fluid.getTexture()
+    		}
+    	};
 
-        let some = new THREE.Mesh( geo, mat )
+    	this.uni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
+    	this.uni.roughness.value = 0.8;
 
-        this.add( some );
-        
+    	let mat = new THREE.ShaderMaterial( {
+    		vertexShader: vert,
+    		fragmentShader: frag,
+    		uniforms: this.uni,
+    		flatShading: true,
+    		lights: true,
+    		side: THREE.DoubleSide
+    	} );
+
+    	let some = new THREE.Mesh( geo, mat );
+
+    	this.add( some );
+
     }
 
     update( time: number ) {
 
-        this.fluid.update(  0  );
-        this.uni.time.value = time;
-        this.uni.fluid.value = this.fluid.getTexture();
+    	this.fluid.update( 0 );
+    	this.uni.time.value = time;
+    	this.uni.fluid.value = this.fluid.getTexture();
 
     }
 
-    public setPointer(  pos: THREE.Vector2, vec: THREE.Vector2  ){
-    
-        if( this.memPos ){
-            
-            this.fluid.setPointer(  this.memPos.add( new THREE.Vector2().subVectors( this.memPos, pos).multiplyScalar(1.0)) , vec  );
+    public setPointer( pos: THREE.Vector2, vec: THREE.Vector2 ) {
 
-        }
+    	if ( this.memPos ) {
 
-        this.memPos = pos;
-    
+    		this.fluid.setPointer( this.memPos.add( new THREE.Vector2().subVectors( this.memPos, pos ).multiplyScalar( 1.0 ) ), vec );
+
+    	}
+
+    	this.memPos = pos;
+
     }
+
 }
