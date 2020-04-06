@@ -1,10 +1,8 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-import { BlurTexture } from './BlurTexture';
-
-import reflectionMatVert from './shaders/reflectionMat.vs';
-import reflectionMatFrag from './shaders/reflectionMat.fs';
+import sphereMatVert from './shaders/sphereMat.vs';
+import sphereMatFrag from './shaders/sphereMat.fs';
 
 export declare interface PowerMaterialParams extends THREE.MaterialParameters {
 	roughness?: number,
@@ -16,7 +14,7 @@ export declare interface PowerMaterialParams extends THREE.MaterialParameters {
 	envMap?: THREE.CubeTexture;
 }
 
-export class ReflectionMat extends THREE.ShaderMaterial {
+export class SphereMaterial extends THREE.ShaderMaterial {
 
 	public envMap: THREE.CubeTexture;
 	public roughness: number;
@@ -35,7 +33,6 @@ export class ReflectionMat extends THREE.ShaderMaterial {
 			]
 		);
 
-		param.uniforms = ORE.UniformsLib.CopyUniforms( param.uniforms, baseUni );
 		param.uniforms = ORE.UniformsLib.CopyUniforms( param.uniforms, {
 			roughness: {
 				value: 0
@@ -50,18 +47,19 @@ export class ReflectionMat extends THREE.ShaderMaterial {
 				value: 0
 			}
 		} );
+		param.uniforms = ORE.UniformsLib.CopyUniforms( param.uniforms, baseUni );
 
-		param.vertexShader = param.vertexShader || reflectionMatVert;
+		param.vertexShader = param.vertexShader || sphereMatVert;
 
 		super( {
 			vertexShader: param.vertexShader,
-			fragmentShader: reflectionMatFrag,
+			fragmentShader: sphereMatFrag,
 			uniforms: param.uniforms,
 			lights: true
 		} );
 
-		this.roughness = param.roughness != undefined ? param.roughness : 0.5;
-		this.metalness = param.metalness != undefined ? param.metalness : 0.5;
+		this.roughness = param.roughness != undefined ? param.roughness : 0.2;
+		this.metalness = param.metalness != undefined ? param.metalness : 0.3;
 		this.envMapIntensity = 1.0;
 
 	}

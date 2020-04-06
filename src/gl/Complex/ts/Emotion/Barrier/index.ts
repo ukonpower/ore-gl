@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-import { PowerMaterial } from './PowerMaterial';
+import { BarrierMaterial } from './BarrierMaterial';
 
 import positionFrag from './shaders/position.fs';
 import velocityFrag from './shaders/velocity.fs';
@@ -127,8 +127,8 @@ export class Barrier extends THREE.Mesh {
 			}
 		};
 
-		let mat = new PowerMaterial( {
-			uniforms: this.pointUni,
+		let mat = new BarrierMaterial( {
+			uniforms: this.pointUni
 		} );
 
 		this.particles = new THREE.Mesh( geo, mat );

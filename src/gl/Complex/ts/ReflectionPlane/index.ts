@@ -88,8 +88,6 @@ export class ReflectionPlane extends THREE.Mesh {
 			this.blurTexture.udpateTexture( 0.3, this.refRenderTarget.texture );
 
 			this.commonUniforms.reflectionTex.value = this.blurTexture.texture.value;
-			
-
 
 		};
 

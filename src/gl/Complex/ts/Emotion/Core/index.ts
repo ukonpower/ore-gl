@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
+import { SphereMaterial } from './SphereMaterial';
+
 export class Core extends THREE.Mesh {
 
 	private commonUniforms: ORE.Uniforms;
@@ -20,6 +22,13 @@ export class Core extends THREE.Mesh {
 	}
 
 	protected init() {
+
+		let sphereGeo = new THREE.SphereBufferGeometry( 0.5, 30, 30 );
+		let sphereMat = new SphereMaterial({
+		});
+
+		let sphere = new THREE.Mesh( sphereGeo, sphereMat );
+		this.add( sphere );
 
 	}
 

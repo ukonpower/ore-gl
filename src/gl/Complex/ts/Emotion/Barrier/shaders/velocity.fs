@@ -9,8 +9,10 @@ varying vec2 vUv;
 #define NOISE_SCALE 1.5
 #define TIME_SCALE .5
 
+$constants
 $noise4D
 $random
+$atan2
 
 vec3 snoise3D( vec3 p ){
 	return vec3(
@@ -44,10 +46,15 @@ void main( void ){
 	} else if( pTime < lifeTime ){
 
 		vel *= 0.9;
-		vel += snoise3D( pos * 7.0 ) * 0.005;
+		vel += snoise3D( pos * 4.0 ) * 0.005;
+		
+		vel += pos * step( 1.0, ( 1.0 - length( pos ) * 2.0 ) ) * 0.1;
 		vel -= pos * 0.005;
 
-		vel.y += step( 0.14, -pos.y ) * 0.01;
+		vel.y += step( 0.135, -pos.y ) * 0.01;
+
+		vel.x += cos( atan2( pos.x, pos.z ) + 0.4) * 0.01 * length( pos );
+		vel.z -= sin( atan2( pos.x, pos.z ) + 0.4) * 0.01 * length( pos );
 
 	}
 

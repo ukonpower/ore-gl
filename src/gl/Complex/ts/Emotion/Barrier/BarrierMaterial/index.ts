@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-import powerMatVert from './shaders/powerMat.vs';
-import powerMatFrag from './shaders/powerMat.fs';
+import barrierMatVert from './shaders/barrierMat.vs';
+import barrierMatFrag from './shaders/barrierMat.fs';
 
 export declare interface PowerMaterialParams extends THREE.MaterialParameters {
 	roughness?: number,
@@ -14,7 +14,7 @@ export declare interface PowerMaterialParams extends THREE.MaterialParameters {
 	envMap?: THREE.CubeTexture;
 }
 
-export class PowerMaterial extends THREE.ShaderMaterial {
+export class BarrierMaterial extends THREE.ShaderMaterial {
 
 	public envMap: THREE.CubeTexture;
 	public roughness: number;
@@ -49,11 +49,11 @@ export class PowerMaterial extends THREE.ShaderMaterial {
 		} );
 		param.uniforms = ORE.UniformsLib.CopyUniforms( param.uniforms, baseUni );
 
-		param.vertexShader = param.vertexShader || powerMatVert;
+		param.vertexShader = param.vertexShader || barrierMatVert;
 
 		super( {
 			vertexShader: param.vertexShader,
-			fragmentShader: powerMatFrag,
+			fragmentShader: barrierMatFrag,
 			uniforms: param.uniforms,
 			lights: true
 		} );

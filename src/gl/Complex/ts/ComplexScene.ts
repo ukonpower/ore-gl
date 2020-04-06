@@ -33,10 +33,11 @@ export class ComplexScene extends ORE.BaseScene {
 
 		this.renderer = this.gProps.renderer;
 
-		this.camera.position.set( 0, 0.5, 5 );
+		this.camera.position.set( 0, 0.1, 5 );
 		this.camera.lookAt( 0, 1.5, 0 );
 
 		this.light = new THREE.DirectionalLight();
+		this.light.intensity = 1.5;
 		this.light.position.set( 1, 1, 1 );
 		this.scene.add( this.light );
 
