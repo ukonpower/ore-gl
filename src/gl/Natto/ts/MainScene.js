@@ -50,8 +50,6 @@ export default class MainScene extends BaseScene {
         this.voxel = new Voxel(this.renderer,1,1,1,15);
         this.scene.add(this.voxel.obj);
 
-        let loader = new GLTFLoader();
-
         this.composer = new EffectComposer(this.renderer);
         this.composer.addPass(new RenderPass(this.scene,this.camera));
 

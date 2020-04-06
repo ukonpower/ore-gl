@@ -183,8 +183,6 @@ export default class Voxel {
     }
 
     setPoint(p) {
-        console.log(p);
-        
         this.comTexs.velocity.uniforms.point.value = p;
     }
 

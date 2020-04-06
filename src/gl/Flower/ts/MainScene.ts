@@ -5,10 +5,8 @@ import Flower from './Flower';
 import NoisePostProcessig from './NoisePostProcessing';
 import Background from './Background';
 
-export default class MainScene extends ORE.BaseScene{
-
-	private renderer: THREE.WebGLRenderer;
-
+export class MainScene extends ORE.BaseScene{
+	
 	private light: THREE.Light;
 	private alight: THREE.Light;
 	private flower: Flower;

@@ -3,13 +3,14 @@ import * as THREE from 'three';
 import { Fireworks } from './Fireworks';
 import Background from './Background';
 
+import { MouseVertexRotator } from './MouseVertexRotator'
+
 export class FireworksScene extends ORE.BaseScene{
 
-	private renderer: THREE.WebGLRenderer;
 	private fireworks: Fireworks;
 	private bloom: ORE.BloomFilter;
 
-	private rotator: ORE.MouseVertexRotator;
+	private rotator: MouseVertexRotator;
 	private background: Background;
 
 	private touchTime: number = 0;
@@ -34,7 +35,7 @@ export class FireworksScene extends ORE.BaseScene{
 		this.fireworks = new Fireworks();
 		this.scene.add( this.fireworks );
 
-		this.rotator = new ORE.MouseVertexRotator( this.fireworks, this.fireworks.uniforms );
+		this.rotator = new MouseVertexRotator( this.fireworks, this.fireworks.uniforms );
 
 		let dlight = new THREE.DirectionalLight();
 		dlight.position.set( 0, 5, 0 );
@@ -43,8 +44,8 @@ export class FireworksScene extends ORE.BaseScene{
 		let aLight = new THREE.AmbientLight();
 		this.scene.add( aLight );
 
-		this.bloom = new ORE.BloomFilter( this.renderer, 0.1);
-		this.bloom.threshold = 0.0;
+		this.bloom = new ORE.BloomFilter( this.renderer, 0.1 );
+		this.bloom.threshold = 0.3;
 		this.bloom.brightness = 0.7;
 		this.bloom.blurRange = 10.0;
 		this.bloom.renderCount = 10;
@@ -110,7 +111,7 @@ export class FireworksScene extends ORE.BaseScene{
 				this.scene.remove( this.fireworks );
 				this.fireworks.dispose();
 				this.fireworks = new Fireworks();
-				this.rotator = new ORE.MouseVertexRotator( this.fireworks, this.fireworks.uniforms );
+				this.rotator = new MouseVertexRotator( this.fireworks, this.fireworks.uniforms );
 				this.scene.add( this.fireworks );
 			});
 

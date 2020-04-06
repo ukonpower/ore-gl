@@ -1,5 +1,5 @@
 import * as ORE from '@ore-three-ts';
-import MainScene from './MainScene';
+import { MainScene } from './MainScene';
 
 class APP{
 	private canvas: any;

@@ -5,7 +5,6 @@ import NoisePostProcessing from './NoisePostProcessing';
 
 export default class MainScene extends ORE.BaseScene{
 
-	private renderer: THREE.WebGLRenderer;
 	private light: THREE.Light;
 	private alight: THREE.Light;
 
@@ -45,10 +44,6 @@ export default class MainScene extends ORE.BaseScene{
 		this.scene.add(this.fluidGeometry);
 
 		this.pp = new NoisePostProcessing(this.renderer);
-		this.pp.addUniform({
-			name: 'rotVec',
-			value: this.fluidGeometry.mouseVertRotator.scrollVel
-		})
 		
 		let screengeo = new THREE.PlaneGeometry( 15.0, 15.0 );
 		let mat = new THREE.MeshNormalMaterial({
@@ -114,7 +109,6 @@ export default class MainScene extends ORE.BaseScene{
 			pos.set( ( point.x + 7.5 ) / 15, (point.y + 7.5 ) / 15 );
 
 		}
-
 
 		let vec = new THREE.Vector2( cursor.delta.x, -cursor.delta.y );
 

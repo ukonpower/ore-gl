@@ -8,7 +8,6 @@ import * as THREE from 'three';
 export class TopScene extends ORE.BaseScene{
 
 	private ext: boolean;
-	private renderer: THREE.WebGLRenderer;
 
 	private cyOffset: number;
 	private bg: Background;

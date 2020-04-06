@@ -8,8 +8,6 @@ import NoisePostProcessing from './NoisePostProcessing';
 
 export class DandelionScene extends ORE.BaseScene{
 
-	private renderer: THREE.WebGLRenderer;
-
 	private dandeilon: Dandelion;
 
 	private micData: MicData;

@@ -15,8 +15,6 @@ export default class FluidGeometry extends THREE.Object3D{
 
     private memPos: THREE.Vector2;
 
-    public mouseVertRotator: ORE.MouseVertexRotator;
-
     constructor(  renderer: THREE.WebGLRenderer ) {
         super();
         this.renderer = renderer;
@@ -95,7 +93,6 @@ export default class FluidGeometry extends THREE.Object3D{
 
         let some = new THREE.Mesh( geo, mat )
 
-        this.mouseVertRotator = new ORE.MouseVertexRotator( some,this.uni );
         this.add( some );
         
     }
@@ -105,7 +102,6 @@ export default class FluidGeometry extends THREE.Object3D{
         this.fluid.update(  0  );
         this.uni.time.value = time;
         this.uni.fluid.value = this.fluid.getTexture();
-        this.mouseVertRotator.update();
 
     }
 

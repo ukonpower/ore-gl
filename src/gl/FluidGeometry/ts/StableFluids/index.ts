@@ -1,16 +1,18 @@
 import *  as THREE from 'three';
 import * as ORE from '@ore-three-ts'
 
+import { GPUComputationController, GPUcomputationData, GPUComputationKernel } from '../GPUComputationController';
+
 import comShadePressure from './shader/pressure.fs';
 import comShaderVelocity from './shader/velocity.fs';
 import comShaderDivergence from './shader/divergence.fs';
 import comShaderAdvect from './shader/advect.fs';
 
 declare interface Kernels{
-    velocity: ORE.GPUComputationKernel;
-    pressure: ORE.GPUComputationKernel;
-    divergence: ORE.GPUComputationKernel;
-    advect: ORE.GPUComputationKernel;
+    velocity: GPUComputationKernel;
+    pressure: GPUComputationKernel;
+    divergence: GPUComputationKernel;
+    advect: GPUComputationKernel;
 }
 
 export interface StableFluidsParam{
@@ -35,12 +37,12 @@ export class StableFluids{
         pointerSize: 0.5,
     }
  
-    private gcConroller: ORE.GPUComputationController;
+    private gcConroller: GPUComputationController;
 
     private resolution: THREE.Vector2;
 
     private kernels: Kernels;
-    private fluidData: ORE.GPUcomputationData;
+    private fluidData: GPUcomputationData;
 
     private time: number = 0;
     private renderer: THREE.WebGLRenderer;
@@ -50,7 +52,7 @@ export class StableFluids{
         this.renderer = renderer;
         this.resolution = resolution;
         
-        this.gcConroller = new ORE.GPUComputationController( this.renderer, this.resolution );
+        this.gcConroller = new GPUComputationController( this.renderer, this.resolution );
 
         //create kernels
         this.kernels = {

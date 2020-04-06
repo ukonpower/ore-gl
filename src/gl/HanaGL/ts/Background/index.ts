@@ -21,7 +21,7 @@ export default class Background extends THREE.Object3D{
 			}
 		}
 		
-		this.bg = new ORE.Background( bgFrag, this.uni );
+		this.bg = new ORE.Background( { fragmentShader: bgFrag, uniforms: this.uni} );
 
 		this.add( this.bg );
 

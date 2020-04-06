@@ -5,13 +5,8 @@ import NoisePostProcessing from './NoisePostProcessing';
 
 export default class MainScene extends ORE.BaseScene{
 
-	private renderer: THREE.WebGLRenderer;
-
 	private light: THREE.Light;
 	private alight: THREE.Light;
-	private box: THREE.Object3D;
-
-	private touchStart: number;
 
 	private boxes: Boxes
 
@@ -80,8 +75,6 @@ export default class MainScene extends ORE.BaseScene{
 
 	onTouchStart( cursor: ORE.Cursor, event:MouseEvent ) {
 		
-		this.touchStart = this.time;
-
 	}
 
 	onTouchMove( cursor: ORE.Cursor, event:MouseEvent ) {

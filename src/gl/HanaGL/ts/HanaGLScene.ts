@@ -12,8 +12,6 @@ import Background from './Background';
 
 export class HanaGLScene extends ORE.BaseScene{
 
-	private renderer: THREE.WebGLRenderer;
-
 	private nose: Nose;
 
 	private finger: Finger;
@@ -80,7 +78,7 @@ export class HanaGLScene extends ORE.BaseScene{
 		
 	}
 
-	private createObjects( scene: THREE.Scene ){
+	private createObjects( scene: THREE.Group ){
 
 		this.nose = new Nose( this.renderer, scene );
 		this.nose.position.y = 0.6;
@@ -167,7 +165,7 @@ export class HanaGLScene extends ORE.BaseScene{
 	
 	onHover( cursor: ORE.Cursor ) {
 		
-		if( cursor.hoverPosition.x != cursor.hoverPosition.x ){ 
+		if( cursor.position.x != cursor.position.x ){ 
 			return;
 		}
 		
@@ -175,7 +173,7 @@ export class HanaGLScene extends ORE.BaseScene{
 			
 			let halfWidth = innerWidth / 2;
 			let halfHeight = innerHeight / 2;
-			let pos = new THREE.Vector2( ( cursor.hoverPosition.x - halfWidth ) / halfWidth, -( cursor.hoverPosition.y - halfHeight ) / halfHeight );
+			let pos = new THREE.Vector2( ( cursor.position.x - halfWidth ) / halfWidth, -( cursor.position.y - halfHeight ) / halfHeight );
 
 			let p = this.touchScreen.getTouchPos( this.camera, pos );
 			

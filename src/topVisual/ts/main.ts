@@ -23,7 +23,7 @@ class APP{
 
 }
 
-window.addEventListener('load',()=>{
+window.addEventListener('DOMContentLoaded',()=>{
 
 	let app = new APP();
 

@@ -9,8 +9,6 @@ import { MouseVertexRotator } from './MouseVertexRotator';
 
 export class TunnelScene extends ORE.BaseScene{
 
-	private renderer: THREE.WebGLRenderer;
-
 	private tunnel: Tunnel;
 	private heart: Heart;
 

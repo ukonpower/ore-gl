@@ -29,7 +29,7 @@ export class Nose extends THREE.Object3D{
 
 	private isSplash: boolean = false;
 
-	constructor( renderer: THREE.WebGLRenderer, gltfScene: THREE.Scene ){
+	constructor( renderer: THREE.WebGLRenderer, gltfScene: THREE.Group ){
 
 		super();
 
@@ -47,7 +47,7 @@ export class Nose extends THREE.Object3D{
 		
 	}
 	
-	private craeteObjects( gltfScene: THREE.Scene ){
+	private craeteObjects( gltfScene: THREE.Group ){
 
 		this.commonUniforms = {
 			opacity: {

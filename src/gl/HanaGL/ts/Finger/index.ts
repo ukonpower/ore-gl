@@ -8,7 +8,7 @@ export class Finger extends THREE.Object3D{
 	private wireFinger: THREE.Mesh;
 	private meshFinger: THREE.Mesh;
 
-	constructor( gltfScene: THREE.Scene ){
+	constructor( gltfScene: THREE.Group ){
 
 		super();
 
@@ -16,7 +16,7 @@ export class Finger extends THREE.Object3D{
 
 	}
 
-	private craeteObjects( gltfScene: THREE.Scene ){
+	private craeteObjects( gltfScene: THREE.Group ){
 
 		/*-------------------------
 			Mesh
