@@ -1,0 +1,31 @@
+$width-middle:1200px;
+$width-tab:1000px;
+$sp-width: 800px;
+
+@mixin sp($max-width:$sp-width) {
+	@media only screen and(max-width: $max-width) {
+		@content;
+	}
+}
+
+@mixin pc($min-width:$sp-width) {
+	@media only screen and(min-width: $min-width) {
+		@content;
+	}
+}
+
+*{
+    margin: 0;
+}
+
+html,body{
+	background-color: #000;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#canvas{
+	width: 100%;
+	height: 100%;
+}
