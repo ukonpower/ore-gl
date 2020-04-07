@@ -3,7 +3,9 @@ varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vViewPosition;
 varying vec3 vWorldPosition;
+varying vec3 vPosition;
 
+uniform float time;
 uniform float roughness;
 uniform float metalness;
 
@@ -124,7 +126,10 @@ void RE_Direct( Geometry geo, Material mat, IncidentLight light, inout Reflected
 	irradiance *= PI;
 
 	ref.directSpecular += irradiance * specularBRDF( geo, mat, light, NV, NL );
-	ref.directDiffuse += irradiance * diffuseBRDF( mat );
+	ref.directDiffuse += irradiance * diffuseBRDF( mat ) * 0.2;
+	ref.directDiffuse += saturate( dot( geo.normal * 0.2, geo.viewDir ) ) * light.color * vec3( 0.8, 0.2, 0.1 ) * 0.7;
+	ref.directDiffuse += saturate( dot( geo.normal * sin( vPosition.z * 14.0 + time * 2.0 ), geo.viewDir ) ) * light.color * vec3( 0.8, 0.2, 0.1 ) * 0.7;
+	ref.directDiffuse += saturate( dot( normalize( geo.normal + vec3( 0.0, 0.0, -0.8 ) ), geo.viewDir ) ) * light.color * vec3( 1.0, 0.2, 0.9 ) * 0.7;
 
 }
 

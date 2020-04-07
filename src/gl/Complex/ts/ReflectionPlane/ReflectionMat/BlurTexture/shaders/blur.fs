@@ -62,7 +62,7 @@ vec4 blur9(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {
 
 void main(){
 
-	vec4 c = blur9( backbuffer, vUv, texResolution, ( direction ? vec2( 0.2, 0.0 ) : vec2( 0.0, 1.0 ) ) * blurWeight * 2.0 );
+	vec4 c = blur9( backbuffer, vUv, texResolution, vec2( 0.0, 0.3 ) );
 
 	gl_FragColor = vec4( c );
 	

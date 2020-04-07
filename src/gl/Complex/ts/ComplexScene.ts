@@ -70,14 +70,14 @@ export class ComplexScene extends ORE.BaseScene {
 		this.emotion.position.set( 0, 1.5, 0 );
 		this.scene.add( this.emotion );
 
-		this.reflectPlane = new ReflectionPlane( this.renderer, new THREE.Vector2( 20, 30 ), 0.5, this.commonUniforms );
+		this.reflectPlane = new ReflectionPlane( this.renderer, new THREE.Vector2( 20, 30 ), 0.4, this.commonUniforms );
 		this.reflectPlane.position.set( 0, 0, 0 );
 		this.reflectPlane.rotateX( - Math.PI / 2.5 );
 		this.scene.add( this.reflectPlane );
 
 		this.windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
-		this.postProcess = new ComplexPostProcessing( this.renderer );
+		this.postProcess = new ComplexPostProcessing( this.renderer, this.commonUniforms );
 
 	}
 
@@ -113,6 +113,7 @@ export class ComplexScene extends ORE.BaseScene {
 		super.onResize( args );
 
 		this.windowSize.set( window.innerWidth, window.innerHeight );
+		this.postProcess.resize();
 		this.reflectPlane.resize( args.windowPixelSize );
 
 	}

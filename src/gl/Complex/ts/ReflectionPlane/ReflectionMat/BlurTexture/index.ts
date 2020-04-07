@@ -38,19 +38,8 @@ export class BlurTexture {
 			[ {
 				fragmentShader: blurFrag,
 				uniforms: ORE.UniformsLib.CopyUniforms( {
-					direction: {
-						value: true,
-					},
 				}, this.commonUniforms )
-			},
-			{
-				fragmentShader: blurFrag,
-				uniforms: ORE.UniformsLib.CopyUniforms( {
-					direction: {
-						value: false,
-					}
-				}, this.commonUniforms )
-			} ]
+			}]
 		);
 
 	}

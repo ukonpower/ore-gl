@@ -25,6 +25,7 @@ export class Core extends THREE.Mesh {
 
 		let sphereGeo = new THREE.SphereBufferGeometry( 0.5, 30, 30 );
 		let sphereMat = new SphereMaterial({
+			uniforms: this.commonUniforms
 		});
 
 		let sphere = new THREE.Mesh( sphereGeo, sphereMat );

@@ -4,6 +4,7 @@ import * as ORE from '@ore-three-ts';
 import bright from './glsl/bright.fs';
 import blur from './glsl/blur.fs';
 import bloom from './glsl/bloom.fs';
+import postprocess from './glsl/postprocess.fs';
 
 export class ComplexPostProcessing {
 
@@ -31,22 +32,35 @@ export class ComplexPostProcessing {
 	protected blurResolution: THREE.Vector2;
 	protected textureResolutionRatio: number;
 
-	constructor( renderer: THREE.WebGLRenderer, textureResolutionRatio?: number, customResolution?: THREE.Vector2 ) {
+	constructor( renderer: THREE.WebGLRenderer, parentUniforms: ORE.Uniforms, textureResolutionRatio?: number, customResolution?: THREE.Vector2 ) {
 
 		this.renderer = renderer;
 
-		this.textureResolutionRatio = textureResolutionRatio ? textureResolutionRatio : 0.5;
+		this.textureResolutionRatio = 0.2;
 
 		this.resolution = new THREE.Vector2();
 		this.blurResolution = new THREE.Vector2();
 
+		//uniforms
+		this.commonUniforms = ORE.UniformsLib.CopyUniforms( {
+			resolution: {
+				value: this.blurResolution
+			},
+			threshold: {
+				value: 0.5,
+			},
+			brightness: {
+				value: 0.7
+			},
+		}, parentUniforms );
+
 		this.init();
 		this.resize( customResolution );
 
-		this.brightness = 1.0;
-		this.blurRange = 4.0;
-		this.threshold = 0.2;
-		this.renderCount = 10.0;
+		this.brightness = 1.2;
+		this.blurRange = 3.0;
+		this.threshold = 0.15;
+		this.renderCount = 5.0;
 
 	}
 
@@ -76,19 +90,6 @@ export class ComplexPostProcessing {
 			value: null
 		};
 
-		//uniforms
-		this.commonUniforms = {
-			resolution: {
-				value: this.blurResolution
-			},
-			threshold: {
-				value: 0.5,
-			},
-			brightness: {
-				value: 0.7
-			},
-		};
-
 		//postprocess params
 		let brightParam = [ {
 			fragmentShader: bright,
@@ -113,11 +114,16 @@ export class ComplexPostProcessing {
 			uniforms: ORE.UniformsLib.CopyUniforms( {
 				sceneTex: this.sceneTex,
 			}, this.commonUniforms )
+		}, {
+			fragmentShader: postprocess,
+			uniforms: this.commonUniforms
 		} ];
+
 
 		//create post processings
 		this._brightPP = new ORE.PostProcessing( this.renderer, brightParam );
 		this._blurPP = new ORE.PostProcessing( this.renderer, blurParam );
+		this._bloomPP = new ORE.PostProcessing( this.renderer, bloomParam );
 		this._bloomPP = new ORE.PostProcessing( this.renderer, bloomParam );
 		this.sceneRenderTarget = this._bloomPP.createRenderTarget();
 

@@ -4,7 +4,7 @@ import * as ORE from '@ore-three-ts';
 export class SmoothCameraMover {
 
 	private camera: THREE.Object3D;
-	
+
 	private radX: number;
 	private radY: number;
 	private rotateZ: number;
@@ -22,7 +22,7 @@ export class SmoothCameraMover {
 		this.camera = camera;
 		this.camera.updateMatrix();
 		this.baseMatrix = this.camera.matrix.clone();
-		
+
 		this.delayPos = new THREE.Vector2( 0, 0 );
 
 	}
@@ -35,13 +35,13 @@ export class SmoothCameraMover {
 
 	public update( deltaTime: number ) {
 
-		this.delayPos.add( this.targetPos.clone().sub( this.delayPos ).multiplyScalar( deltaTime * 2.0) );
+		this.delayPos.add( this.targetPos.clone().sub( this.delayPos ).multiplyScalar( deltaTime * 2.0 ) );
 
 		this.camera.updateMatrix();
 		this.camera.matrix.copy( this.baseMatrix );
 		this.camera.matrix.decompose( this.camera.position, this.camera.quaternion, this.camera.scale );
 
-		this.camera.applyMatrix4( ( new THREE.Matrix4().makeRotationFromEuler( new THREE.Euler( this.delayPos.y * this.radX, this.delayPos.x * this.radY, 0, 'XYZ' ) ) ) );
+		this.camera.applyMatrix4( ( new THREE.Matrix4().makeRotationFromEuler( new THREE.Euler( - this.delayPos.y * this.radX, this.delayPos.x * this.radY, 0, 'XYZ' ) ) ) );
 
 	}
 
