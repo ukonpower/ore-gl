@@ -18,27 +18,34 @@ export class ReflectionPlane extends THREE.Mesh {
 
 	constructor( renderer: THREE.WebGLRenderer, size: THREE.Vector2, resolutionRatio: number = 0.5, parentUniforms?: ORE.Uniforms ) {
 
-		let uni = {
+		let uni = ORE.UniformsLib.CopyUniforms( {
 			reflectionTex: {
 				value: null
 			},
 			winResolution: {
 				value: new THREE.Vector2( window.innerWidth, window.innerHeight )
+			},
+			roughnessTex: {
+				value: null
+			},
+			normalTex: {
+				value: null
 			}
-		};
+		}, parentUniforms );
 
 		let geo = new THREE.PlaneBufferGeometry( size.x, size.y );
 		let mat = new ReflectionMat( {
-			uniforms: uni
+			uniforms: uni,
 		} );
 
 		super( geo, mat );
+
+		this.commonUniforms = uni;
 
 		this.blurTexture = new BlurTexture( renderer, new THREE.Vector2( 512, 512 ) );
 
 		this.mat = mat;
 		this.resolutionRatio = resolutionRatio;
-		this.commonUniforms = ORE.UniformsLib.CopyUniforms( uni, parentUniforms );
 
 		this.init();
 
@@ -54,10 +61,9 @@ export class ReflectionPlane extends THREE.Mesh {
 
 		this.onBeforeRender = ( renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera ) => {
 
-			this.visible = false;
-
 			let refCamera = camera.clone();
 
+			refCamera.rotateX( - 0.1 );
 			let inverse = new THREE.Matrix4().getInverse( this.matrixWorld );
 
 			refCamera.applyMatrix4( inverse );
@@ -77,19 +83,42 @@ export class ReflectionPlane extends THREE.Mesh {
 
 			refCamera.applyMatrix4( this.matrix );
 
+			let currentRenderTarget = renderer.getRenderTarget();
+
 			renderer.setRenderTarget( this.refRenderTarget );
+
+			this.visible = false;
 
 			renderer.render( scene, refCamera );
 
-			renderer.setRenderTarget( null );
-
 			this.visible = true;
 
-			this.blurTexture.udpateTexture( 0.3, this.refRenderTarget.texture );
+			this.blurTexture.udpateTexture( 0.2, this.refRenderTarget.texture );
 
 			this.commonUniforms.reflectionTex.value = this.blurTexture.texture.value;
+			// this.commonUniforms.reflectionTex.value = this.refRenderTarget.texture;
+
+			renderer.setRenderTarget( currentRenderTarget );
 
 		};
+
+
+		let loader = new THREE.TextureLoader();
+		loader.load( './assets/img/Metal003_2K_Roughness.jpg', ( tex ) => {
+
+			tex.wrapS = THREE.RepeatWrapping;
+			tex.wrapT = THREE.RepeatWrapping;
+			this.commonUniforms.roughnessTex.value = tex;
+
+		} );
+
+		loader.load( './assets/img/Metal003_2K_Normal.jpg', ( tex ) => {
+
+			tex.wrapS = THREE.RepeatWrapping;
+			tex.wrapT = THREE.RepeatWrapping;
+			this.commonUniforms.normalTex.value = tex;
+
+		} );
 
 	}
 

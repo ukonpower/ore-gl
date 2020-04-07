@@ -132,6 +132,7 @@ export class Barrier extends THREE.Mesh {
 		} );
 
 		this.particles = new THREE.Mesh( geo, mat );
+		this.particles.frustumCulled = false;
 		this.add( this.particles );
 
 		let vSize = 2.0;

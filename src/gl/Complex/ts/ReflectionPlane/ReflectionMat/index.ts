@@ -57,7 +57,10 @@ export class ReflectionMat extends THREE.ShaderMaterial {
 			vertexShader: param.vertexShader,
 			fragmentShader: reflectionMatFrag,
 			uniforms: param.uniforms,
-			lights: true
+			lights: true,
+			extensions: {
+				derivatives: true
+			}
 		} );
 
 		this.roughness = param.roughness != undefined ? param.roughness : 0.5;

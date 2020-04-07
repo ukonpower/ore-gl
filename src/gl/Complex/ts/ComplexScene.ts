@@ -1,17 +1,25 @@
 import * as ORE from '@ore-three-ts';
 import * as THREE from 'three';
 
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { SmoothCameraMover } from './SmoothCameraMover';
 import { ReflectionPlane } from './ReflectionPlane';
 import { Emotion } from './Emotion';
+import { ComplexPostProcessing } from './ComplexPostProcessing';
 
 export class ComplexScene extends ORE.BaseScene {
 
-	private reflectPlane: THREE.Mesh;
+	private controls: OrbitControls;
+	private cameraMover: SmoothCameraMover;
+
+	private reflectPlane: ReflectionPlane;
 	private emotion: Emotion;
 
 	private commonUniforms: ORE.Uniforms;
 
-	private light: THREE.Light;
+	private postProcess: ComplexPostProcessing;
+
+	private windowSize: THREE.Vector2;
 
 	constructor() {
 
@@ -35,20 +43,41 @@ export class ComplexScene extends ORE.BaseScene {
 
 		this.camera.position.set( 0, 0.1, 5 );
 		this.camera.lookAt( 0, 1.5, 0 );
+		this.cameraMover = new SmoothCameraMover( this.camera, Math.PI / 4, Math.PI / 12 );
 
-		this.light = new THREE.DirectionalLight();
-		this.light.intensity = 1.5;
-		this.light.position.set( 1, 1, 1 );
-		this.scene.add( this.light );
+		let light: THREE.Light;
+		light = new THREE.DirectionalLight();
+		light.intensity = 0.04;
+		light.position.set( 0.0, 1.0, - 1.0 );
+		this.scene.add( light );
+
+		light = new THREE.DirectionalLight();
+		light.intensity = 0.005;
+		light.position.set( 0.8, 1.0, - 0.8 );
+		this.scene.add( light );
+
+		light = new THREE.DirectionalLight();
+		light.intensity = 0.005;
+		light.position.set( - 0.8, 1.0, - 0.8 );
+		this.scene.add( light );
+
+		light = new THREE.DirectionalLight();
+		light.intensity = 1.0;
+		light.position.set( 1, 1, 1 );
+		this.scene.add( light );
 
 		this.emotion = new Emotion( this.renderer, this.commonUniforms );
 		this.emotion.position.set( 0, 1.5, 0 );
 		this.scene.add( this.emotion );
 
-		this.reflectPlane = new ReflectionPlane( this.renderer, new THREE.Vector2( 10, 10 ), 0.5 );
+		this.reflectPlane = new ReflectionPlane( this.renderer, new THREE.Vector2( 20, 30 ), 0.5, this.commonUniforms );
 		this.reflectPlane.position.set( 0, 0, 0 );
-		this.reflectPlane.rotateX( - Math.PI / 2 );
+		this.reflectPlane.rotateX( - Math.PI / 2.5 );
 		this.scene.add( this.reflectPlane );
+
+		this.windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
+
+		this.postProcess = new ComplexPostProcessing( this.renderer );
 
 	}
 
@@ -56,15 +85,35 @@ export class ComplexScene extends ORE.BaseScene {
 
 		this.commonUniforms.time.value = this.time;
 
+		// this.controls.update();
+
+		this.cameraMover.update( deltaTime );
+
 		this.emotion.update( deltaTime );
 
-		this.renderer.render( this.scene, this.camera );
+		// this.renderer.render( this.scene, this.camera );
+		this.postProcess.render( this.scene, this.camera );
+
+	}
+
+	public onTouchMove( cursor: ORE.Cursor ) {
+
+		this.cameraMover.setCursor( cursor.getNormalizePosition( this.windowSize ) );
+
+	}
+
+	public onHover( cursor: ORE.Cursor ) {
+
+		this.cameraMover.setCursor( cursor.getNormalizePosition( this.windowSize ) );
 
 	}
 
 	public onResize( args: ORE.ResizeArgs ) {
 
 		super.onResize( args );
+
+		this.windowSize.set( window.innerWidth, window.innerHeight );
+		this.reflectPlane.resize( args.windowPixelSize );
 
 	}
 

@@ -2,6 +2,7 @@ varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vViewPosition;
 varying vec3 vWorldPosition;
+varying vec4 mvpPos;
 
 void main( void ) {
 
@@ -15,5 +16,5 @@ void main( void ) {
 	vNormal = normalMatrix * normal;
 	vViewPosition = -mvPosition.xyz;
 	vWorldPosition = vec4( modelMatrix * vec4( pos, 1.0 ) ).xyz;
-
+	mvpPos = gl_Position;
 }
