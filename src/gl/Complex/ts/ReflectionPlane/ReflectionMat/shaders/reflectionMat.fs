@@ -14,6 +14,7 @@ uniform sampler2D normalTex;
 uniform sampler2D reflectionTex;
 uniform vec2 winResolution;
 varying vec4 mvpPos;
+varying vec3 vPosition;
 
 varying vec2 vUv;
 #ifdef TRANSPARENCY
@@ -102,14 +103,18 @@ void main() {
 
 	vec3 ref = texture2D( reflectionTex, refUV ).xyz;
 
-	outgoingLight = outgoingLight * 0.8 + ref;
+	outgoingLight = outgoingLight * 0.5 + ref * 0.5;
 
 	#ifdef TRANSPARENCY
 		diffuseColor.a *= saturate( 1. - transparency + linearToRelativeLuminance( reflectedLight.directSpecular + reflectedLight.indirectSpecular ) );
 	#endif
 	
 	outgoingLight *= smoothstep( 10.0, 3.0, mvpPos.z );
-	
+	outgoingLight += smoothstep( 2.0, 5.0 + 2.0, mvpPos.z ) * 0.15;
+
+	float len = max( 0.0, 1.0 - length( vPosition.xy ) );
+	outgoingLight += vec3( 1.0, 0.0, 0.4  ) * len * 0.08;
+
 	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 
 }

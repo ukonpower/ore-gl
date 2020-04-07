@@ -57,7 +57,7 @@ export class ComplexPostProcessing {
 		this.init();
 		this.resize( customResolution );
 
-		this.brightness = 1.2;
+		this.brightness = 1.5;
 		this.blurRange = 3.0;
 		this.threshold = 0.15;
 		this.renderCount = 5.0;

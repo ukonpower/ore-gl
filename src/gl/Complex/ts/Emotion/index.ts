@@ -35,6 +35,12 @@ export class Emotion extends THREE.Object3D {
 		this.barrier = new Barrier( this.renderer, this.commonUniforms );
 		this.add( this.barrier );
 
+		// let needleGeo = new THREE.CylinderBufferGeometry( 0.03, 0.00, 3.0 );
+		// let needleMat = new THREE.MeshStandardMaterial();
+		// let needle = new THREE.Mesh( needleGeo, needleMat );
+		// needle.rotation.set( Math.PI / 3, 0.0, - Math.PI / 7 );
+		// this.add( needle );
+
 	}
 
 	public update( deltaTime: number ) {

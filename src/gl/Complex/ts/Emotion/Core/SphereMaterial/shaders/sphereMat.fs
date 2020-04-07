@@ -127,9 +127,6 @@ void RE_Direct( Geometry geo, Material mat, IncidentLight light, inout Reflected
 
 	ref.directSpecular += irradiance * specularBRDF( geo, mat, light, NV, NL );
 	ref.directDiffuse += irradiance * diffuseBRDF( mat ) * 0.2;
-	ref.directDiffuse += saturate( dot( geo.normal * 0.2, geo.viewDir ) ) * light.color * vec3( 0.8, 0.2, 0.1 ) * 0.7;
-	ref.directDiffuse += saturate( dot( geo.normal * sin( vPosition.z * 14.0 + time * 2.0 ), geo.viewDir ) ) * light.color * vec3( 0.8, 0.2, 0.1 ) * 0.7;
-	ref.directDiffuse += saturate( dot( normalize( geo.normal + vec3( 0.0, 0.0, -0.8 ) ), geo.viewDir ) ) * light.color * vec3( 1.0, 0.2, 0.9 ) * 0.7;
 
 }
 
@@ -361,7 +358,10 @@ void main( void ) {
 
 	#endif
 
-	//indirect light
+	ref.directDiffuse += saturate( dot( geo.normal * 0.2, geo.viewDir ) ) * vec3( 0.8, 0.2, 0.1 ) * 0.7;
+	ref.directDiffuse += saturate( dot( geo.normal * sin( (vPosition.z) * 14.0 + time * 2.0 ), geo.viewDir ) ) * vec3( 0.8, 0.2, 0.1 ) * 0.7;
+	ref.directDiffuse += saturate( dot( normalize( geo.normal + vec3( 0.0, 0.0, -0.8 ) ), geo.viewDir ) ) * vec3( 0.2, 0.3, 0.8 );
+
 	
 	//emvMap diffuse
 	vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );

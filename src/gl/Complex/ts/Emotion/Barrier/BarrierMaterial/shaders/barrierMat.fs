@@ -3,8 +3,13 @@ varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vViewPosition;
 varying vec3 vWorldPosition;
-varying vec4 vMVPPosition;
+varying vec4 mvpPos;
+varying vec3 vPosition;
+varying vec4 velocity;
+varying float life;
 
+varying vec2 vTexUV;
+uniform float time;
 uniform float roughness;
 uniform float metalness;
 
@@ -125,7 +130,7 @@ void RE_Direct( Geometry geo, Material mat, IncidentLight light, inout Reflected
 	irradiance *= PI;
 
 	ref.directSpecular += irradiance * specularBRDF( geo, mat, light, NV, NL );
-	ref.directDiffuse += irradiance * diffuseBRDF( mat );
+	ref.directDiffuse += irradiance * diffuseBRDF( mat ) * 0.3;
 
 }
 
@@ -357,8 +362,12 @@ void main( void ) {
 
 	#endif
 
-	//indirect light
 	
+	// ref.directDiffuse += saturate( dot( geo.normal, geo.viewDir ) ) * smoothstep( 0., 0.03, length( velocity.xyz ) ) * 0.5;
+	// ref.directDiffuse += smoothstep( 0.5, 1.0,sin( length( life ) * 1.0 - time * .0 ) );
+	ref.directDiffuse += vec3( 1.0, vTexUV.y * 0.4, vTexUV.y * 3.0 ) * step( 0.9, vTexUV.x );
+	ref.directDiffuse.r += smoothstep( 0.96, 1.0, sin ( length( vPosition ) + PI - 0.8 - time * 0.5 ) ) * 0.8;
+
 	//emvMap diffuse
 	vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );
 	irradiance += getLightProbeIrradiance( lightProbe, geo );
@@ -383,7 +392,10 @@ void main( void ) {
 	vec3 outColor = ref.directSpecular + ref.directDiffuse + ref.indirectSpecular + ref.indirectDiffuse;
 
 	float d = 3.5;
-	outColor -= smoothstep( d, d + 5.0, vMVPPosition.z );
+
+	outColor -= smoothstep( d, d + 5.0, mvpPos.z );
+	outColor = mix( outColor, vec3( 0.15 ), smoothstep( 0.0, 5.0 + 3.0, mvpPos.z ) );
+
 
 	gl_FragColor = vec4( vec3( outColor ), 1.0 );
 

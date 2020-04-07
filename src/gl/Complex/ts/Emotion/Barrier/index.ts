@@ -118,14 +118,14 @@ export class Barrier extends THREE.Mesh {
 
 		geo.setAttribute( 'texUV', new THREE.InstancedBufferAttribute( new Float32Array( texUVArray ), 2 ) );
 
-		this.pointUni = {
+		this.pointUni = ORE.UniformsLib.CopyUniforms({
 			posTex: {
 				value: null
 			},
 			velTex: {
 				value: null
 			}
-		};
+		}, this.commonUniforms );
 
 		let mat = new BarrierMaterial( {
 			uniforms: this.pointUni

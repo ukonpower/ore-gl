@@ -40,21 +40,26 @@ void main( void ){
 		vel = vec3( 
 			random( vUv + vec2( 0.0, 0.0 ) ) - 0.5,
 			random( vUv + vec2( 10.0, -100.0 ) ) - 0.5,
-			random( vUv + vec2( 34.0, 354.0 ) ) - 0.5
+			-random( vUv + vec2( 34.0, 354.0 ) ) * 2.0
 		) * 0.01;
 		
 	} else if( pTime < lifeTime ){
 
 		vel *= 0.9;
-		vel += snoise3D( pos * 4.0 ) * 0.005;
+
+		vec3 addVel;
+
+		addVel += snoise3D( pos * 3.0 ) * 0.004;
 		
-		vel += pos * step( 1.0, ( 1.0 - length( pos ) * 2.0 ) ) * 0.1;
-		vel -= pos * 0.005;
+		addVel += pos * smoothstep( 0.7, 1.0, sin( time * 0.5 ) ) * 0.005;
+		addVel -= pos * 0.005;
 
-		vel.y += step( 0.135, -pos.y ) * 0.01;
+		addVel.y += step( 0.135, -pos.y ) * 0.01;
 
-		vel.x += cos( atan2( pos.x, pos.z ) + 0.4) * 0.01 * length( pos );
-		vel.z -= sin( atan2( pos.x, pos.z ) + 0.4) * 0.01 * length( pos );
+		addVel.x += cos( atan2( pos.x, pos.z ) + 0.4) * 0.01 * length( pos.xz );
+		addVel.z -= sin( atan2( pos.x, pos.z ) + 0.4) * 0.01 * length( pos.xz );
+
+		vel += addVel;
 
 	}
 

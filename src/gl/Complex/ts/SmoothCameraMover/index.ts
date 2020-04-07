@@ -35,6 +35,8 @@ export class SmoothCameraMover {
 
 	public update( deltaTime: number ) {
 
+		deltaTime = Math.min( deltaTime, 1.0 );
+
 		this.delayPos.add( this.targetPos.clone().sub( this.delayPos ).multiplyScalar( deltaTime * 2.0 ) );
 
 		this.camera.updateMatrix();
