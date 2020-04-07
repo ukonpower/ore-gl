@@ -27,9 +27,6 @@ export class ReflectionPlane extends THREE.Mesh {
 			},
 			roughnessTex: {
 				value: null
-			},
-			normalTex: {
-				value: null
 			}
 		}, parentUniforms );
 
@@ -109,14 +106,6 @@ export class ReflectionPlane extends THREE.Mesh {
 			tex.wrapS = THREE.RepeatWrapping;
 			tex.wrapT = THREE.RepeatWrapping;
 			this.commonUniforms.roughnessTex.value = tex;
-
-		} );
-
-		loader.load( './assets/img/Metal003_2K_Normal.jpg', ( tex ) => {
-
-			tex.wrapS = THREE.RepeatWrapping;
-			tex.wrapT = THREE.RepeatWrapping;
-			this.commonUniforms.normalTex.value = tex;
 
 		} );
 
