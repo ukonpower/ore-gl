@@ -26,10 +26,7 @@ export class Background extends GLP.PowerObj {
 
 		let geo = new GLP.PlaneGeometry( 2, 2 );
 
-		super( {
-			geo: geo,
-			mat: mat,
-		} );
+		super( geo, mat );
 
 		this.uniforms = uniforms;
 

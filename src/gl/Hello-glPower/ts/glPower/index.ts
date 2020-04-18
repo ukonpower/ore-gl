@@ -39,10 +39,7 @@ export class glPower extends GLP.Empty {
 			geo.add( 'normal', data.glpower.normal.array, data.glpower.normal.size );
 			geo.add( 'index', data.glpower.indices.array, data.glpower.indices.size );
 
-			this.glpower = new GLP.PowerObj( {
-				geo: geo,
-				mat: mat,
-			} );
+			this.glpower = new GLP.PowerObj( geo, mat );
 
 			this.add( this.glpower );
 
