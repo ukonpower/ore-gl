@@ -68,7 +68,7 @@ export class FloatingObj extends GLP.Empty {
 			geo.add( 'offsetPos', offsetPos, 3, true );
 			geo.add( 'num', n, 1, true );
 
-			let obj = new GLP.RenderingObject( {
+			let obj = new GLP.PowerObj( {
 				geo: geo,
 				mat: mat,
 				drawType: this.drawType

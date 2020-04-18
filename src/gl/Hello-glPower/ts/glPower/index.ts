@@ -9,7 +9,7 @@ export class glPower extends GLP.Empty {
 
 	private gl: WebGLRenderingContext;
 
-	private glpower: GLP.RenderingObject;
+	private glpower: GLP.PowerObj;
 
 	constructor( gl: WebGLRenderingContext ) {
 
@@ -39,7 +39,7 @@ export class glPower extends GLP.Empty {
 			geo.add( 'normal', data.glpower.normal.array, data.glpower.normal.size );
 			geo.add( 'index', data.glpower.indices.array, data.glpower.indices.size );
 
-			this.glpower = new GLP.RenderingObject( {
+			this.glpower = new GLP.PowerObj( {
 				geo: geo,
 				mat: mat,
 			} );

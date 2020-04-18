@@ -3,7 +3,7 @@ import * as GLP from '@glpower';
 import frag from './shaders/background.fs';
 import vert from './shaders/background.vs';
 
-export class Background extends GLP.RenderingObject {
+export class Background extends GLP.PowerObj {
 
 	private uniforms;
 
