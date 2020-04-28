@@ -79,7 +79,7 @@ export class ShadowScene extends GLP.BaseScene {
 
 	public onHover( cursor: GLP.Cursor ) { }
 
-	public onWheel( event: WheelEvent, trackpadDelta: number ) { }
+	public onWheel( event: WheelEvent ) { }
 
 
 }
