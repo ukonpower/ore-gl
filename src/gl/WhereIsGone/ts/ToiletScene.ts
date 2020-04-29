@@ -8,6 +8,7 @@ import { Timeline } from './Timeline';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { ReflectionPlane } from './ReflectionPlane';
 import { PostProcessing } from './PostProcessing';
+import { SceneMixer } from './SceneMixer';
 
 
 export class ToiletScene extends ORE.BaseScene {
@@ -21,6 +22,7 @@ export class ToiletScene extends ORE.BaseScene {
 
 	private commonUniforms: ORE.Uniforms;
 
+	private mixer: SceneMixer;
 	private postProcess: PostProcessing;
 
 	private windowSize: THREE.Vector2;
@@ -47,7 +49,8 @@ export class ToiletScene extends ORE.BaseScene {
 
 				window.dispatchEvent( new Event( 'resize' ) );
 
-			} } );
+			}
+		} );
 
 	}
 
@@ -61,10 +64,13 @@ export class ToiletScene extends ORE.BaseScene {
 
 		this.postProcess = new PostProcessing( this.renderer, this.commonUniforms );
 
+		this.mixer = new SceneMixer( this.renderer, this.commonUniforms );
+
 	}
 
 	private initScene() {
 
+		this.camera.near = 0.01;
 		this.camera.position.set( 0, 1.0, 3 );
 		this.camera.lookAt( 0, 0.4, 0 );
 
@@ -118,16 +124,27 @@ export class ToiletScene extends ORE.BaseScene {
 		this.timeline.update( this.time * 0.25 % 1 );
 
 		// this.camera.position.copy( this.timeline.get( 'camPos' ) );
-		this.setCameraTransform( this.time * 0.25 % 1 );
-		this.postProcess.render( this.scene, this.camera );
+		let t = ( this.time * 1.0 + 5 ) * 0.25;
+
+		this.updateScene( t % 1.6, Math.floor( t / 1.6 ) );
+		this.mixer.renderScene( this.scene, this.camera, 0 );
+
+		this.updateScene( ( t - 0.8 ) % 1.6, Math.floor( (t - 0.8) / 1.6 ) );
+		this.mixer.renderScene( this.scene, this.camera, 1 );
+
+		this.mixer.composite( ( t - 0.2 ) % 1.6 / 0.8 > 1 );
+		// this.postProcess.render( this.scene, this.camera );
 
 	}
 
-	private setCameraTransform( time: number ) {
+	private updateScene( time: number, seed: number = 0 ) {
 
 		let t = time * Math.PI;
-		this.camera.position.set( 0.0, Math.sin( t ) * 1.0, 1.0 + Math.cos( t ) - 0.1 );
-		this.camera.rotation.set( - ( ORE.Easings.easeInCubic( this.smoothstep( 0.1, 1.0, time ) ) * Math.PI ) * 0.7, 0, 0 );
+		// console.log( time , t );
+
+		this.camera.position.set( 0.0, Math.sin( t ) * 1.0, 1.0 + Math.cos( t ) * 1.5 + 0.4 );
+		this.camera.rotation.set( - time * Math.PI + Math.PI / 2.5, 0, t * Math.sin( seed * 3.464 ) * 1.0 );
+		// this.camera.rotation.set( - ( ORE.Easings.easeInCubic( this.smoothstep( 0.1, 1.0, time ) ) * Math.PI ) * 0.7, 0, 0 );
 
 		this.scene.getObjectByName( 'Toilet_Futa' ).rotation.set( - ( this.smoothstep( 0.2, 0.5, time ) * Math.PI ) * 0.5, 0, 0 );
 
@@ -156,7 +173,7 @@ export class ToiletScene extends ORE.BaseScene {
 
 		if ( args.aspectRatio > 1.0 ) {
 
-			this.camera.fov = 80;
+			this.camera.fov = 100;
 
 		} else {
 
@@ -169,6 +186,7 @@ export class ToiletScene extends ORE.BaseScene {
 			this.windowSize.set( window.innerWidth, window.innerHeight );
 			this.postProcess.resize();
 			this.reflectPlane.resize( args.windowPixelSize );
+			this.mixer.resize();
 
 		}
 

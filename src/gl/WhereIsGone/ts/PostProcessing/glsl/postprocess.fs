@@ -18,7 +18,7 @@ void main(){
 	vec3 c =  texture2D(backbuffer,vUv ).xyz;
 
 	c *= 1.0 - smoothstep( 0.5, 1.0, length( u ) ) * 0.2;
-	c += ( random( vUv + sin( time ) ) * 2.0 - 1.0 ) * 0.04;
+	// c += ( random( vUv + sin( time ) ) * 2.0 - 1.0 ) * 0.04;
 
 
 	float depth = texture2D( depthTexture, vUv ).x;

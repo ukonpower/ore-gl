@@ -22,6 +22,7 @@ class APP {
 
 			canvas: this.canvas,
 			retina: true,
+			alpha: true
 
 		} );
 
