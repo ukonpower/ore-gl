@@ -6,7 +6,6 @@ import { AssetManager } from './AssetManager';
 import { Timeline } from './Timeline';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { ReflectionPlane } from './ReflectionPlane';
 import { PostProcessing } from './PostProcessing';
 import { SceneMixer } from './SceneMixer';
 import { Scroller } from './Scroller';
@@ -20,8 +19,6 @@ export class ToiletScene extends ORE.BaseScene {
 	private scroller: Scroller;
 
 	private controls: OrbitControls;
-
-	private reflectPlane: ReflectionPlane;
 
 	private commonUniforms: ORE.Uniforms;
 
@@ -117,11 +114,6 @@ export class ToiletScene extends ORE.BaseScene {
 		( light as THREE.PointLight ).decay = 1.7;
 		light.position.set( 0, 0.4, 0 );
 		this.scene.add( light );
-
-		this.reflectPlane = new ReflectionPlane( this.renderer, new THREE.Vector2( 100, 100 ), 0.4, this.commonUniforms );
-		this.reflectPlane.position.set( 0, 0, 0 );
-		this.reflectPlane.rotateX( - Math.PI / 2 );
-		// this.scene.add( this.reflectPlane );
 
 		this.timeline = new Timeline();
 
@@ -226,7 +218,6 @@ export class ToiletScene extends ORE.BaseScene {
 
 			this.windowSize.set( window.innerWidth, window.innerHeight );
 			this.postProcess.resize();
-			this.reflectPlane.resize( args.windowPixelSize );
 			this.mixer.resize();
 
 		}
