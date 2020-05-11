@@ -190,13 +190,15 @@ export default class Fish {
 			},
 		};
 
-		let phong = THREE.ShaderLib.standard;
-		this.uni = THREE.UniformsUtils.merge( [ phong.uniforms, customUni ] );
+		let standard = THREE.ShaderLib.standard;
+		this.uni = THREE.UniformsUtils.merge( [ standard.uniforms, customUni ] );
+		this.uni.roughness.value = 0.5;
+		this.uni.metalness.value = 0.3;
 
 		let mat = new THREE.ShaderMaterial( {
 			uniforms: this.uni,
 			vertexShader: vert,
-			fragmentShader: phong.fragmentShader,
+			fragmentShader: standard.fragmentShader,
 			lights: true,
 			flatShading: true,
 		} );

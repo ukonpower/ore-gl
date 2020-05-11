@@ -65,8 +65,8 @@ export class AssetManager {
 
 		this.load();
 
-		window.assetManager = this;
-		
+		// window.assetManager = this;
+
 	}
 
 	public get isLoaded() {

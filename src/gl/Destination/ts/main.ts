@@ -2,11 +2,11 @@ import * as ORE from '@ore-three-ts';
 import { ToiletScene } from './ToiletScene';
 import { AssetManager } from './AssetManager';
 
-declare global {
-	interface Window {
-		assetManager: AssetManager;
-	}
-}
+// declare global {
+// 	interface Window {
+// 		assetManager: AssetManager;
+// 	}
+// }
 
 class APP {
 
