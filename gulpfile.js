@@ -18,7 +18,7 @@ const options = minimist( process.argv.slice( 2 ), {
 		name: null,
 		P: false,
 	}
-});
+} );
 
 const srcPath = './src';
 const publicPath = './public';
@@ -55,9 +55,9 @@ function esLint( cb ) {
 --------------------*/
 
 const glDir = srcPath + '/gl/';
-const distGLDir =  publicPath + '/gl/';
+const distGLDir = publicPath + '/gl/';
 
-function buildAllGLs( cb ){
+function buildAllGLs( cb ) {
 
 	fs.readdir( glDir, ( err, files ) => {
 
@@ -66,26 +66,26 @@ function buildAllGLs( cb ){
 		let conf = require( './webpack/buildAllGL.config' );
 		conf.mode = options.P ? 'production' : 'development';
 
-		for ( let i = 0; i < files.length; i++ ) {
+		for ( let i = 0; i < files.length; i ++ ) {
 
-			if( files[i] == '.DS_Store' ) continue;
-			
-			let glItemDir = glDir + files[i];
-			let distGLItemDir = distGLDir + files[i];
+			if ( files[ i ] == '.DS_Store' ) continue;
+
+			let glItemDir = glDir + files[ i ];
+			let distGLItemDir = distGLDir + files[ i ];
 
 			//set webpack entry files
-			conf.entry[files[i]] = glItemDir + '/ts/main.ts';	 
+			conf.entry[ files[ i ] ] = glItemDir + '/ts/main.ts';
 
 			//pug
-			gulp.src([ glItemDir + '/pug/**/*.pug', '!' + glItemDir + '/pug/**/_*.pug'] )
-				.pipe(plumber())
-				.pipe(pug({
+			gulp.src( [ glItemDir + '/pug/**/*.pug', '!' + glItemDir + '/pug/**/_*.pug' ] )
+				.pipe( plumber() )
+				.pipe( pug( {
 					pretty: true,
 					locals: {
-						title: files[i],
+						title: files[ i ],
 					}
-				}))
-				.pipe(gulp.dest( distGLItemDir ));
+				} ) )
+				.pipe( gulp.dest( distGLItemDir ) );
 
 			//sass
 			gulp.src( glItemDir + "/scss/style.scss" )
@@ -93,41 +93,41 @@ function buildAllGLs( cb ){
 				.pipe( autoprefixer() )
 				.pipe( sass() )
 				.pipe( cssmin() )
-				.pipe( gulp.dest( distGLItemDir + "/css/" ) )
+				.pipe( gulp.dest( distGLItemDir + "/css/" ) );
 
 			//copy files
-			gulp.src( glDir + files[i] + '/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
+			gulp.src( glDir + files[ i ] + '/assets/**/*' ).pipe( gulp.dest( distGLItemDir + '/assets/' ) );
 
-			gulp.src( glItemDir + '/' + files[i] + '-thumbnail.jpg', { allowEmpty: true } ).pipe( gulp.dest( distGLItemDir) );
-			
+			gulp.src( glItemDir + '/' + files[ i ] + '-thumbnail.jpg', { allowEmpty: true } ).pipe( gulp.dest( distGLItemDir ) );
+
 		}
-		
+
 		conf.output.filename = '[name]/js/main.js';
 
 		//webpack
 		webpackStream( conf, webpack )
 			.pipe( gulp.dest( distGLDir ) )
-			.on( 'end', cb )
+			.on( 'end', cb );
 
-	});
+	} );
 
 }
 
-function cleanAllFiles( cb ){
+function cleanAllFiles( cb ) {
 
-	del([
+	del( [
 
 		publicPath
-		
-	],{
+
+	], {
 
 		force: true,
 
-	}).then( ( paths ) => {
+	} ).then( ( paths ) => {
 
 		cb();
 
-	});
+	} );
 
 }
 
@@ -138,67 +138,71 @@ function cleanAllFiles( cb ){
 let srcDir = '';
 let distDir = '';
 
-function copyFiles( cb ){
+function copyFiles( cb ) {
 
 	gulp.src( srcDir + '/assets/**/*' ).pipe( gulp.dest( distDir + '/assets/' ) );
 	gulp.src( './src/conf/**/*' ).pipe( gulp.dest( distDir ) );
 
 	browserSync.reload();
-	
+
 	cb();
 
 }
 
-function cleanDevFiles( cb ){
+function cleanDevFiles( cb ) {
 
-	del([
+	del( [
 
 		distDir
-		
-	],{
+
+	], {
 
 		force: true,
 
-	}).then( ( paths ) => {
+	} ).then( ( paths ) => {
 
 		cb();
 
-	});
+	} );
 
 }
 
-function webpackDev(){
+function webpackDev() {
 
 	let conf = require( './webpack/dev.config' );
 	conf.entry.main = srcDir + '/ts/main.ts';
 	conf.output.filename = 'main.js';
 	conf.mode = options.P ? 'production' : 'development';
-	
+
 	return webpackStream( conf, webpack )
 		.on( 'end', browserSync.reload )
-		.on( 'error', function() { this.emit( 'end' ) } )
+		.on( 'error', function () {
+
+			this.emit( 'end' );
+
+		} )
 		.pipe( gulp.dest( distDir + "/js/" ) );
 
 }
 
-function pugDev(){
+function pugDev() {
 
 	let title = options.name || 'Ore-GL';
-	
-	return gulp.src([ srcDir + '/pug/**/*.pug', '!' + srcDir + '/pug/**/_*.pug'] )
-		.pipe(plumber())
-		.pipe(pug({
+
+	return gulp.src( [ srcDir + '/pug/**/*.pug', '!' + srcDir + '/pug/**/_*.pug' ] )
+		.pipe( plumber() )
+		.pipe( pug( {
 			pretty: true,
 			locals: {
 				title: title,
 			}
-		}))
+		} ) )
 		.pipe( gulp.dest( distDir ) )
 		.unpipe( browserSync.reload() );
-	
+
 }
 
-function sassDev(){
+function sassDev() {
 
 	return gulp.src( srcDir + "/scss/style.scss" )
 		.pipe( plumber() )
@@ -206,44 +210,45 @@ function sassDev(){
 		.pipe( autoprefixer() )
 		.pipe( cssmin() )
 		.pipe( gulp.dest( distDir + "/css/" ) )
-		.pipe( browserSync.stream() )
+		.pipe( browserSync.stream() );
 
 }
 
-function brSync(){
+function brSync() {
 
-	browserSync.init({
+	browserSync.init( {
 		server: {
 			baseDir: distDir,
 			index: "index.html",
 		},
-	});
+	} );
 
 }
 
-function watch(){
+function watch() {
 
 	gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
 	gulp.watch( srcDir + '/pug/**/*', gulp.series( pugDev ) );
 	gulp.watch( srcDir + '/scss/**/*', gulp.series( sassDev ) );
 	gulp.watch( srcDir + '/html/**/*', gulp.series( copyFiles ) );
 	gulp.watch( srcDir + '/assets/**/*', gulp.series( copyFiles ) );
-	
+
 	let commonDir = './src/common';
 	gulp.watch( commonDir + '/ts/**/*', gulp.series( webpackDev ) );
 	gulp.watch( commonDir + '/pug/**/*', gulp.series( pugDev ) );
 
 }
 
-function setDevGLPath( cb ){
-	
+function setDevGLPath( cb ) {
+
 	srcDir = srcPath + '/gl/' + options.name;
 	distDir = publicPath + '/gl/' + options.name + '/public';
 
 	cb();
+
 }
 
-function setDevTopVisualPath( cb ){
+function setDevTopVisualPath( cb ) {
 
 	srcDir = srcPath + '/topVisual';
 	distDir = publicPath;
@@ -252,13 +257,13 @@ function setDevTopVisualPath( cb ){
 
 }
 
-let develop = gulp.series( 
+let develop = gulp.series(
 	copyFiles,
 	gulp.parallel( pugDev, webpackDev, sassDev ),
 	gulp.parallel( brSync, watch ),
 );
 
-let build = gulp.series( 
+let build = gulp.series(
 	copyFiles,
 	gulp.parallel( pugDev, webpackDev, sassDev ),
 );

@@ -6,12 +6,12 @@ module.exports = {
 	output: {
 	},
 	resolve: {
-		modules: ['node_modules'],
-		extensions: ['.ts', '.js'],
+		modules: [ 'node_modules' ],
+		extensions: [ '.ts', '.js' ],
 		alias: {
-            "@ore-three-ts": path.resolve(__dirname, '../src/common/ts/ore-three-ts/src'),
-            "@glpower": path.resolve(__dirname, '../src/common/ts/glpower/src')
-        },
+			"@ore-three-ts": path.resolve( __dirname, '../src/common/ts/ore-three-ts/src' ),
+			"@glpower": path.resolve( __dirname, '../src/common/ts/glpower/src' )
+		},
 	},
 	module: {
 		rules: [

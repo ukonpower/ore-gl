@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-import frag from './shaders/Tunnel.fs';
-import vert from './shaders/Tunnel.vs';
+import frag from './shaders/tunnel.fs';
+import vert from './shaders/tunnel.vs';
 import { throwStatement } from 'babel-types';
 
 export class Tunnel extends THREE.Object3D {
