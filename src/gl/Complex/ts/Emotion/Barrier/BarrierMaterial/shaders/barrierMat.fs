@@ -43,6 +43,12 @@ $constants
 #define RECIPROCAL_PI 0.31830988618
 #define RECIPROCAL_PI2 0.15915494
 
+float saturate( float x ) {
+
+	return clamp( x, 0.0, 1.0 );
+	
+}
+
 vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 	return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
 }
