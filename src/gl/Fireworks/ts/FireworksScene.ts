@@ -44,11 +44,10 @@ export class FireworksScene extends ORE.BaseScene {
 		let aLight = new THREE.AmbientLight();
 		this.scene.add( aLight );
 
-		this.bloom = new ORE.BloomFilter( this.renderer, 0.1 );
-		this.bloom.threshold = 0.3;
-		this.bloom.brightness = 0.7;
-		this.bloom.blurRange = 10.0;
-		this.bloom.renderCount = 10;
+		this.bloom = new ORE.BloomFilter( this.renderer, 0.4, 3 );
+		this.bloom.threshold = 0.4;
+		this.bloom.brightness = 0.6
+		this.bloom.blurRange = 5.0;
 
 		this.background = new Background();
 		this.scene.add( this.background );

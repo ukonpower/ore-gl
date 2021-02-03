@@ -213,6 +213,10 @@ export class ToiletScene extends ORE.BaseScene {
 			this.camera.fov = 100;
 
 		}
+		this.camera.near = 0.01;
+
+		this.camera.updateProjectionMatrix();
+		
 
 		if ( this.assetManager.isLoaded ) {
 
